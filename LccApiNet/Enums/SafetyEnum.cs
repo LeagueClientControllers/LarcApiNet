@@ -1,32 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace LccApiNet.Enums
 {
     /// <summary>
-    /// Enum with type safety
+    /// Enum with type safety.
     /// </summary>
-    /// <typeparam name="TEntity">Type of the class that represents enum</typeparam>
+    /// <typeparam name="TEntity">Type of the class that represents enum.</typeparam>
     public abstract class SafetyEnum<TEntity> : IEqualityComparer<SafetyEnum<TEntity>>, IEquatable<SafetyEnum<TEntity>>
         where TEntity : SafetyEnum<TEntity>, new()
     {
-        private string _value = null!;
+        protected string _value = null!;
+        private static bool _wasInitialized = false;
         private static List<string> _values = new List<string>();
 
+        static SafetyEnum()
+        {
+            Init();
+        }
+
         /// <summary>
-        /// Access value of the enum element
+        /// Initializes enum
         /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
+        protected static void Init()
+        {
+            if (_wasInitialized)
+                return;
+
+            _wasInitialized = true;
+
+            typeof(TEntity).GetProperties(BindingFlags.Static | BindingFlags.Public).ToList().ForEach(a => Debug.WriteLine(a.Name));
+            foreach (PropertyInfo property in typeof(TEntity).GetProperties(BindingFlags.Static | BindingFlags.Public)) {
+                SafetyEnumValueAttribute? attribute = property.GetCustomAttribute<SafetyEnumValueAttribute>();
+                if (attribute == null)
+                    continue;
+
+                if (_values.Contains(attribute.Value)) {
+                    throw new ArgumentException("Value is already registered");
+                }
+
+                _values.Add(attribute.Value);
+                property.SetValue(null,
+                    new TEntity() { _value = attribute.Value });
+            }
+        }
+
+        /// <summary>
+        /// Access value of the enum element.
+        /// </summary>
+        /// <param name="entity">Enum entity.</param>
+        /// <returns>Value of the enum entity.</returns>
         public static string GetValue(TEntity entity) =>
             entity._value;
 
         /// <summary>
-        /// Tries to assign string value to the enum value
+        /// Tries to assign string value to the enum value.
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>Enum entity based on the <paramref name="value"/></returns>
+        /// <param name="value">String value.</param>
+        /// <returns>Enum entity based on the <paramref name="value"/>.</returns>
         public static TEntity Assign(string value)
         {
             if (_values.Contains(value)) {
@@ -37,26 +73,11 @@ namespace LccApiNet.Enums
         }
 
         /// <summary>
-        /// Registers value
+        /// Equality operator.
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>Enum type value</returns>
-        protected static TEntity RegisterValue(string value)
-        {
-            if (_values.Contains(value)) {
-                throw new ArgumentException("Value is already registered");
-            }
-
-            _values.Add(value);
-            return new TEntity() { _value = value };
-        }
-
-        /// <summary>
-        /// Equality operator
-        /// </summary>
-        /// <param name="left">Left value</param>
-        /// <param name="right">Right value</param>
-        /// <returns><see cref="true"/> if the specified objects are equal; otherwise, <see cref="false"/>.</returns>
+        /// <param name="left">Left value.</param>
+        /// <param name="right">Right value.</param>
+        /// <returns>true if the specified objects are equal; otherwise, false.</returns>
         public static bool operator ==(SafetyEnum<TEntity>? left, SafetyEnum<TEntity>? right)
         {
             if (ReferenceEquals(objA: right, objB: left)) {
@@ -70,11 +91,11 @@ namespace LccApiNet.Enums
         }
 
         /// <summary>
-        /// Inequality operator
+        /// Inequality operator.
         /// </summary>
-        /// <param name="left">Left value</param>
-        /// <param name="right">Right value</param>
-        /// <returns><see cref="false"/> if the specified objects are equal; otherwise, <see cref="true"/></returns>
+        /// <param name="left">Left value.</param>
+        /// <param name="right">Right value.</param>
+        /// <returns>false if the specified objects are equal; otherwise, true.</returns>
         public static bool operator !=(SafetyEnum<TEntity>? left, SafetyEnum<TEntity>? right)
         {
             return !(left == right);

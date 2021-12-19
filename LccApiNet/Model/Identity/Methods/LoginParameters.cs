@@ -1,4 +1,5 @@
-﻿using LccApiNet.Model.Device;
+﻿using LccApiNet.Enums.Safety;
+using LccApiNet.Utilities.JsonConverters;
 
 using Newtonsoft.Json;
 
@@ -7,12 +8,13 @@ namespace LccApiNet.Model.Identity.Methods
     /// <summary>
     /// Parameters of the /identity/login method
     /// </summary>
-    class LoginParameters
+    public class LoginParameters
     {
         /// <summary>
         /// Type of the current device
         /// </summary>
-        [JsonProperty("deviceTypeId")]
+        [JsonProperty("deviceType")]
+        [JsonConverter(typeof(SafetyEnumConverter<DeviceType>))]
         public DeviceType DeviceType { get; set; }
 
         /// <summary>

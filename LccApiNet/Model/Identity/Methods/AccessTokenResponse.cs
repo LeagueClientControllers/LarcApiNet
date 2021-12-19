@@ -1,11 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using LccApiNet.Model.General;
+
+using Newtonsoft.Json;
 
 namespace LccApiNet.Model.Identity.Methods
 {
     /// <summary>
-    /// Response of the /identity/login method
+    /// Response of the methods that returns access token
     /// </summary>
-    class LoginResponse
+    class AccessTokenResponse : ApiResponse
     {
         /// <summary>
         /// Access token given to user

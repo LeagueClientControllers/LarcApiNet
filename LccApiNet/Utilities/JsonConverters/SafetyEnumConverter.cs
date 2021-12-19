@@ -9,7 +9,7 @@ namespace LccApiNet.Utilities.JsonConverters
     /// <summary>
     /// Converter from safety enum to json
     /// </summary>
-    class SafetyEnumConverter<TEntity> : JsonConverter
+    public class SafetyEnumConverter<TEntity> : JsonConverter
          where TEntity : SafetyEnum<TEntity>, new()
     {
         /// <inheritdoc />
@@ -27,7 +27,7 @@ namespace LccApiNet.Utilities.JsonConverters
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-
+            writer.WriteValue(SafetyEnum<TEntity>.GetValue((TEntity)value!));
         }
     }
 }

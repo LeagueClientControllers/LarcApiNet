@@ -8,6 +8,12 @@
     <Configurations>Debug;Release;netcore3.0D;netcore5.0D</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Model\IdentityCategory\**" />
     <EmbeddedResource Remove="Model\IdentityCategory\**" />
@@ -15,8 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="JWT" Version="8.4.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Json" Version="4.7.1" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="5.0.0" />
   </ItemGroup>
 

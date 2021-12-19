@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LccApiNet.Enums.Safety
+﻿namespace LccApiNet.Enums.Safety
 {
     /// <summary>
     /// All possible results of the API method execution
     /// </summary>
     public sealed class ExecutionResult : SafetyEnum<ExecutionResult>
     {
+        public ExecutionResult()
+        {
+            Init();
+        }
+
         /// <summary>
         /// Normal result
         /// </summary>
-        public static readonly ExecutionResult Okey = RegisterValue("Okey");
+        [SafetyEnumValue("Okey")]
+        public static ExecutionResult Okey { get; private set; } = null!;
 
         /// <summary>
         /// Error result
         /// </summary>
-        public static readonly ExecutionResult Error = RegisterValue("Error");
+        [SafetyEnumValue("Error")]
+        public static ExecutionResult Error { get; private set; } = null!;
     }
 }
