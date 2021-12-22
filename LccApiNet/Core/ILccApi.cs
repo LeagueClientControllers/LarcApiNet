@@ -12,6 +12,11 @@ namespace LccApiNet.Core
     public interface ILccApi
     {
         /// <summary>
+        /// Payload of the <see cref="AccessToken"/>
+        /// </summary>
+        JwtPayload? AccessTokenContent { get; }
+
+        /// <summary>
         /// JWT that is used to get access to the user methods
         /// </summary>
         string? AccessToken { get; }
@@ -45,7 +50,7 @@ namespace LccApiNet.Core
             where TResponse : ApiResponse;
 
         /// <summary>
-        /// Executes API method with a response
+        /// Executes API method with a response without parameters
         /// </summary>
         /// <typeparam name="TResponse">Type of the response model</typeparam>
         /// <param name="methodPath">Path to the method</param>
@@ -53,6 +58,16 @@ namespace LccApiNet.Core
         /// <returns>Method response</returns>
         Task<TResponse> ExecuteAsync<TResponse>(string methodPath, bool withAccessToken = true, CancellationToken token = default)
             where TResponse : ApiResponse;
+
+        /// <summary>
+        /// Executes API method with parameters and without response
+        /// </summary>
+        /// <typeparam name="TParameters">Type of the parameters model</typeparam>
+        /// <param name="methodPath">Path to the method</param>
+        /// <param name="params">Method parameters</param>
+        /// <param name="withAccessToken">Whether access token should be provided to execute method</param>
+        Task ExecuteAsync<TParameters>(string methodPath, TParameters @params, bool withAccessToken = true, CancellationToken token = default);
+        
 
         /// <summary>
         /// Updates access token that used to execute user methods

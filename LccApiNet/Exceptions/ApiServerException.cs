@@ -7,6 +7,9 @@ namespace LccApiNet.Exceptions
     /// </summary>
     public class ApiServerException : Exception
     {
-        public ApiServerException() : base("Internal server error occured when trying to execute API method") { }
+        public ApiServerException() : base("Internal server error occured when trying to execute API method")
+        {
+            
+        }
     }
 }

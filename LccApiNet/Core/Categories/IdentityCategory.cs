@@ -21,6 +21,7 @@ namespace LccApiNet.Core.Categories
             _api = api;
         }
 
+
         /// <inheritdoc />
         public async Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials, CancellationToken token = default)
         {
@@ -50,6 +51,14 @@ namespace LccApiNet.Core.Categories
                 throw new WrongResponseException("/identity/login");
 
             await _api.UpdateAccessToken(response.AccessToken).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<ProfileInfoResponse> GetProfileInfoAsync(CancellationToken token = default)
+        {
+            ProfileInfoResponse response = await _api.ExecuteAsync<ProfileInfoResponse>("/identity/getProfileInfo", true, token).ConfigureAwait(false);
+
+            return response;
         }
     }
 }

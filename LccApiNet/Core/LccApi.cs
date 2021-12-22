@@ -23,10 +23,11 @@ namespace LccApiNet.Core
     /// </summary>
     public class LccApi : ILccApi
     {
-        private const string API_HOST = "150.230.151.8";
+        /// <inheritdoc />
+        public JwtPayload? AccessTokenContent { get; private set; }
+        
         private const int PORT = 56032;
-
-        private JwtPayload? _accessTokenContent;
+        private const string API_HOST = "150.230.151.8";
         private Uri _baseUri = new Uri($"http://{API_HOST}:{PORT}");
 
         /// <inheritdoc />
@@ -121,6 +122,57 @@ namespace LccApiNet.Core
         }
 
         /// <inheritdoc />
+        public async Task ExecuteAsync<TParameters>(string methodPath, TParameters @params, bool withAccessToken = true, CancellationToken token = default)
+        {
+            HttpWebRequest request = WebRequest.CreateHttp(new Uri(_baseUri, methodPath));
+            request.Method = "POST";
+            request.ContentType = "application/json;charset=utf-8";
+            request.Accept = "application/json;charset=utf-8";
+            request.Headers.Add("x-api-key", ApiCredentials.API_KEY);
+
+            if (withAccessToken) {
+                if (AccessToken == null) throw new LccUserNotAuthorizedException();
+
+                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {AccessToken}");
+            }
+            
+            string payload = JsonConvert.SerializeObject(@params);
+            using (Stream requestStream = request.GetRequestStream())
+            using (StreamWriter sw = new StreamWriter(requestStream)) {
+                await sw.WriteAsync(payload.AsMemory(), token).ConfigureAwait(false);
+                await sw.FlushAsync().ConfigureAwait(false);
+            }
+
+            HttpWebResponse? response;
+            using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
+                try {
+                    response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
+                } catch (WebException e) {
+                    response = (HttpWebResponse)e.Response;
+                    if (response == null && token.IsCancellationRequested) {
+                        throw new OperationCanceledException(e.Message, e, token);
+                    }
+                }
+            }
+
+            string responseBody;
+            using (StreamReader sr = new StreamReader(response!.GetResponseStream())) {
+                responseBody = await sr.ReadToEndAsync().ConfigureAwait(false);
+            }
+
+            ApiResponse? responseEntity = JsonConvert.DeserializeObject<ApiResponse>(responseBody);
+            Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
+            
+            if (responseEntity == null) throw new MissingResponseException(methodPath);
+            if (responseEntity.Result == ExecutionResult.Error) {
+                if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
+                    throw new WrongResponseException(methodPath);
+                else
+                    throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<TResponse> ExecuteAsync<TResponse>(string methodPath, bool withAccessToken = true, CancellationToken token = default)
             where TResponse : ApiResponse
         {
@@ -177,7 +229,7 @@ namespace LccApiNet.Core
             if (storeInSystem)
                 await UserCredentialsManager.SaveAccessTokenAsync(accessToken).ConfigureAwait(false);
 
-            _accessTokenContent = 
+            AccessTokenContent = 
                 JwtBuilder.Create()
                     .WithAlgorithm(new HMACSHA256Algorithm())
                     .WithSecret(ApiCredentials.JWT_SECRET)
