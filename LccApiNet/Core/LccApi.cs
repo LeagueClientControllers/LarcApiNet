@@ -1,10 +1,8 @@
 ﻿using JWT.Algorithms;
 using JWT.Builder;
-using JWT.Exceptions;
 
 using LccApiNet.Core.Categories;
 using LccApiNet.Core.Categories.Abstraction;
-using LccApiNet.Enums.Safety;
 using LccApiNet.Exceptions;
 using LccApiNet.Model.General;
 using LccApiNet.Security;
@@ -13,7 +11,6 @@ using Newtonsoft.Json;
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Net;
 using System.Threading;

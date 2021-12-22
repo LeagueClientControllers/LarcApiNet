@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace LccApiNet.Core.Categories.Abstraction
 {
     /// <summary>
-    /// Abstraction of the API category that contains methods related to user identification.
+    /// Contains methods of the /identity/ API category 
     /// </summary>
     public interface IIdentityCategory
     {

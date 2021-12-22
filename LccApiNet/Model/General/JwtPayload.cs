@@ -1,5 +1,6 @@
-﻿using LccApiNet.Enums.Safety;
-using LccApiNet.Utilities.JsonConverters;
+﻿using Ardalis.SmartEnum.JsonNet;
+
+using LccApiNet.Model.Device;
 
 using Newtonsoft.Json;
 
@@ -32,7 +33,7 @@ namespace LccApiNet.Model.General
         /// Type of the current device
         /// </summary>
         [JsonProperty("deviceType")]
-        [JsonConverter(typeof(SafetyEnumConverter<DeviceType>))]
+        [JsonConverter(typeof(SmartEnumNameConverter<DeviceType, int>))]
         public DeviceType? DeviceType { get; set; }
 
         /// <summary>

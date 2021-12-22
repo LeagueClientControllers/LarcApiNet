@@ -1,4 +1,4 @@
-﻿using LccApiNet.Enums.Safety;
+﻿using LccApiNet.Model.General;
 
 using System;
 

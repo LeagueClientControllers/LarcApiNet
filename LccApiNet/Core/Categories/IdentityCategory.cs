@@ -1,6 +1,6 @@
 ﻿using LccApiNet.Core.Categories.Abstraction;
-using LccApiNet.Enums.Safety;
 using LccApiNet.Exceptions;
+using LccApiNet.Model.General;
 using LccApiNet.Model.Identity.Methods;
 
 using System;

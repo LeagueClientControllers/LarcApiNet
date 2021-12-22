@@ -1,5 +1,4 @@
-﻿using LccApiNet.Enums.Safety;
-using LccApiNet.Utilities.JsonConverters;
+﻿using Ardalis.SmartEnum.JsonNet;
 
 using Newtonsoft.Json;
 
@@ -15,14 +14,14 @@ namespace LccApiNet.Model.General
         /// Result of the response
         /// </summary>
         [JsonProperty("result")]
-        [JsonConverter(typeof(SafetyEnumConverter<ExecutionResult>))]
+        [JsonConverter(typeof(SmartEnumNameConverter<ExecutionResult, int>))]
         public ExecutionResult? Result { get; set; } 
     
         /// <summary>
         /// Name of the error occured during execution
         /// </summary>
         [JsonProperty("errorName")]
-        [JsonConverter(typeof(SafetyEnumConverter<MethodError>))]
+        [JsonConverter(typeof(SmartEnumNameConverter<MethodError, int>))]
         public MethodError? ErrorName { get; set; }
 
         /// <summary>
