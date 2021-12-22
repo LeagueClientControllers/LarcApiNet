@@ -1,15 +1,12 @@
-﻿using LccApiNet.Model.General;
-using LccApiNet.Model.General.Enums;
-using LccApiNet.Model.Identity.Methods;
+﻿using LccApiNet.Model.General.Enums;
 using LccApiNet.Model.Teams;
 using LccApiNet.Model.Teams.Methods;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using LccApiNet.Core.Categories.Abstraction;
 
-namespace LccApiNet.Core.Categories.Abstraction
+namespace LccApiNet.Core.Categories
 {
     public class TeamsCategory : ITeamsCategory
     {

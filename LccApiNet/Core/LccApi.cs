@@ -38,6 +38,9 @@ namespace LccApiNet.Core
 
         /// <inheritdoc />
         public IDeviceCategory Device { get; private set; }
+        
+        /// <inheritdoc />
+        public ITeamsCategory Teams { get; private set; }
 
         /// <summary>
         /// Creates new instance of the main API class
@@ -46,6 +49,7 @@ namespace LccApiNet.Core
         {
             Identity = new IdentityCategory(this);
             Device = new DeviceCategory(this);
+            Teams = new TeamsCategory(this);
         }
 
         /// <inheritdoc />

@@ -30,7 +30,12 @@ namespace LccApiNet.Core
         /// API Device category
         /// </summary>
         IDeviceCategory Device { get; }
-
+        
+        /// <summary>
+        /// API Teams category
+        /// </summary>
+        ITeamsCategory Teams { get; }
+        
         /// <summary>
         /// Initializes the API module. 
         /// Tries to get stored access token and refreshes it
