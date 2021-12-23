@@ -34,13 +34,13 @@ namespace LccApiNet.Core
         public string? AccessToken { get; private set; }
 
         /// <inheritdoc />
-        public IIdentityCategory Identity { get; private set; }
+        public IIdentityCategory Identity { get; }
 
         /// <inheritdoc />
-        public IDeviceCategory Device { get; private set; }
+        public IDeviceCategory Device { get; }
         
         /// <inheritdoc />
-        public ITeamsCategory Teams { get; private set; }
+        public ITeamsCategory Teams { get; }
 
         /// <summary>
         /// Creates new instance of the main API class
@@ -99,7 +99,7 @@ namespace LccApiNet.Core
                 try {
                     response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
                 } catch (WebException e) {
-                    response = (HttpWebResponse)e.Response;
+                    response = e.Response as HttpWebResponse;
                     if (response == null && token.IsCancellationRequested) {
                         throw new OperationCanceledException(e.Message, e, token);
                     }
@@ -114,15 +114,16 @@ namespace LccApiNet.Core
             TResponse? responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
             Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
             
-            if (responseEntity == null) throw new MissingResponseException(methodPath);
-            if (responseEntity.Result == ExecutionResult.Error) {
-                if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
-                    throw new WrongResponseException(methodPath);
-                else
-                    throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
-            }
-
-            return responseEntity;
+            if (responseEntity == null) 
+                throw new MissingResponseException(methodPath);
+            
+            if (responseEntity.Result != ExecutionResult.Error) 
+                return responseEntity;
+            
+            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
+                throw new WrongResponseException(methodPath);
+            
+            throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
         }
 
         /// <inheritdoc />
@@ -141,18 +142,18 @@ namespace LccApiNet.Core
             }
             
             string payload = JsonConvert.SerializeObject(@params);
-            using (Stream requestStream = request.GetRequestStream())
-            using (StreamWriter sw = new StreamWriter(requestStream)) {
+            await using (Stream requestStream = request.GetRequestStream())
+            await using (StreamWriter sw = new StreamWriter(requestStream)) {
                 await sw.WriteAsync(payload.AsMemory(), token).ConfigureAwait(false);
                 await sw.FlushAsync().ConfigureAwait(false);
             }
 
             HttpWebResponse? response;
-            using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
+            await using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
                 try {
                     response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
                 } catch (WebException e) {
-                    response = (HttpWebResponse)e.Response;
+                    response = e.Response as HttpWebResponse;
                     if (response == null && token.IsCancellationRequested) {
                         throw new OperationCanceledException(e.Message, e, token);
                     }
@@ -168,11 +169,12 @@ namespace LccApiNet.Core
             Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
             
             if (responseEntity == null) throw new MissingResponseException(methodPath);
-            if (responseEntity.Result == ExecutionResult.Error) {
+            if (responseEntity.Result == ExecutionResult.Error)
+            {
                 if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
                     throw new WrongResponseException(methodPath);
-                else
-                    throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
+                
+                throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
             }
         }
 
@@ -192,12 +194,12 @@ namespace LccApiNet.Core
             }
 
             HttpWebResponse? response;
-            using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
+            await using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
                 try {
                     response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
                 } catch (WebException e) {
-                    response = (HttpWebResponse)e.Response;
-                    if (response.StatusCode == HttpStatusCode.InternalServerError) {
+                    response = e.Response as HttpWebResponse;
+                    if (response!.StatusCode == HttpStatusCode.InternalServerError) {
                         throw new ApiServerException();
                     }
                     
@@ -215,15 +217,16 @@ namespace LccApiNet.Core
             TResponse? responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
             Debug.WriteLine($"Executed {methodPath}. Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
 
-            if (responseEntity == null) throw new MissingResponseException(methodPath);
-            if (responseEntity.Result == ExecutionResult.Error) {
-                if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
-                    throw new WrongResponseException(methodPath);
-                else
-                    throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
-            }
-
-            return responseEntity;
+            if (responseEntity == null) 
+                throw new MissingResponseException(methodPath);
+            
+            if (responseEntity.Result != ExecutionResult.Error) 
+                return responseEntity;
+            
+            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
+                throw new WrongResponseException(methodPath);
+            
+            throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
         }
 
         /// <inheritdoc />

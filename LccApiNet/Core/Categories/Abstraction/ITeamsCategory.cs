@@ -44,7 +44,7 @@ namespace LccApiNet.Core.Categories.Abstraction
         /// <param name="teamId">Id of the team.</param>
         /// <param name="memberName">Member's name.</param>
         /// <param name="memberRole">Member's role.</param>
-        /// <returns>Mameber's id.</returns>
+        /// <returns>Member's id.</returns>
         Task<int> AddTeamMemberAsync(int teamId, string memberName, Role memberRole,  CancellationToken token = default); 
 
         /// <summary>
@@ -60,6 +60,13 @@ namespace LccApiNet.Core.Categories.Abstraction
         /// <param name="teamId">Id of the team.</param>
         /// <param name="memberId">If of the member</param>
         /// <param name="role">New role of the member</param>
-        Task ChangeMemberRole(int teamId, int memberId, Role role, CancellationToken token = default);
+        Task ChangeMemberRoleAsync(int teamId, int memberId, Role role, CancellationToken token = default);
+        
+        /// <summary>
+        /// Sets new leader of the team
+        /// </summary>
+        /// <param name="teamId">Id of the team</param>
+        /// <param name="newLeaderId">Id of the new leader of the team</param>
+        Task ChangeTeamLeaderAsync(int teamId, int newLeaderId, CancellationToken token = default);
     }
 }

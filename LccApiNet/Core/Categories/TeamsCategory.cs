@@ -73,8 +73,14 @@ namespace LccApiNet.Core.Categories
         }
 
         /// <inheritdoc />
-        public async Task ChangeMemberRole(int teamId, int memberId, Role role, CancellationToken token = default) {
+        public async Task ChangeMemberRoleAsync(int teamId, int memberId, Role role, CancellationToken token = default) {
             await _api.ExecuteAsync("teams/changeMemberRole", new ChangeMemberRoleParameters(teamId, memberId, role), true, token).ConfigureAwait(false);    
+        }
+
+        /// <inheritdoc />
+        public async Task ChangeTeamLeaderAsync(int teamId, int newLeaderId, CancellationToken token = default)
+        {
+            await _api.ExecuteAsync("teams/changeLeader", new ChangeTeamLeaderParameters(teamId, newLeaderId), true, token).ConfigureAwait(false);
         }
     }
 }
