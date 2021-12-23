@@ -12,11 +12,11 @@ namespace LccApiNet.Model.General
         /// <summary>
         /// Normal result
         /// </summary>
-        public static ExecutionResult Okey { get; } = new ExecutionResult("Okey", 1);
+        public static readonly ExecutionResult Okey = new ExecutionResult("Okey", 1);
 
         /// <summary>
         /// Error result
         /// </summary>
-        public static ExecutionResult Error { get; } = new ExecutionResult("Okey", 1);
+        public static readonly ExecutionResult Error = new ExecutionResult("Error", 2);
     }
 }

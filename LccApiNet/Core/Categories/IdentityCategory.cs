@@ -1,6 +1,7 @@
 ﻿using LccApiNet.Core.Categories.Abstraction;
 using LccApiNet.Exceptions;
 using LccApiNet.Model.General;
+using LccApiNet.Model.Identity;
 using LccApiNet.Model.Identity.Methods;
 
 using System;
@@ -54,11 +55,11 @@ namespace LccApiNet.Core.Categories
         }
 
         /// <inheritdoc />
-        public async Task<ProfileInfoResponse> GetProfileInfoAsync(CancellationToken token = default)
+        public async Task<ProfileInfo> GetProfileInfoAsync(CancellationToken token = default)
         {
             ProfileInfoResponse response = await _api.ExecuteAsync<ProfileInfoResponse>("/identity/getProfileInfo", true, token).ConfigureAwait(false);
 
-            return response;
+            return response.Profile;
         }
     }
 }

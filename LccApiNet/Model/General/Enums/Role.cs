@@ -16,26 +16,26 @@ namespace LccApiNet.Model.General.Enums
         /// <summary>
         /// Role of the top lane
         /// </summary>
-        public static Role Top { get; } = new Role("Top", 1);
+        public static readonly Role Top = new Role("Top", 1);
        
         /// <summary>
         /// Role of the jungle
         /// </summary>
-        public static Role Jungle { get; } = new Role("Jungle", 2);
+        public static readonly Role Jungle = new Role("Jungle", 2);
     
         /// <summary>
         /// Role of the mid lane
         /// </summary>
-        public static Role Mid { get; } = new Role("Mid", 3);
+        public static readonly Role Mid = new Role("Mid", 3);
     
         /// <summary>
         /// Role of the bot lane
         /// </summary>
-        public static Role Bot { get; } = new Role("Bot", 4);
+        public static readonly Role Bot = new Role("Bot", 4);
     
         /// <summary>
         /// Role of the support
         /// </summary>
-        public static Role Support { get; } = new Role("Support", 5);
+        public static readonly Role Support = new Role("Support", 5);
     }
 }

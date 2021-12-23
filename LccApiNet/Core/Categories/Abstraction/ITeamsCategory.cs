@@ -29,8 +29,9 @@ namespace LccApiNet.Core.Categories.Abstraction
         /// <summary>
         /// Changes team name.
         /// </summary>
-        /// <param name="teamName">Name of the team.</param>
-        Task ChangeTeamNameAsync(string teamName, CancellationToken token = default);
+        /// <param name="teamId">Id of the team.</param>
+        /// <param name="teamName">New name of the team.</param>
+        Task ChangeTeamNameAsync(int teamId, string teamName, CancellationToken token = default);
 
         /// <summary>
         /// Deletes team with specific id.
@@ -42,10 +43,10 @@ namespace LccApiNet.Core.Categories.Abstraction
         /// Adds member in the team.
         /// </summary>
         /// <param name="teamId">Id of the team.</param>
-        /// <param name="memberName">Member's name.</param>
+        /// <param name="memberSummonerId">Id of the Riot account of the new member.</param>
         /// <param name="memberRole">Member's role.</param>
         /// <returns>Member's id.</returns>
-        Task<int> AddTeamMemberAsync(int teamId, string memberName, Role memberRole,  CancellationToken token = default); 
+        Task<int> AddTeamMemberAsync(int teamId, string memberSummonerId, Role memberRole,  CancellationToken token = default); 
 
         /// <summary>
         /// Deletes team member with specific id.

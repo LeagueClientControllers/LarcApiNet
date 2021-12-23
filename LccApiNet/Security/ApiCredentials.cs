@@ -5,7 +5,7 @@
     /// </summary>
     internal static class ApiCredentials
     {
-        internal const string API_KEY = "ApiKey";
-        internal const string JWT_SECRET = "JwtSecret";
+        internal const string API_KEY = "***REMOVED***";
+        internal const string JWT_SECRET = "5$*t{AwD«M(9*YXBfan^P?sbk~kQUy";
     }
 }

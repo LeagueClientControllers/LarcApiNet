@@ -12,11 +12,11 @@ namespace LccApiNet.Model.Device
         /// <summary>
         /// Client controller
         /// </summary>
-        public static DeviceType Controller { get; } = new DeviceType("Controller", 1);
+        public static readonly DeviceType Controller = new DeviceType("Controller", 1);
 
         /// <summary>
         /// Mobile phone
         /// </summary>
-        public static DeviceType Phone { get; } = new DeviceType("Phone", 2);
+        public static readonly DeviceType Phone = new DeviceType("Phone", 2);
     }
 }

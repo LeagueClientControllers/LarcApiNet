@@ -1,4 +1,5 @@
-﻿using LccApiNet.Model.General.Enums;
+﻿using Ardalis.SmartEnum.JsonNet;
+using LccApiNet.Model.General.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace LccApiNet.Model.Teams.Methods
         public string MemberSummonerId { get; set; }
 
         [JsonProperty("memberRole")]
+        [JsonConverter(typeof(SmartEnumNameConverter<Role, int>))]
         public Role MemberRole;
 
         public AddTeamMemberParameters(int teamId, string memberSummonerId, Role memberRole)

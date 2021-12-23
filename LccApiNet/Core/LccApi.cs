@@ -26,7 +26,7 @@ namespace LccApiNet.Core
         /// <inheritdoc />
         public JwtPayload? AccessTokenContent { get; private set; }
         
-        private const int PORT = 56032;
+        private const int PORT = 56067;
         private const string API_HOST = "150.230.151.8";
         private Uri _baseUri = new Uri($"http://{API_HOST}:{PORT}");
 

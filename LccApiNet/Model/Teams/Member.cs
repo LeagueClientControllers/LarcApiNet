@@ -27,8 +27,11 @@ namespace LccApiNet.Model.Teams
         /// <summary>
         /// Role of the team member
         /// </summary>
-        [JsonProperty("role")]
+        [JsonProperty("teamRole")]
         [JsonConverter(typeof(SmartEnumNameConverter<Role, int>))]
         public Role TeamRole { get; set; } = default!;
+
+        [JsonProperty("isLeader")]
+        public bool IsLeader { get; set; }
     }
 }

@@ -26,6 +26,6 @@ namespace LccApiNet.Model.Teams
         /// Five members of the team
         /// </summary>
         [JsonProperty("members")]
-        public Member[] Members { get; set; } = default!;
+        public Member[] Members { get; set; } = new Member[0];
     }
 }

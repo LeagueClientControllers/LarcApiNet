@@ -1,4 +1,5 @@
-﻿using LccApiNet.Model.Identity.Methods;
+﻿using LccApiNet.Model.Identity;
+using LccApiNet.Model.Identity.Methods;
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,6 +27,6 @@ namespace LccApiNet.Core.Categories.Abstraction
         /// <summary>
         /// Gets profile info.
         /// </summary>
-        Task<ProfileInfoResponse> GetProfileInfoAsync(CancellationToken token = default);
+        Task<ProfileInfo> GetProfileInfoAsync(CancellationToken token = default);
     }
 }

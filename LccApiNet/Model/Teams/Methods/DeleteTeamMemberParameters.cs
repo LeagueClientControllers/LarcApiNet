@@ -10,7 +10,7 @@ namespace LccApiNet.Model.Teams.Methods
         [JsonProperty("teamId")]
         public int TeamId { get; set; }
      
-        [JsonProperty("membeId")]
+        [JsonProperty("memberId")]
         public int MemberId { get; set; }
 
         public DeleteTeamMemberParameters(int teamId, int memberId)

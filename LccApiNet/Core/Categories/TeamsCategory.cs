@@ -36,13 +36,13 @@ namespace LccApiNet.Core.Categories
         }
 
         /// <inheritdoc />
-        public async Task ChangeTeamNameAsync(string teamName, CancellationToken token = default)
+        public async Task ChangeTeamNameAsync(int teamId, string teamName, CancellationToken token = default)
         {
 
             if (teamName == "") 
                 throw new ArgumentException("Team name cannot be empty");
 
-            await _api.ExecuteAsync("/teams/changeName", new CreateTeamParameters(teamName), true, token).ConfigureAwait(false);
+            await _api.ExecuteAsync("/teams/changeName", new ChangeTeamNameParameters(teamId, teamName), true, token).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
