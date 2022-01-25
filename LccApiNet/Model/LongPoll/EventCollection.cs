@@ -5,7 +5,7 @@ namespace LccApiNet.Model.LongPoll
     /// <summary>
     /// Collection of the events
     /// </summary>
-    internal class EventCollection
+    public class EventCollection
     {
         /// <summary>
         /// All the events related to the user's devices

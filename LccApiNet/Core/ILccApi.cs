@@ -1,4 +1,5 @@
 ﻿using LccApiNet.Core.Categories.Abstraction;
+using LccApiNet.Core.Services;
 using LccApiNet.Model.General;
 
 using System.Threading;
@@ -35,6 +36,21 @@ namespace LccApiNet.Core
         /// API Teams category
         /// </summary>
         ITeamsCategory Teams { get; }
+        
+        /// <summary>
+        /// API Long poll category
+        /// </summary>
+        ILongPollCategory LongPoll { get; }
+
+        /// <summary>
+        /// API Client category
+        /// </summary>
+        IClientCategory Client { get; }
+
+        /// <summary>
+        /// Service that manages user events
+        /// </summary>
+        UserEventService UserEvents { get; }
         
         /// <summary>
         /// Initializes the API module. 

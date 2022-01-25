@@ -9,7 +9,7 @@ namespace LccApiNet.Model.LongPoll.Methods
     /// <summary>
     /// Parameters of the /longpoll/getEvents method
     /// </summary>
-    internal class LongPollEventsParameters
+    public class LongPollEventsParameters
     {
         /// <summary> 
         /// Determines from which event to start fetching events when executing next long poll request

@@ -11,7 +11,7 @@ namespace LccApiNet.Core.Categories.Abstraction
     /// <summary>
     /// Contains methods of the /longpoll/ API category 
     /// </summary>
-    internal interface ILongPollCategory
+    public interface ILongPollCategory
     {
         /// <summary>
         /// Gets id of the last current event of the user
