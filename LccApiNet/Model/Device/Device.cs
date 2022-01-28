@@ -18,7 +18,7 @@ namespace LccApiNet.Model.Device
         /// <summary>
         /// Type of the device
         /// </summary>
-        [JsonProperty("deviceType")]
+        [JsonProperty("type")]
         [JsonConverter(typeof(SmartEnumNameConverter<DeviceType, int>))]
         public DeviceType Type { get; set; } = null!;
 

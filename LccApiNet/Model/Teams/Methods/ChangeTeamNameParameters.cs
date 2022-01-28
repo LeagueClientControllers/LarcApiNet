@@ -18,8 +18,7 @@ namespace LccApiNet.Model.Teams.Methods
 
         public ChangeTeamNameParameters(int teamId, string teamName)
         {
-            TeamName = teamName;
-            TeamId = teamId;
+            (TeamName, TeamId) = (teamName, teamId);
         }
     }
 }

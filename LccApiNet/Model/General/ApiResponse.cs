@@ -15,7 +15,7 @@ namespace LccApiNet.Model.General
         /// </summary>
         [JsonProperty("result")]
         [JsonConverter(typeof(SmartEnumNameConverter<ExecutionResult, int>))]
-        public ExecutionResult? Result { get; set; } 
+        public ExecutionResult Result { get; set; } = null!;
     
         /// <summary>
         /// Name of the error occured during execution

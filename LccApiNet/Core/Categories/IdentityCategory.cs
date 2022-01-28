@@ -27,11 +27,11 @@ namespace LccApiNet.Core.Categories
         public async Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials, CancellationToken token = default)
         {
             try {
-                AccessTokenResponse response = await _api.ExecuteAsync<AccessTokenResponse, LoginParameters>("/identity/login", @params, false, token).ConfigureAwait(false);
-                if (response.AccessToken == null)
+                string response = await _api.ExecuteAsync<string, LoginParameters>("/identity/login", @params, "accessToken", false, token).ConfigureAwait(false);
+                if (response == null)
                     throw new WrongResponseException("/identity/login");
 
-                await _api.UpdateAccessToken(response.AccessToken, saveCredentials).ConfigureAwait(false);
+                await _api.UpdateAccessToken(response, saveCredentials).ConfigureAwait(false);
                 return true;
             } catch (MethodException me) {
                 if (me.ErrorName == MethodError.WrongNicknameEmailOrPassword || me.ErrorName == MethodError.InvalidMethodParameter) {
@@ -39,19 +39,17 @@ namespace LccApiNet.Core.Categories
                 } else {
                     throw me;
                 }
-            } catch (Exception e) {
-                throw e;
             }
         }
 
         /// <inheritdoc />
         public async Task RefreshAccessTokenAsync(CancellationToken token = default)
         {
-            AccessTokenResponse response = await _api.ExecuteAsync<AccessTokenResponse>("/identity/refreshAccessToken", true, token).ConfigureAwait(false);
-            if (response.AccessToken == null)
+            string? response = await _api.ExecuteAsync<string?>("/identity/refreshAccessToken", "accessToken", true, token).ConfigureAwait(false);
+            if (response == null)
                 throw new WrongResponseException("/identity/login");
 
-            await _api.UpdateAccessToken(response.AccessToken).ConfigureAwait(false);
+            await _api.UpdateAccessToken(response).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

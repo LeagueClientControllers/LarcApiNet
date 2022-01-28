@@ -22,9 +22,11 @@ namespace LccApiNet.Core.Categories
             if (teamName == "") 
                 throw new ArgumentException("Team name cannot be empty");
 
-            CreateTeamResponse response = await _api.ExecuteAsync<CreateTeamResponse, CreateTeamParameters>("/teams/create", new CreateTeamParameters(teamName), true, token).ConfigureAwait(false);
-            
-            return response.TeamId;
+            //CreateTeamResponse response = await _api.ExecuteAsync<CreateTeamResponse, CreateTeamParameters>("/teams/create", new CreateTeamParameters(teamName), true, token).ConfigureAwait(false);
+
+            //int response = await _api.ExecuteAsync<int, CreateTeamParameters>("/teams/create", new CreateTeamParameters(teamName), "teamId", true, token).ConfigureAwait(false);
+            int response = await _api.ExecuteAsync<int, string>("/teams/create", "teamName", teamName, "teamId", true, token).ConfigureAwait(false);
+            return response;
         }
 
         /// <inheritdoc />
@@ -48,7 +50,8 @@ namespace LccApiNet.Core.Categories
         /// <inheritdoc />
         public async Task DeleteTeamAsync(int teamId, CancellationToken token = default)
         {
-            await _api.ExecuteAsync("/teams/delete", new DeleteTeamParameters(teamId), true, token).ConfigureAwait(false);
+            //await _api.ExecuteAsync("/teams/delete", new DeleteTeamParameters(teamId), true, token).ConfigureAwait(false);
+            await _api.ExecuteAsync("/teams/delete", "teamId", teamId, true, token).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
@@ -56,11 +59,11 @@ namespace LccApiNet.Core.Categories
         {
             AddTeamMemberParameters @params = new AddTeamMemberParameters(teamId, memberSummonerId, memberRole);
 
-            AddTeamMemberResponse response = 
-                await _api.ExecuteAsync<AddTeamMemberResponse, AddTeamMemberParameters>(
-                    "/teams/addMember", @params, true, token).ConfigureAwait(false);
+            //AddTeamMemberResponse response = 
+            //    await _api.ExecuteAsync<AddTeamMemberResponse, AddTeamMemberParameters>("/teams/addMember", @params, true, token).ConfigureAwait(false);
 
-            return response.MemberId;
+            int response = await _api.ExecuteAsync<int, AddTeamMemberParameters>("/teams/addMember", @params, "memberId", true, token).ConfigureAwait(false);
+            return response;
         }
 
         /// <inheritdoc />

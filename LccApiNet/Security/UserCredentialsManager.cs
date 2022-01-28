@@ -14,7 +14,7 @@ namespace LccApiNet.Security
     /// <summary>
     /// Stores the user credentials in the system and get it back
     /// </summary>
-    internal static class UserCredentialsManager
+    internal static class UserCredentialsManager 
     {
         private const string FILE_NAME = "credentials.json"; 
 

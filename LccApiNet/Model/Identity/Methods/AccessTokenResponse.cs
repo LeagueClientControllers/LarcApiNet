@@ -7,7 +7,7 @@ namespace LccApiNet.Model.Identity.Methods
     /// <summary>
     /// Response of the methods that returns access token
     /// </summary>
-    class AccessTokenResponse : ApiResponse
+    public class AccessTokenResponse : ApiResponse
     {
         /// <summary>
         /// Access token given to user

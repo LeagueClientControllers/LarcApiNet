@@ -1,4 +1,5 @@
-﻿using JWT.Algorithms;
+﻿using Ardalis.SmartEnum.JsonNet;
+using JWT.Algorithms;
 using JWT.Builder;
 
 using LccApiNet.Core.Categories;
@@ -6,13 +7,19 @@ using LccApiNet.Core.Categories.Abstraction;
 using LccApiNet.Exceptions;
 using LccApiNet.Model.General;
 using LccApiNet.Security;
-
+using LccApiNet.Utilities;
 using Newtonsoft.Json;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,6 +49,8 @@ namespace LccApiNet.Core
         /// <inheritdoc />
         public ITeamsCategory Teams { get; }
 
+        private IUserCreditionalsStorage _userCreditionalsStorage = null!;
+
         /// <summary>
         /// Creates new instance of the main API class
         /// </summary>
@@ -53,9 +62,10 @@ namespace LccApiNet.Core
         }
 
         /// <inheritdoc />
-        public async Task InitAsync(CancellationToken token = default)
+        public async Task InitAsync(IUserCreditionalsStorage userCreditionalsStorage, CancellationToken token = default)
         {
-            string? accessToken = await UserCredentialsManager.GetAccessTokenAsync().ConfigureAwait(false);
+            string? accessToken = await userCreditionalsStorage.RetrieveAccessTokenAsync().ConfigureAwait(false);
+            _userCreditionalsStorage = userCreditionalsStorage;
             if (accessToken == null)
                 return;
 
@@ -66,7 +76,7 @@ namespace LccApiNet.Core
             } catch (MethodException me) {
                 if (me.ErrorName == MethodError.WrongAccessToken) {
                     AccessToken = null;
-                    UserCredentialsManager.ClearAccessToken();
+                    await userCreditionalsStorage.ClearAccessTokenAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -75,166 +85,27 @@ namespace LccApiNet.Core
         public async Task<TResponse> ExecuteAsync<TResponse, TParameters>(string methodPath, TParameters @params, bool withAccessToken = true, CancellationToken token = default)
             where TResponse : ApiResponse
         {
-            HttpWebRequest request = WebRequest.CreateHttp(new Uri(_baseUri, methodPath));
-            request.Method = "POST";
-            request.ContentType = "application/json;charset=utf-8";
-            request.Accept = "application/json;charset=utf-8";
-            request.Headers.Add("x-api-key", ApiCredentials.API_KEY);
-
-            if (withAccessToken) {
-                if (AccessToken == null) throw new LccUserNotAuthorizedException();
-
-                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {AccessToken}");
-            }
-            
             string payload = JsonConvert.SerializeObject(@params);
-            using (Stream requestStream = request.GetRequestStream())
-            using (StreamWriter sw = new StreamWriter(requestStream)) {
-                await sw.WriteAsync(payload.AsMemory(), token).ConfigureAwait(false);
-                await sw.FlushAsync().ConfigureAwait(false);
-            }
-
-            HttpWebResponse? response;
-            using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
-                try {
-                    response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
-                } catch (WebException e) {
-                    response = e.Response as HttpWebResponse;
-                    if (response == null && token.IsCancellationRequested) {
-                        throw new OperationCanceledException(e.Message, e, token);
-                    }
-                }
-            }
-
-            string responseBody;
-            using (StreamReader sr = new StreamReader(response!.GetResponseStream())) {
-                responseBody = await sr.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            TResponse? responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
-            Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
-            
-            if (responseEntity == null) 
-                throw new MissingResponseException(methodPath);
-            
-            if (responseEntity.Result != ExecutionResult.Error) 
-                return responseEntity;
-            
-            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
-                throw new WrongResponseException(methodPath);
-            
-            throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
+            return await ExecuteBase<TResponse>(methodPath, withAccessToken, token, payload).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         public async Task ExecuteAsync<TParameters>(string methodPath, TParameters @params, bool withAccessToken = true, CancellationToken token = default)
         {
-            HttpWebRequest request = WebRequest.CreateHttp(new Uri(_baseUri, methodPath));
-            request.Method = "POST";
-            request.ContentType = "application/json;charset=utf-8";
-            request.Accept = "application/json;charset=utf-8";
-            request.Headers.Add("x-api-key", ApiCredentials.API_KEY);
-
-            if (withAccessToken) {
-                if (AccessToken == null) throw new LccUserNotAuthorizedException();
-
-                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {AccessToken}");
-            }
-            
             string payload = JsonConvert.SerializeObject(@params);
-            await using (Stream requestStream = request.GetRequestStream())
-            await using (StreamWriter sw = new StreamWriter(requestStream)) {
-                await sw.WriteAsync(payload.AsMemory(), token).ConfigureAwait(false);
-                await sw.FlushAsync().ConfigureAwait(false);
-            }
-
-            HttpWebResponse? response;
-            await using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
-                try {
-                    response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
-                } catch (WebException e) {
-                    response = e.Response as HttpWebResponse;
-                    if (response == null && token.IsCancellationRequested) {
-                        throw new OperationCanceledException(e.Message, e, token);
-                    }
-                }
-            }
-
-            string responseBody;
-            using (StreamReader sr = new StreamReader(response!.GetResponseStream())) {
-                responseBody = await sr.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            ApiResponse? responseEntity = JsonConvert.DeserializeObject<ApiResponse>(responseBody);
-            Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
-            
-            if (responseEntity == null) throw new MissingResponseException(methodPath);
-            if (responseEntity.Result == ExecutionResult.Error)
-            {
-                if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
-                    throw new WrongResponseException(methodPath);
-                
-                throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
-            }
+            await ExecuteBase<ApiResponse>(methodPath, withAccessToken, token, payload).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<TResponse> ExecuteAsync<TResponse>(string methodPath, bool withAccessToken = true, CancellationToken token = default)
-            where TResponse : ApiResponse
-        {
-            HttpWebRequest request = WebRequest.CreateHttp(new Uri(_baseUri, methodPath));
-            request.Method = "POST";
-            request.Accept = "application/json;charset=utf-8";
-            request.Headers.Add("x-api-key", ApiCredentials.API_KEY);
-
-            if (withAccessToken) {
-                if (AccessToken == null) throw new LccUserNotAuthorizedException();
-
-                request.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {AccessToken}");
-            }
-
-            HttpWebResponse? response;
-            await using (token.Register(() => request.Abort(), useSynchronizationContext: false)) {
-                try {
-                    response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
-                } catch (WebException e) {
-                    response = e.Response as HttpWebResponse;
-                    if (response!.StatusCode == HttpStatusCode.InternalServerError) {
-                        throw new ApiServerException();
-                    }
-                    
-                    if (response == null && token.IsCancellationRequested) {
-                        throw new OperationCanceledException(e.Message, e, token);
-                    }
-                }
-            }
-
-            string responseBody;
-            using (StreamReader sr = new StreamReader(response!.GetResponseStream())) {
-                responseBody = await sr.ReadToEndAsync().ConfigureAwait(false);
-            }
-
-            TResponse? responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
-            Debug.WriteLine($"Executed {methodPath}. Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
-
-            if (responseEntity == null) 
-                throw new MissingResponseException(methodPath);
-            
-            if (responseEntity.Result != ExecutionResult.Error) 
-                return responseEntity;
-            
-            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null)
-                throw new WrongResponseException(methodPath);
-            
-            throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
-        }
+        public Task<TResponse> ExecuteAsync<TResponse>(string methodPath, bool withAccessToken = true, CancellationToken token = default)
+            where TResponse : ApiResponse => ExecuteBase<TResponse>(methodPath, withAccessToken, token);
 
         /// <inheritdoc />
         public async Task UpdateAccessToken(string accessToken, bool storeInSystem = false)
         {
             AccessToken = accessToken;
             if (storeInSystem)
-                await UserCredentialsManager.SaveAccessTokenAsync(accessToken).ConfigureAwait(false);
+                await _userCreditionalsStorage.StoreAccessTokenAsync(accessToken).ConfigureAwait(false);
 
             AccessTokenContent = 
                 JwtBuilder.Create()
@@ -242,6 +113,157 @@ namespace LccApiNet.Core
                     .WithSecret(ApiCredentials.JWT_SECRET)
                     .DoNotVerifySignature()
                     .Decode<JwtPayload>(AccessToken);
+        }
+
+        /// <inheritdoc />
+        public Task ExecuteAsync(string methodPath, bool withAccessToken = true, CancellationToken token = default)
+            => ExecuteBase<ApiResponse>(methodPath, withAccessToken, token);
+
+        /// <inheritdoc />
+        public async Task<TResponse> ExecuteAsync<TResponse, TParameters>(string methodPath, TParameters @params, string responseObjectKey, bool withAccessToken = true, CancellationToken token = default)
+        {
+            string payload = JsonConvert.SerializeObject(@params);
+            return await ExecuteBase<TResponse>(methodPath, responseObjectKey, withAccessToken, token, payload).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<TResponse> ExecuteAsync<TResponse, TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default) 
+            where TResponse : ApiResponse
+        {
+            if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) { 
+                string payload = $"{{ \"{paramKey}\" : \"{param}\" }}";
+                return await ExecuteBase<TResponse>(methodPath, withAccessToken, token, payload).ConfigureAwait(false);
+            } else {
+                throw new WrongSimpleParameterTypeExeption(typeof(TParameter).ToString());
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<TResponse> ExecuteAsync<TResponse, TParameter>(string methodPath, string paramKey, TParameter param, string responseObjectKey, bool withAccessToken = true, CancellationToken token = default)
+        {
+            if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) {
+                string payload = $"{{ \"{paramKey}\" : \"{param}\" }}";
+                return await ExecuteBase<TResponse>(methodPath, responseObjectKey, withAccessToken, token, payload).ConfigureAwait(false);
+            } else {
+                throw new WrongSimpleParameterTypeExeption(typeof(TParameter).ToString());
+            }
+        }
+
+        /// <inheritdoc />
+        public Task<TResponse> ExecuteAsync<TResponse>(string methodPath, string responseObjectKey, bool withAccessToken = true, CancellationToken token = default)
+            => ExecuteBase<TResponse>(methodPath, responseObjectKey, withAccessToken, token);
+
+        /// <inheritdoc />
+        public async Task ExecuteAsync<TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default)
+        {
+            if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) {
+                string payload = $"{{ \"{paramKey}\" : \"{param}\" }}";
+                await ExecuteBase<ApiResponse>(methodPath, withAccessToken, token, payload).ConfigureAwait(false);
+            } else {
+                throw new WrongSimpleParameterTypeExeption(typeof(TParameter).ToString());
+            }
+        }
+
+
+        public async Task<TResponse> ExecuteBase<TResponse>(string methodPath, bool withAccessToken, CancellationToken token, string? payload = null)
+            where TResponse : ApiResponse
+        {
+            string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
+            TResponse? responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
+            Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
+
+            if (responseEntity == null) { 
+                throw new MissingResponseException(methodPath);
+            }
+
+            if (responseEntity.Result != ExecutionResult.Error) { 
+                return responseEntity;
+            }
+
+            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null) { 
+                throw new WrongResponseException(methodPath);
+            }
+
+            throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
+        }
+
+
+        public async Task<TResponse> ExecuteBase<TResponse>(string methodPath, string responseObjectKey, bool withAccessToken, CancellationToken token, string? payload = null)
+        {
+            string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
+
+            Type type = CustomApiResponseTypeBuilder.GetCustomApiResponseType<TResponse>(responseObjectKey);
+            object? responseEntity = JsonConvert.DeserializeObject(responseBody, type);
+            
+            if (responseEntity == null) { 
+                throw new MissingResponseException(methodPath);
+            }
+
+            ApiResponse apiResponse = (ApiResponse)responseEntity;
+            
+            if (apiResponse.Result != ExecutionResult.Error) {
+                PropertyInfo responseObjectProperty = type.GetProperty(string.Concat(responseObjectKey[0].ToString().ToUpper(), responseObjectKey.AsSpan(1)))!;
+                TResponse responseObjectPropertyValue = (TResponse)responseObjectProperty.GetValue(responseEntity);
+                Console.WriteLine($"[ExecuteBase] TResponse type: {typeof(TResponse)}");
+
+                return responseObjectPropertyValue;
+            }
+
+            if (apiResponse.ErrorName == null || apiResponse.ErrorMessage == null) { 
+                throw new WrongResponseException(methodPath);
+            }
+
+            throw new MethodException(methodPath, apiResponse.ErrorName, apiResponse.ErrorMessage);
+        }
+
+        private async Task<string> _ExecuteBase(string methodPath, string? payload, bool withAccessToken, CancellationToken token)
+        {
+            HttpResponseMessage response;
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, methodPath);
+            request.Content = new StringContent(payload ?? "", Encoding.UTF8, "application/json");
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = _baseUri;
+                client.DefaultRequestHeaders.Add("Accept", "application/json;charset=utf-8");
+                client.DefaultRequestHeaders.Add("x-api-key", ApiCredentials.API_KEY);
+
+                if (withAccessToken)
+                {
+                    if (AccessToken == null) throw new LccUserNotAuthorizedException();
+
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
+                }
+
+                try
+                {
+                    response = await client.SendAsync(request, token).ConfigureAwait(false);
+                }
+                catch (HttpRequestException e)
+                {
+                    response = null;
+                    if (response == null)
+                    {
+                        if ( e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused)
+                        {
+                            //throw new ServerUnreachableException();
+                        }
+
+                        throw e;
+                    }
+
+                    if (response.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        throw new ApiServerException();
+                    }
+                }
+
+            }
+
+            string responseString = await response.Content.ReadAsStringAsync(token).ConfigureAwait(false);
+            Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {responseString} ");
+
+            return responseString;    
         }
     }
 }
