@@ -9,7 +9,7 @@ namespace LccApiNet.Model.LongPoll
     /// <summary>
     /// Describes event that occured with the device
     /// </summary>
-    internal class DeviceEvent
+    public class DeviceEvent
     {
         /// <summary>
         /// Type of the event
@@ -30,6 +30,6 @@ namespace LccApiNet.Model.LongPoll
         /// Stores changes of the device's properties
         /// </summary>
         [JsonProperty("changes")]
-        public Dictionary<string, dynamic>? Changes { get; set; }
+        public Dictionary<string, object>? Changes { get; set; }
     }
 }

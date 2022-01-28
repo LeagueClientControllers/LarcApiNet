@@ -7,14 +7,14 @@ namespace LccApiNet.Model.LongPoll.Methods
     /// <summary>
     /// Response of the /longpoll/getEvents method
     /// </summary>
-    internal class LongPollEventsResponse : ApiResponse
+    public class LongPollEventsResponse : ApiResponse
     {
         /// <summary>
         /// Id of the last event in the returned collection. 
         /// Used to point out when to start catch events when executing next long poll request
         /// </summary>
         [JsonProperty("lastEventId")]
-        public int lastEventId { get; set; }
+        public int LastEventId { get; set; }
 
         /// <summary>
         /// Collection of the events

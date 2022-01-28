@@ -11,7 +11,7 @@ namespace LccApiNet.Model.LongPoll.Methods
     /// <summary>
     /// Response of the /longpoll/getLastEventId method
     /// </summary>
-    internal class EventIdResponse : ApiResponse
+    public class EventIdResponse : ApiResponse
     {
         /// <summary>
         /// Id of the last event

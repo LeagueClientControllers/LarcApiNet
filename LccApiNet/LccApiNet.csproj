@@ -6,6 +6,7 @@
     <RootNamespace>LccApiNet</RootNamespace>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;netcore3.0D;netcore5.0D</Configurations>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

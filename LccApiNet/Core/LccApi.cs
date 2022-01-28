@@ -4,6 +4,7 @@ using JWT.Builder;
 
 using LccApiNet.Core.Categories;
 using LccApiNet.Core.Categories.Abstraction;
+using LccApiNet.Core.Services;
 using LccApiNet.Exceptions;
 using LccApiNet.Model.General;
 using LccApiNet.Security;
@@ -51,6 +52,16 @@ namespace LccApiNet.Core
 
         private IUserCreditionalsStorage _userCreditionalsStorage = null!;
 
+        
+        /// <inheritdoc />
+        public ILongPollCategory LongPoll { get; }
+
+        /// <inheritdoc />  
+        public IClientCategory Client { get; }
+
+        /// <inheritdoc />
+        public UserEventService UserEvents { get; }
+
         /// <summary>
         /// Creates new instance of the main API class
         /// </summary>
@@ -59,6 +70,10 @@ namespace LccApiNet.Core
             Identity = new IdentityCategory(this);
             Device = new DeviceCategory(this);
             Teams = new TeamsCategory(this);
+            LongPoll = new LongPollCategory(this);
+            Client = new ClientCategory(this);
+
+            UserEvents = new UserEventService(this);
         }
 
         /// <inheritdoc />

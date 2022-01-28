@@ -18,14 +18,14 @@ namespace LccApiNet.Model.General
         public ExecutionResult Result { get; set; } = null!;
     
         /// <summary>
-        /// Name of the error occured during execution
+        /// Name of the error occurred during execution
         /// </summary>
         [JsonProperty("errorName")]
         [JsonConverter(typeof(SmartEnumNameConverter<MethodError, int>))]
         public MethodError? ErrorName { get; set; }
 
         /// <summary>
-        /// Message of the error occured during execution
+        /// Message of the error occurred during execution
         /// </summary>
         [JsonProperty("errorMessage")]
         public string? ErrorMessage { get; set; }
