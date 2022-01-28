@@ -18,7 +18,7 @@ namespace LccApiNet.Model.Device
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
-        /// Unique identificator of the device
+        /// Unique identifier of the device
         /// </summary>
         [JsonProperty("id")]
         public int Id
@@ -37,7 +37,7 @@ namespace LccApiNet.Model.Device
         /// <summary>
         /// Type of the device
         /// </summary>
-        [JsonProperty("deviceType")]
+        [JsonProperty("type")]
         [JsonConverter(typeof(SmartEnumNameConverter<DeviceType, int>))]
         public DeviceType Type
         {
