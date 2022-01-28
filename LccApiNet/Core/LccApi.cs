@@ -14,6 +14,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -220,13 +222,21 @@ namespace LccApiNet.Core
                     response = (HttpWebResponse)await request.GetResponseAsync().ConfigureAwait(false);
                 } catch (WebException e) {
                     response = e.Response as HttpWebResponse;
-                    if (response!.StatusCode == HttpStatusCode.InternalServerError) {
-                        throw new ApiServerException();
+                    if (response == null) {
+                        if (token.IsCancellationRequested) {
+                            throw new OperationCanceledException(e.Message, e, token);
+                        }
+
+                        if (e.InnerException is HttpRequestException hrE && hrE.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused) {
+                            throw new ServerUnreachableException();
+                        }
+
+                        throw e;
                     }
                     
-                    if (response == null && token.IsCancellationRequested) {
-                        throw new OperationCanceledException(e.Message, e, token);
-                    }
+                    if (response.StatusCode == HttpStatusCode.InternalServerError) {
+                        throw new ApiServerException();
+                    }                    
                 }
             }
 
