@@ -1,4 +1,5 @@
-﻿using LccApiNet.Model.Client.Methods;
+﻿using LccApiNet.Model.Client;
+using LccApiNet.Model.Client.Methods;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +13,6 @@ namespace LccApiNet.Core.Categories.Abstraction
         /// <summary>
         /// Sets current game flow phase of the league client.
         /// </summary>
-        Task SetGameflowPhase(SetGameflowPhaseParameters @params, CancellationToken token = default);
+        Task SetGameflowPhase(GameflowPhase gameflowPhase, CancellationToken token = default);
     }
 }

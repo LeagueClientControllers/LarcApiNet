@@ -180,7 +180,7 @@ namespace LccApiNet.Core
         }
 
 
-        public async Task<TResponse> ExecuteBase<TResponse>(string methodPath, bool withAccessToken, CancellationToken token, string? payload = null)
+        private async Task<TResponse> ExecuteBase<TResponse>(string methodPath, bool withAccessToken, CancellationToken token, string? payload = null)
             where TResponse : ApiResponse
         {
             string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
@@ -203,7 +203,7 @@ namespace LccApiNet.Core
         }
 
 
-        public async Task<TResponse> ExecuteBase<TResponse>(string methodPath, string responseObjectKey, bool withAccessToken, CancellationToken token, string? payload = null)
+        private async Task<TResponse> ExecuteBase<TResponse>(string methodPath, string responseObjectKey, bool withAccessToken, CancellationToken token, string? payload = null)
         {
             string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
 
@@ -261,7 +261,7 @@ namespace LccApiNet.Core
                     {
                         if ( e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused)
                         {
-                            //throw new ServerUnreachableException();
+                            throw new ServerUnreachableException();
                         }
 
                         throw e;

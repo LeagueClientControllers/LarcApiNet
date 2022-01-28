@@ -28,7 +28,7 @@ namespace LccApiNet.Core.Categories
         /// <inheritdoc />
         public async Task<Device> GetById(int deviceId, CancellationToken token = default)
         {
-            DeviceResponse response = await _api.ExecuteAsync<DeviceResponse, GetDeviceParameters>("/device/getById", new GetDeviceParameters(deviceId), true, token);
+            DeviceResponse response = await _api.ExecuteAsync<DeviceResponse, int>("/device/getById", "deviceId", deviceId, true, token).ConfigureAwait(false);
             return response.Device;
         }
     }

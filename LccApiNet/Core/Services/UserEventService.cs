@@ -14,7 +14,7 @@ namespace LccApiNet.Core.Services
     public class UserEventService
     {
         private ILccApi _api;
-        private int lastEventId;
+        private int _lastEventId;
 
         /// <summary>
         /// Invoked when new remote devices is authorized
@@ -39,16 +39,15 @@ namespace LccApiNet.Core.Services
         /// </summary>
         public async Task StartAsync(CancellationToken token = default, CancellationToken workerToken = default)
         {
-            lastEventId = await _api.LongPoll.GetLastEventId(token);
+            _lastEventId = await _api.LongPoll.GetLastEventId(token);
             _ = WorkingTask(workerToken);
         }
 
         private async Task WorkingTask(CancellationToken token = default)
         {
-            LongPollEventsParameters @params = new LongPollEventsParameters(lastEventId);
             
             while (!token.IsCancellationRequested) {
-                LongPollEventsResponse response = await _api.LongPoll.GetEvents(@params, token);
+                LongPollEventsResponse response = await _api.LongPoll.GetEvents(_lastEventId, token: token);
                 foreach (DeviceEvent de in response.Events.DeviceEvents) {
                     if (de.Type == DeviceEventType.DeviceAdded) {
                         _ = DeviceAdded?.Invoke(de.DeviceId);
@@ -56,8 +55,8 @@ namespace LccApiNet.Core.Services
                         _ = DeviceChanged?.Invoke(de.DeviceId, de.Changes!);
                     }
                 }
-                
-                @params.LastEventId = response.LastEventId;
+
+                _lastEventId = response.LastEventId;
             }
         } 
     }
