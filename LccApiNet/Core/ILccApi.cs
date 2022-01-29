@@ -49,10 +49,15 @@ namespace LccApiNet.Core
         IClientCategory Client { get; }
 
         /// <summary>
-        /// Service that manages user events
+        /// Service that manages user events.
         /// </summary>
         UserEventService UserEvents { get; }
-        
+
+        /// <summary>
+        /// Service that manages command execution flow.
+        /// </summary>
+        CommandService Commands { get; }
+
         /// <summary>
         /// Initializes the API module. 
         /// Tries to get stored access token and refreshes it

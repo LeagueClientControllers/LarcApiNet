@@ -62,6 +62,9 @@ namespace LccApiNet.Core
         /// <inheritdoc />
         public UserEventService UserEvents { get; }
 
+        /// <inheritdoc />
+        public CommandService Commands { get; }
+
         /// <summary>
         /// Creates new instance of the main API class
         /// </summary>
@@ -74,6 +77,7 @@ namespace LccApiNet.Core
             Client = new ClientCategory(this);
 
             UserEvents = new UserEventService(this);
+            Commands = new CommandService(this);
         }
 
         /// <inheritdoc />
@@ -145,8 +149,14 @@ namespace LccApiNet.Core
         public async Task<TResponse> ExecuteAsync<TResponse, TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default) 
             where TResponse : ApiResponse
         {
-            if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) { 
-                string payload = $"{{ \"{paramKey}\" : \"{param}\" }}";
+            if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) {
+                string payload;
+                if (param == null) {
+                    payload = $"{{\"{paramKey}\":null}}";
+                } else {
+                    payload = $"{{\"{paramKey}\":\"{param}\"}}";
+                }
+
                 return await ExecuteBase<TResponse>(methodPath, withAccessToken, token, payload).ConfigureAwait(false);
             } else {
                 throw new WrongSimpleParameterTypeExeption(typeof(TParameter).ToString());
@@ -172,7 +182,13 @@ namespace LccApiNet.Core
         public async Task ExecuteAsync<TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default)
         {
             if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) {
-                string payload = $"{{ \"{paramKey}\" : \"{param}\" }}";
+                string payload;
+                if (param == null) {
+                    payload = $"{{\"{paramKey}\":null}}";
+                } else {
+                    payload = $"{{\"{paramKey}\":\"{param}\"}}";
+                }
+
                 await ExecuteBase<ApiResponse>(methodPath, withAccessToken, token, payload).ConfigureAwait(false);
             } else {
                 throw new WrongSimpleParameterTypeExeption(typeof(TParameter).ToString());
@@ -184,8 +200,13 @@ namespace LccApiNet.Core
             where TResponse : ApiResponse
         {
             string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
-            TResponse? responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
-            Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {{{JsonConvert.SerializeObject(responseEntity, Formatting.Indented)}}} ");
+            
+            TResponse? responseEntity = null;
+            try {
+                responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
+            } catch (JsonSerializationException) {
+                throw new WrongResponseException(methodPath);
+            }
 
             if (responseEntity == null) { 
                 throw new MissingResponseException(methodPath);
@@ -233,7 +254,7 @@ namespace LccApiNet.Core
 
         private async Task<string> _ExecuteBase(string methodPath, string? payload, bool withAccessToken, CancellationToken token)
         {
-            HttpResponseMessage response;
+            HttpResponseMessage? response = null;
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, methodPath);
             request.Content = new StringContent(payload ?? "", Encoding.UTF8, "application/json");
 
@@ -245,40 +266,31 @@ namespace LccApiNet.Core
 
                 if (withAccessToken)
                 {
-                    if (AccessToken == null) throw new LccUserNotAuthorizedException();
+                    if (AccessToken == null) { 
+                        throw new LccUserNotAuthorizedException();
+                    }
 
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
                 }
 
-                try
-                {
+                try {
                     response = await client.SendAsync(request, token).ConfigureAwait(false);
-                }
-                catch (HttpRequestException e)
-                {
-                    response = null;
-                    if (response == null)
-                    {
-                        if ( e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused)
-                        {
-                            throw new ServerUnreachableException();
-                        }
-
-                        throw e;
+                    if (!response.IsSuccessStatusCode) {
+                        if (response.StatusCode == HttpStatusCode.InternalServerError) {
+                            throw new ApiServerException();
+                        } 
                     }
-
-                    if (response.StatusCode == HttpStatusCode.InternalServerError)
-                    {
-                        throw new ApiServerException();
+                } catch (HttpRequestException e) {
+                    if ( e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused) {
+                        throw new ServerUnreachableException();
                     }
                 }
-
             }
 
-            string responseString = await response.Content.ReadAsStringAsync(token).ConfigureAwait(false);
+            string responseString = await response!.Content.ReadAsStringAsync(token).ConfigureAwait(false);
             Debug.WriteLine($"Executed {methodPath}. Request - {payload},  Response - {responseString} ");
 
-            return responseString;    
+            return responseString;
         }
     }
 }

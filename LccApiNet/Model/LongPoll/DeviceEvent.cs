@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace LccApiNet.Model.LongPoll
 {
     /// <summary>
-    /// Describes event that occured with the device
+    /// Describes event that occurred with the device
     /// </summary>
     public class DeviceEvent
     {

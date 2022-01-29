@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LccApiNet.Security
@@ -9,8 +10,8 @@ namespace LccApiNet.Security
 
     public interface IUserCreditionalsStorage
     {
-        Task StoreAccessTokenAsync(string AccessToken);
-        Task<string?> RetrieveAccessTokenAsync();
-        Task ClearAccessTokenAsync();
+        Task StoreAccessTokenAsync(string accessToken, CancellationToken token = default);
+        Task<string?> RetrieveAccessTokenAsync(CancellationToken token = default);
+        Task ClearAccessTokenAsync(CancellationToken token = default);
     }
 }

@@ -8,9 +8,15 @@ namespace LccApiNet.Model.LongPoll
     public class EventCollection
     {
         /// <summary>
-        /// All the events related to the user's devices
+        /// All of the events related to the user's devices
         /// </summary>
         [JsonProperty("deviceEvents")]
-        public DeviceEvent[] DeviceEvents { get; set; } = default!;
+        public DeviceEvent[] DeviceEvents { get; set; } = null!;
+
+        /// <summary>
+        /// All of the events related to the command system.
+        /// </summary>
+        [JsonProperty("commandEvents")]
+        public CommandEvent[] CommandEvents { get; set; } = null!;
     }
 }
