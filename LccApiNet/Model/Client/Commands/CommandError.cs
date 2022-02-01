@@ -10,7 +10,7 @@ namespace LccApiNet.Model.Client.Commands
         public CommandError(string name, int value) : base(name, value) { }
 
         /// <summary>
-        /// Error occurred due to the attempt to accept or decline match when game flow phase is not <see cref="GameflowPhase.ReadyCheck"/>.
+        /// Error occurred due to the attempt to accept or decline match when game flow phase is not 'ReadyCheck'.
         /// </summary>
         public static readonly CommandError ReadyCheckError = new CommandError("ReadyCheckError", 1);
     }

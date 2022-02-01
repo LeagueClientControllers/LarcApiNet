@@ -20,9 +20,9 @@ namespace LccApiNet.Model.Teams.Methods
         [JsonConverter(typeof(SmartEnumNameConverter<Role, int>))]
         public Role MemberRole { get; set; }
 
-        public ChangeMemberRoleParameters(int teamId, int memberId, Role role)
+        public ChangeMemberRoleParameters(int teamId, int memberId, Role memberRole)
         {
-            (TeamId, MemberId, MemberRole) = (teamId, memberId, role);
+            (TeamId, MemberId, MemberRole) = (teamId, memberId, memberRole);
         }
     }
 }

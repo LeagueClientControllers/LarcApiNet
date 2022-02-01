@@ -17,7 +17,7 @@ namespace LccApiNet.Model.Teams.Methods
 
         [JsonProperty("memberRole")]
         [JsonConverter(typeof(SmartEnumNameConverter<Role, int>))]
-        public Role MemberRole;
+        public Role MemberRole { get; set; }
 
         public AddTeamMemberParameters(int teamId, string memberSummonerId, Role memberRole)
         {

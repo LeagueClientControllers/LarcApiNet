@@ -11,9 +11,9 @@ namespace LccApiNet.Model.Teams.Methods
         [JsonProperty("teamName")]
         public string Name { get; set; }
 
-        public CreateTeamParameters(string teamName)
+        public CreateTeamParameters(string name)
         {
-            Name = teamName;
+            Name = name;
         }
     }
 }

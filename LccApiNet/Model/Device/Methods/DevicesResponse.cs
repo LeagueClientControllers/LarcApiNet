@@ -9,7 +9,7 @@ namespace LccApiNet.Model.Device.Methods
     /// <summary>
     /// Response of the /device/getDevices method
     /// </summary>
-    class GetDevicesResponse : ApiResponse
+    class DevicesResponse : ApiResponse
     {
         /// <summary>
         /// List of devices
@@ -17,7 +17,7 @@ namespace LccApiNet.Model.Device.Methods
         [JsonProperty("devices")]
         public List<Device> Devices { get; set; }
 
-        public GetDevicesResponse()
+        public DevicesResponse()
         {
             Devices = new List<Device>();
         }

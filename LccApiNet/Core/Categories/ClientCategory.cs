@@ -22,7 +22,7 @@ namespace LccApiNet.Core.Categories
         /// <inheritdoc />
         public async Task SetGameflowPhase(GameflowPhase? gameflowPhase, CancellationToken token = default)
         {
-            await _api.ExecuteAsync<string?>("/client/setGameflowPhase", "gameflowPhase", gameflowPhase?.ToString(), true, token).ConfigureAwait(false);
+            await _api.ExecuteAsync<string?>("/client/setGameflowPhase", "gameflowPhase", gameflowPhase?.Name, true, token).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

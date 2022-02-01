@@ -30,7 +30,7 @@ namespace LccApiNet.Model.LongPoll
         /// contains id of the command.
         /// </summary>
         [JsonProperty("commandId")]
-        public int? CommandId { get; set; }
+        public int CommandId { get; set; } = default!;
 
         /// <summary>
         /// If <see cref="Type"/> is <see cref="CommandEventType.CommandExecuted"/>,

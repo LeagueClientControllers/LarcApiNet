@@ -21,7 +21,7 @@ namespace LccApiNet.Core.Categories
         /// <inheritdoc />
         public async Task<ReadOnlyCollection<Device>> GetDevices(CancellationToken token = default)
         {
-            GetDevicesResponse response = await _api.ExecuteAsync<GetDevicesResponse>("/device/getDevices", true, token);
+            DevicesResponse response = await _api.ExecuteAsync<DevicesResponse>("/device/getDevices", true, token);
             return new ReadOnlyCollection<Device>(response.Devices);
         }
 

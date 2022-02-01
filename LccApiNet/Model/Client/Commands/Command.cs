@@ -6,6 +6,7 @@ namespace LccApiNet.Model.Client.Commands
 {
     /// <summary>
     /// Describes command that is sent to the client controller to execute.
+    /// Teststests
     /// </summary>
     public class Command
     {

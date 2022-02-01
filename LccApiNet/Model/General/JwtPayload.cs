@@ -15,19 +15,19 @@ namespace LccApiNet.Model.General
         /// Id of the user that can be authorized with this token
         /// </summary>
         [JsonProperty("userId")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; } = default!;
 
         /// <summary>
         /// Name of the user that can be authorized with this token
         /// </summary>
         [JsonProperty("username")]
-        public string? Username { get; set; }
+        public string? Username { get; set; } = null!;
 
         /// <summary>
         /// Id of the current device
         /// </summary>
         [JsonProperty("deviceId")]
-        public int? DeviceId { get; set; }
+        public int DeviceId { get; set; } = default!;
 
         /// <summary>
         /// Type of the current device
@@ -40,12 +40,12 @@ namespace LccApiNet.Model.General
         /// When token was issued
         /// </summary>
         [JsonProperty("iat")]
-        public int? IssuedAt { get; set; }
+        public int IssuedAt { get; set; } = default!;
 
         /// <summary>
         /// When token is expired
         /// </summary>
         [JsonProperty("exp")]
-        public int? ExpireAt { get; set; }
+        public int ExpireAt { get; set; } = default!;
     }
 }
