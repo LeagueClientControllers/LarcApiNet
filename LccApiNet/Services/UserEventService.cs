@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 using LccApiNet.EventHandlers;
 using LccApiNet.Model.LongPoll;
 using LccApiNet.Model.LongPoll.Methods;
 
-namespace LccApiNet.Core.Services
+namespace LccApiNet.Services
 {
     /// <summary>
     /// Simplifies work with long poll system
@@ -22,7 +20,7 @@ namespace LccApiNet.Core.Services
         /// Invoked when new remote devices is authorized
         /// </summary>
         public event DeviceAddedEventHandler? DeviceAdded;
-        
+
         /// <summary>
         /// Invoked when device was changed
         /// </summary>
@@ -32,12 +30,12 @@ namespace LccApiNet.Core.Services
         /// Invoked when command was sent;
         /// </summary>
         public event CommandSentEventHandler? CommandSent;
-        
+
         public UserEventService(ILccApi api)
         {
             _api = api;
         }
-        
+
         /// <summary>
         /// Starts the process of getting new events
         /// and handling them
@@ -52,7 +50,7 @@ namespace LccApiNet.Core.Services
 
         private async Task WorkingTask(CancellationToken token = default)
         {
-            
+
             while (!token.IsCancellationRequested) {
                 LongPollEventsResponse response = await _api.LongPoll.GetEvents(_lastEventId, token: token);
                 foreach (DeviceEvent de in response.Events.DeviceEvents) {
@@ -71,6 +69,6 @@ namespace LccApiNet.Core.Services
 
                 _lastEventId = response.LastEventId;
             }
-        } 
+        }
     }
 }

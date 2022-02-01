@@ -1,4 +1,4 @@
-﻿using LccApiNet.Core.Categories.Abstraction;
+﻿using LccApiNet.Categories.Abstraction;
 using LccApiNet.Model.Device;
 using LccApiNet.Model.Device.Methods;
 
@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Core.Categories
+namespace LccApiNet.Categories
 {
     /// <inheritdoc />
     public class DeviceCategory : IDeviceCategory

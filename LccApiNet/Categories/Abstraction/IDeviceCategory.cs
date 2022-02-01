@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Core.Categories.Abstraction
+namespace LccApiNet.Categories.Abstraction
 {
     /// <summary>
     /// Contains methods of the /device/ API category 

@@ -1,4 +1,4 @@
-﻿using LccApiNet.Core.Categories.Abstraction;
+﻿using LccApiNet.Categories.Abstraction;
 using LccApiNet.Model.LongPoll.Methods;
 
 using System;
@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LccApiNet.Exceptions;
 
-namespace LccApiNet.Core.Categories
+namespace LccApiNet.Categories
 {
     /// <inheritdoc />
     internal class LongPollCategory : ILongPollCategory

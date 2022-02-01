@@ -1,7 +1,7 @@
 ﻿using LccApiNet.EventHandlers;
 using LccApiNet.Model.Client.Commands;
 
-namespace LccApiNet.Core.Services
+namespace LccApiNet.Services
 {
     /// <summary>
     /// Manage command execution flow.
@@ -14,7 +14,7 @@ namespace LccApiNet.Core.Services
         /// Handler function of the commands.
         /// </summary>
         public CommandHandler? Handler { private get; set; }
-        
+
         public CommandService(ILccApi api)
         {
             _api = api;

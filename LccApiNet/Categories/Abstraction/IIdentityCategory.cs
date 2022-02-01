@@ -4,7 +4,7 @@ using LccApiNet.Model.Identity.Methods;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Core.Categories.Abstraction
+namespace LccApiNet.Categories.Abstraction
 {
     /// <summary>
     /// Contains methods of the /identity/ API category. 

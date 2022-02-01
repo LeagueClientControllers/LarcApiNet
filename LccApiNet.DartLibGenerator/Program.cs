@@ -1,8 +1,4 @@
-﻿using LccApiNet.Core;
-
-using System;
-
-namespace LccApiNet.DartLibGenerator
+﻿namespace LccApiNet.DartLibGenerator
 {
     internal class Program
     {

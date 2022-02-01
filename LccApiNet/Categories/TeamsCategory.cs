@@ -4,9 +4,9 @@ using LccApiNet.Model.Teams.Methods;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using LccApiNet.Core.Categories.Abstraction;
+using LccApiNet.Categories.Abstraction;
 
-namespace LccApiNet.Core.Categories
+namespace LccApiNet.Categories
 {
     public class TeamsCategory : ITeamsCategory
     {

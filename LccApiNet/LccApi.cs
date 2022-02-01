@@ -1,20 +1,19 @@
-﻿using Ardalis.SmartEnum.JsonNet;
+﻿
 using JWT.Algorithms;
 using JWT.Builder;
 
-using LccApiNet.Core.Categories;
-using LccApiNet.Core.Categories.Abstraction;
-using LccApiNet.Core.Services;
+using LccApiNet.Categories;
+using LccApiNet.Categories.Abstraction;
 using LccApiNet.Exceptions;
 using LccApiNet.Model.General;
 using LccApiNet.Security;
+using LccApiNet.Services;
 using LccApiNet.Utilities;
+
 using Newtonsoft.Json;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -24,7 +23,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Core
+namespace LccApiNet
 {
     /// <summary>
     /// Main API class
@@ -33,10 +32,11 @@ namespace LccApiNet.Core
     {
         /// <inheritdoc />
         public JwtPayload? AccessTokenContent { get; private set; }
-        
+
         private const int PORT = 56067;
         private const string API_HOST = "150.230.151.8";
         private Uri _baseUri = new Uri($"http://{API_HOST}:{PORT}");
+        private IUserCreditionalsStorage _userCreditionalsStorage = null!;
 
         /// <inheritdoc />
         public string? AccessToken { get; private set; }
@@ -46,13 +46,10 @@ namespace LccApiNet.Core
 
         /// <inheritdoc />
         public IDeviceCategory Device { get; }
-        
+
         /// <inheritdoc />
         public ITeamsCategory Teams { get; }
 
-        private IUserCreditionalsStorage _userCreditionalsStorage = null!;
-
-        
         /// <inheritdoc />
         public ILongPollCategory LongPoll { get; }
 
@@ -83,8 +80,8 @@ namespace LccApiNet.Core
         /// <inheritdoc />
         public async Task InitAsync(IUserCreditionalsStorage userCreditionalsStorage, CancellationToken token = default)
         {
-            string? accessToken = await userCreditionalsStorage.RetrieveAccessTokenAsync().ConfigureAwait(false);
             _userCreditionalsStorage = userCreditionalsStorage;
+            string? accessToken = await _userCreditionalsStorage.RetrieveAccessTokenAsync().ConfigureAwait(false);
             if (accessToken == null)
                 return;
 
@@ -95,7 +92,7 @@ namespace LccApiNet.Core
             } catch (MethodException me) {
                 if (me.ErrorName == MethodError.WrongAccessToken) {
                     AccessToken = null;
-                    await userCreditionalsStorage.ClearAccessTokenAsync().ConfigureAwait(false);
+                    await _userCreditionalsStorage.ClearAccessTokenAsync().ConfigureAwait(false);
                 }
             }
         }
@@ -126,7 +123,7 @@ namespace LccApiNet.Core
             if (storeInSystem)
                 await _userCreditionalsStorage.StoreAccessTokenAsync(accessToken).ConfigureAwait(false);
 
-            AccessTokenContent = 
+            AccessTokenContent =
                 JwtBuilder.Create()
                     .WithAlgorithm(new HMACSHA256Algorithm())
                     .WithSecret(ApiCredentials.JWT_SECRET)
@@ -146,7 +143,7 @@ namespace LccApiNet.Core
         }
 
         /// <inheritdoc />
-        public async Task<TResponse> ExecuteAsync<TResponse, TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default) 
+        public async Task<TResponse> ExecuteAsync<TResponse, TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default)
             where TResponse : ApiResponse
         {
             if (typeof(TParameter).IsPrimitive || typeof(TParameter) == typeof(string) || typeof(TParameter) == typeof(decimal)) {
@@ -200,7 +197,7 @@ namespace LccApiNet.Core
             where TResponse : ApiResponse
         {
             string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
-            
+
             TResponse? responseEntity = null;
             try {
                 responseEntity = JsonConvert.DeserializeObject<TResponse>(responseBody);
@@ -208,15 +205,15 @@ namespace LccApiNet.Core
                 throw new WrongResponseException(methodPath);
             }
 
-            if (responseEntity == null) { 
+            if (responseEntity == null) {
                 throw new MissingResponseException(methodPath);
             }
 
-            if (responseEntity.Result != ExecutionResult.Error) { 
+            if (responseEntity.Result != ExecutionResult.Error) {
                 return responseEntity;
             }
 
-            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null) { 
+            if (responseEntity.ErrorName == null || responseEntity.ErrorMessage == null) {
                 throw new WrongResponseException(methodPath);
             }
 
@@ -230,13 +227,13 @@ namespace LccApiNet.Core
 
             Type type = CustomApiResponseTypeBuilder.GetCustomApiResponseType<TResponse>(responseObjectKey);
             object? responseEntity = JsonConvert.DeserializeObject(responseBody, type);
-            
-            if (responseEntity == null) { 
+
+            if (responseEntity == null) {
                 throw new MissingResponseException(methodPath);
             }
 
             ApiResponse apiResponse = (ApiResponse)responseEntity;
-            
+
             if (apiResponse.Result != ExecutionResult.Error) {
                 PropertyInfo responseObjectProperty = type.GetProperty(string.Concat(responseObjectKey[0].ToString().ToUpper(), responseObjectKey.AsSpan(1)))!;
                 TResponse responseObjectPropertyValue = (TResponse)responseObjectProperty.GetValue(responseEntity);
@@ -245,7 +242,7 @@ namespace LccApiNet.Core
                 return responseObjectPropertyValue;
             }
 
-            if (apiResponse.ErrorName == null || apiResponse.ErrorMessage == null) { 
+            if (apiResponse.ErrorName == null || apiResponse.ErrorMessage == null) {
                 throw new WrongResponseException(methodPath);
             }
 
@@ -258,15 +255,13 @@ namespace LccApiNet.Core
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, methodPath);
             request.Content = new StringContent(payload ?? "", Encoding.UTF8, "application/json");
 
-            using (HttpClient client = new HttpClient())
-            {
+            using (HttpClient client = new HttpClient()) {
                 client.BaseAddress = _baseUri;
                 client.DefaultRequestHeaders.Add("Accept", "application/json;charset=utf-8");
                 client.DefaultRequestHeaders.Add("x-api-key", ApiCredentials.API_KEY);
 
-                if (withAccessToken)
-                {
-                    if (AccessToken == null) { 
+                if (withAccessToken) {
+                    if (AccessToken == null) {
                         throw new LccUserNotAuthorizedException();
                     }
 
@@ -278,10 +273,10 @@ namespace LccApiNet.Core
                     if (!response.IsSuccessStatusCode) {
                         if (response.StatusCode == HttpStatusCode.InternalServerError) {
                             throw new ApiServerException();
-                        } 
+                        }
                     }
                 } catch (HttpRequestException e) {
-                    if ( e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused) {
+                    if (e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused) {
                         throw new ServerUnreachableException();
                     }
                 }

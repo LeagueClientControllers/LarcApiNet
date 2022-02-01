@@ -1,4 +1,4 @@
-﻿using LccApiNet.Core.Categories.Abstraction;
+﻿using LccApiNet.Categories.Abstraction;
 using LccApiNet.Exceptions;
 using LccApiNet.Model.General;
 using LccApiNet.Model.Identity;
@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Core.Categories
+namespace LccApiNet.Categories
 {
     /// <summary>
     /// API category that contains methods related to user identification

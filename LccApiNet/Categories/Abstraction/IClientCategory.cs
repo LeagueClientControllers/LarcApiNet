@@ -4,7 +4,7 @@ using LccApiNet.Model.Client.Methods;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Core.Categories.Abstraction
+namespace LccApiNet.Categories.Abstraction
 {
     /// <summary>
     /// Contains methods of /client/ API category.

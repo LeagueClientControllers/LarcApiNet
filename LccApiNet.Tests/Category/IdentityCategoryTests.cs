@@ -1,7 +1,8 @@
-﻿using LccApiNet.Core;
-using LccApiNet.Model.Device;
+﻿using LccApiNet.Model.Device;
 using LccApiNet.Model.Identity.Methods;
+
 using NUnit.Framework;
+
 using System.Threading.Tasks;
 
 namespace LccApiNet.Tests.Category

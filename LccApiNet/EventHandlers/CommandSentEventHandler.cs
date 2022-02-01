@@ -1,14 +1,15 @@
 ﻿using LccApiNet.Model.Client.Commands;
+using LccApiNet.Services;
 
 namespace LccApiNet.EventHandlers
 {
     /// <summary>
-    /// Represents a function that will handle <see cref="Core.Services.UserEventService.CommandSent"/> event.
+    /// Represents a function that will handle <see cref="UserEventService.CommandSent"/> event.
     /// </summary>
     public delegate void CommandSentEventHandler(object sender, CommandSentEventArgs args);
 
     /// <summary>
-    /// Provides data for <see cref="Core.Services.UserEventService.CommandSent"/> event.
+    /// Provides data for <see cref="UserEventService.CommandSent"/> event.
     /// </summary>
     public class CommandSentEventArgs
     {

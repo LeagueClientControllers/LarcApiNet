@@ -1,12 +1,12 @@
-﻿using LccApiNet.Core.Categories.Abstraction;
-using LccApiNet.Core.Services;
+﻿using LccApiNet.Categories.Abstraction;
 using LccApiNet.Model.General;
 using LccApiNet.Exceptions;
 using System.Threading;
 using System.Threading.Tasks;
 using LccApiNet.Security;
+using LccApiNet.Services;
 
-namespace LccApiNet.Core
+namespace LccApiNet
 {
     /// <summary>
     /// Abstraction of the main API class
@@ -32,12 +32,12 @@ namespace LccApiNet.Core
         /// API Device category
         /// </summary>
         IDeviceCategory Device { get; }
-        
+
         /// <summary>
         /// API Teams category
         /// </summary>
         ITeamsCategory Teams { get; }
-        
+
         /// <summary>
         /// API Long poll category
         /// </summary>
