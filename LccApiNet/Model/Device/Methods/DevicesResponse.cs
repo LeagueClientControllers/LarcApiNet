@@ -15,11 +15,11 @@ namespace LccApiNet.Model.Device.Methods
         /// List of devices
         /// </summary>
         [JsonProperty("devices")]
-        public List<Device> Devices { get; set; }
+        public List<DeviceModel> Devices { get; set; }
 
         public DevicesResponse()
         {
-            Devices = new List<Device>();
+            Devices = new List<DeviceModel>();
         }
     }
 }

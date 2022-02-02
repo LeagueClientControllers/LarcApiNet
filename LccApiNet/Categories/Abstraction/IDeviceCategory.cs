@@ -17,12 +17,12 @@ namespace LccApiNet.Categories.Abstraction
         /// <summary>
         /// Gets user devices
         /// </summary>
-        Task<ReadOnlyCollection<Device>> GetDevices(CancellationToken token = default);
+        Task<ReadOnlyCollection<DeviceModel>> GetDevicesAsync(CancellationToken token = default);
 
         /// <summary>
         /// Gets device information by the id
         /// </summary>
         /// <param name="deviceId">Id of the device</param>
-        Task<Device> GetById(int deviceId, CancellationToken token = default);
+        Task<DeviceModel> GetDeviceByIdAsync(int deviceId, CancellationToken token = default);
     }
 }

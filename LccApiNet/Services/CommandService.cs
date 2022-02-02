@@ -28,7 +28,7 @@ namespace LccApiNet.Services
             }
 
             CommandResult result = Handler.Invoke(sender, args).Result;
-            _api.Client.SetCommandResult(args.Command.Id, result);
+            _api.Client.SetCommandResultAsync(args.Command.Id, result);
         }
     }
 }

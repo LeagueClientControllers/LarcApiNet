@@ -26,7 +26,7 @@ namespace LccApiNet.Tests.Category
 
         [Test]
         public async Task GetDevicesTest() {
-            ReadOnlyCollection<Device> devices = await _api.Device.GetDevices();
+            ReadOnlyCollection<DeviceModel> devices = await _api.Device.GetDevicesAsync();
             
             Assert.AreEqual(2, devices.Count);
             

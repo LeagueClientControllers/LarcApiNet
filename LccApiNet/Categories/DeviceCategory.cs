@@ -19,16 +19,16 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task<ReadOnlyCollection<Device>> GetDevices(CancellationToken token = default)
+        public async Task<ReadOnlyCollection<DeviceModel>> GetDevicesAsync(CancellationToken token = default)
         {
             DevicesResponse response = await _api.ExecuteAsync<DevicesResponse>("/device/getDevices", true, token);
-            return new ReadOnlyCollection<Device>(response.Devices);
+            return new ReadOnlyCollection<DeviceModel>(response.Devices);
         }
 
         /// <inheritdoc />
-        public async Task<Device> GetById(int deviceId, CancellationToken token = default)
+        public async Task<DeviceModel> GetDeviceByIdAsync(int deviceId, CancellationToken token = default)
         {
-            DeviceResponse response = await _api.ExecuteAsync<DeviceResponse, int>("/device/getById", "deviceId", deviceId, true, token).ConfigureAwait(false);
+            DeviceResponse response = await _api.ExecuteAsync<DeviceResponse, int>("/device/getDeviceById", "deviceId", deviceId, true, token).ConfigureAwait(false);
             return response.Device;
         }
     }

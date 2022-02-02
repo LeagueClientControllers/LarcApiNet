@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace LccApiNet.DartLibGenerator
@@ -21,54 +22,64 @@ namespace LccApiNet.DartLibGenerator
             return null;
         }
         
-        public static string CsTypeToDartTypeConverter(Type type)
+        public static string CsTypeToDartTypeConverter(Type type, NullabilityInfo? info = null)
         {
             if (type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type)) {
                 if (type.GenericTypeArguments.Length == 0) {
-                    string innerType = CsTypeToDartTypeConverter(GetTypeByName(type.FullName!.Replace("[]", ""))!);
-                    return $"List<{innerType}>";
+                    string innerType = CsTypeToDartTypeConverter(GetTypeByName(type.FullName!.Replace("[]", ""))!, info);
+                    return $"List<{innerType}>{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
                 } else if (type.GenericTypeArguments.Length == 1) {
-                    string innerType = CsTypeToDartTypeConverter(type.GenericTypeArguments[0]);
-                    return $"List<{innerType}>";
+                    string innerType = CsTypeToDartTypeConverter(type.GenericTypeArguments[0], info?.GenericTypeArguments[0]);
+                    return $"List<{innerType}>{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
                 } else if (type.GenericTypeArguments.Length == 2) {
-                    string innerType1 = CsTypeToDartTypeConverter(type.GenericTypeArguments[0]);
-                    string innerType2 = CsTypeToDartTypeConverter(type.GenericTypeArguments[1]);
-                    return $"Map<{innerType1}, {innerType2}>";
+                    string innerType1 = CsTypeToDartTypeConverter(type.GenericTypeArguments[0], info?.GenericTypeArguments[0]);
+                    string innerType2 = CsTypeToDartTypeConverter(type.GenericTypeArguments[1], info?.GenericTypeArguments[1]);
+                    return $"Map<{innerType1}, {innerType2}>{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
+                } else {
+                    throw new Exception("Too many generic arguments in type");
                 }
             }
 
             if (type == typeof(int) || type == typeof(long)) {
-                return "int";
+                return $"int{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
             } else if (type == typeof(double) || type == typeof(float) || type == typeof(decimal)) {
-                return "double";
+                return $"double{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
             } else if (type == typeof(bool)) {
-                return "bool";
+                return $"bool{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
             } else if (type == typeof(string)) {
-                return "String";
+                return $"String{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
             } else if (type == typeof(object)) {
-                return "Object";
+                return $"Object{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
             } else {
-                return type.Name;
+                return $"{type.Name}{(info != null && info.ReadState == NullabilityState.Nullable ? "?" : "")}";
             }
         }
 
         public static bool CsTypeDartImportRequired(Type type)
         {
-            if (type != typeof(string) && typeof(IEnumerable).IsAssignableFrom(type)) {
-                if (type.GenericTypeArguments.Length == 0) {
-                    type = GetTypeByName(type.FullName!.Replace("[]", ""))!;
-                } else if (type.GenericTypeArguments.Length == 1) {
-                    type = type.GenericTypeArguments[0];
-                } else if (type.GenericTypeArguments.Length == 2) {
-                    return CsTypeDartImportRequired(type.GenericTypeArguments[0]) || CsTypeDartImportRequired(type.GenericTypeArguments[1]);
-                }
-            }
-
             return !(type == typeof(int) || type == typeof(long)) 
                 && !(type == typeof(double) || type == typeof(float) || type == typeof(decimal)) 
                 && type != typeof(bool)
                 && type != typeof(string) 
                 && type != typeof(object);
+        }
+
+        public static List<Type> ConvertCsTypeToDartImportType(Type type)
+        {
+            List<Type> imports = new List<Type>();
+            if (CsTypeDartImportRequired(type)) {
+                if (type.Name.Contains("[]")) {
+                    imports.AddRange(ConvertCsTypeToDartImportType(GetTypeByName(type.FullName!.Replace("[]", ""))!));
+                } else if (type.Name != "List`1" && type.Name != "Dictionary`2") {
+                    imports.Add(type);
+                }
+                
+                foreach (Type genericType in type.GenericTypeArguments) {
+                    imports.AddRange(ConvertCsTypeToDartImportType(genericType));
+                }   
+            } 
+
+            return imports;
         }
 
         public static string CamelCaseToSnakeCase(string str)
@@ -93,5 +104,7 @@ namespace LccApiNet.DartLibGenerator
         public static string CamelCaseToLowerCamelCase(string str) =>
             string.Concat(char.ToLower(str[0]), str.Substring(1));
 
+        public static string CamelCaseToLowerCamelCase(IEnumerable<char> str) =>
+            string.Concat(char.ToLower(str.ElementAt(0)), new string(str.ToArray()).Substring(1));
     }
 }

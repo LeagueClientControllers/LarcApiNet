@@ -21,7 +21,7 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task<int> GetLastEventId(CancellationToken token = default)
+        public async Task<int> GetLastEventIdAsync(CancellationToken token = default)
         {
             //EventIdResponse response = await _api.ExecuteAsync<EventIdResponse>("/longpoll/getLastEventId", true, token);
             int? response = await _api.ExecuteAsync<int?>("/longpoll/getLastEventId", "eventId", true, token).ConfigureAwait(false);
@@ -33,7 +33,7 @@ namespace LccApiNet.Categories
         }
         
         /// <inheritdoc />
-        public async Task<LongPollEventsResponse> GetEvents(int lastEventId, int timeout = 60, CancellationToken token = default)
+        public async Task<LongPollEventsResponse> GetEventsAsync(int lastEventId, int timeout = 60, CancellationToken token = default)
         {
             LongPollEventsParameters @params = new LongPollEventsParameters(lastEventId, timeout);
             LongPollEventsResponse response = await _api.ExecuteAsync<LongPollEventsResponse, LongPollEventsParameters>("/longpoll/getEvents", @params, true, token).ConfigureAwait(false);

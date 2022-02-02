@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using LccApiNet.Model.Device.Methods;
+
+using Newtonsoft.Json;
 
 using System;
 using System.Collections;
@@ -13,17 +15,12 @@ namespace LccApiNet.DartLibGenerator
 {
     public class ModelsGenerator
     {
-        public static void Generate(string projectPath)
+        public static Dictionary<Type, string> Generate(string projectPath)
         {
             List<string> model = LocateModel(new DirectoryInfo(Path.Combine(projectPath, "Model")));
             Dictionary<Type, string> modelTypes = GetModelTypes(projectPath, model);
 
             string outputDir = Path.Combine(Environment.CurrentDirectory, "output");
-            if (Directory.Exists(outputDir)) {
-                Directory.Delete(outputDir, true);
-            }
-
-            Directory.CreateDirectory(outputDir);
             Dictionary<Type, string> dartModelTypes = new Dictionary<Type, string>();
             foreach (KeyValuePair<Type, string> modelType in modelTypes) {
                 string[] splittedPath = modelType.Value.Split("\\");
@@ -60,9 +57,11 @@ namespace LccApiNet.DartLibGenerator
                 exportFileContentBuilder.AppendLine($"export '{Path.GetRelativePath(Path.Combine(outputDir, "model"), dartModelType.Value).Replace("\\", "/")}';");
             }
 
-            using (StreamWriter writer = new StreamWriter(new FileStream(Path.Combine(outputDir, "model", "lcc_api_dart_model.dart"), FileMode.OpenOrCreate))) {
+            using (StreamWriter writer = new StreamWriter(new FileStream(Path.Combine(outputDir, "model", "lcc_api_dart_model.dart"), FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))) {
                 writer.Write(exportFileContentBuilder);
             }
+
+            return dartModelTypes;
         }
 
         private static List<string> LocateModel(DirectoryInfo info)
@@ -113,41 +112,13 @@ namespace LccApiNet.DartLibGenerator
 
             List<string> imports = new List<string>();
             foreach (CsPropertyInfo csProperty in classInfo.Properties) {
-                if (Utilities.CsTypeDartImportRequired(csProperty.Property.PropertyType)) {
-                    string importPath;
-                    if (typeof(IEnumerable).IsAssignableFrom(csProperty.Property.PropertyType)) {
-                        if (csProperty.Property.PropertyType.GenericTypeArguments.Length == 0) {
-                            string typeName = csProperty.Property.PropertyType.FullName!.Replace("[]", "");
-                            importPath = allModelTypes[Utilities.GetTypeByName(typeName)!];
-                        } else if (csProperty.Property.PropertyType.GenericTypeArguments.Length == 1) {
-                            importPath = allModelTypes[csProperty.Property.PropertyType.GenericTypeArguments[0]];
-                        } else if (csProperty.Property.PropertyType.GenericTypeArguments.Length == 2) {
-                            if (Utilities.CsTypeDartImportRequired(csProperty.Property.PropertyType.GenericTypeArguments[0])) {
-                                importPath = allModelTypes[csProperty.Property.PropertyType.GenericTypeArguments[0]];
-                                imports.Add($"import 'package:lcc_api_dart/src/{Path.GetRelativePath(outputDirPath, importPath).Replace("\\", "/")}';");
-                            }
-
-                            if (Utilities.CsTypeDartImportRequired(csProperty.Property.PropertyType.GenericTypeArguments[1])) {
-                                importPath = allModelTypes[csProperty.Property.PropertyType.GenericTypeArguments[1]];
-                                imports.Add($"import 'package:lcc_api_dart/src/{Path.GetRelativePath(outputDirPath, importPath).Replace("\\", "/")}';");
-                            }
-
-                            continue;
-                        } else {
-                            throw new Exception("Too many generic type arguments");
-                        }
-
-
-                        imports.Add($"import 'package:lcc_api_dart/src/{Path.GetRelativePath(outputDirPath, importPath).Replace("\\", "/")}';");
-                        continue;
-                    }
-
-                    importPath = allModelTypes[csProperty.Property.PropertyType];
-                    imports.Add($"import 'package:lcc_api_dart/src/{Path.GetRelativePath(outputDirPath, importPath).Replace("\\", "/")}';");
-                }
+                imports.AddRange(
+                    Utilities.ConvertCsTypeToDartImportType(
+                        csProperty.Property.PropertyType)
+                    .Select(t => $"import 'package:lcc_api_dart/src/{Path.GetRelativePath(outputDirPath, allModelTypes[t]).Replace("\\", "/")}';"));
             }
 
-            fileContentBuilder.AppendLine(string.Join("\r\n", imports));
+            fileContentBuilder.AppendLine(string.Join("\r\n", imports.Distinct()));
             fileContentBuilder.AppendLine();
             fileContentBuilder.AppendLine($"part '{Path.GetFileNameWithoutExtension(dartFilePath)}.g.dart';");
             fileContentBuilder.AppendLine();
@@ -173,10 +144,10 @@ namespace LccApiNet.DartLibGenerator
                     fileContentBuilder.AppendLine($"\t@JsonKey(name: \"{jsonPropertyAttr.PropertyName}\")");
                 }
 
-                if (csProperty.Nullable) {
-                    fileContentBuilder.AppendLine($"\t{Utilities.CsTypeToDartTypeConverter(csProperty.Property.PropertyType)}? {Utilities.CamelCaseToLowerCamelCase(csProperty.Property.Name)};");
+                if (csProperty.Nullability.ReadState == NullabilityState.Nullable) {
+                    fileContentBuilder.AppendLine($"\t{Utilities.CsTypeToDartTypeConverter(csProperty.Property.PropertyType, csProperty.Nullability)} {Utilities.CamelCaseToLowerCamelCase(csProperty.Property.Name)};");
                 } else {
-                    fileContentBuilder.AppendLine($"\tlate {Utilities.CsTypeToDartTypeConverter(csProperty.Property.PropertyType)} {Utilities.CamelCaseToLowerCamelCase(csProperty.Property.Name)};");
+                    fileContentBuilder.AppendLine($"\tlate {Utilities.CsTypeToDartTypeConverter(csProperty.Property.PropertyType, csProperty.Nullability)} {Utilities.CamelCaseToLowerCamelCase(csProperty.Property.Name)};");
                 }
 
                 fileContentBuilder.AppendLine();
@@ -229,6 +200,9 @@ namespace LccApiNet.DartLibGenerator
             using (StreamWriter writer = new StreamWriter(new FileStream(dartFilePath, FileMode.Open, FileAccess.Write, FileShare.Write))) {
                 writer.Write(fileContentBuilder);
             }
+
+            string str = fileContentBuilder.ToString();
+            ;
         }
 
         private static void FillModel_SmartEnum(string csFilePath, string dartFilePath, string outputDirPath, Type modelType)
@@ -265,13 +239,11 @@ namespace LccApiNet.DartLibGenerator
         private class CsClassInfo 
         {
             public string[] CommentLines;
-            public string[] Imports;
             public CsPropertyInfo[] Properties;
             public CsFieldInfo[] Fields;
 
-            private CsClassInfo(string[] commentLines, string[] imports, CsPropertyInfo[] properties, CsFieldInfo[] fields) {
+            private CsClassInfo(string[] commentLines, CsPropertyInfo[] properties, CsFieldInfo[] fields) {
                 CommentLines = commentLines;
-                Imports = imports;
                 Properties = properties;
                 Fields = fields;
             }
@@ -284,17 +256,17 @@ namespace LccApiNet.DartLibGenerator
                 }
 
                 int csFilePos = 0;
-                int classDefStrIndex = -1;
-                int classCommentStartStrIndex = -1;
+                int interfaceDefStrIndex = -1;
+                int interfaceCommentStartStrIndex = -1;
                 string[] splittedFileContent = csFileContent.Split("\r\n");
                 for (; csFilePos < splittedFileContent.Length; csFilePos++) {
                     string line = splittedFileContent[csFilePos];
                     if (line.Contains($"class {classType.Name}")) {
-                        classDefStrIndex = csFilePos;
+                        interfaceDefStrIndex = csFilePos;
                         if (splittedFileContent[csFilePos - 1].Contains("</summary>")) {
-                            for (int j = classDefStrIndex; j >= 0; j--) {
+                            for (int j = interfaceDefStrIndex; j >= 0; j--) {
                                 if (splittedFileContent[j].Contains("<summary>")) {
-                                    classCommentStartStrIndex = j;
+                                    interfaceCommentStartStrIndex = j;
                                 }
                             }
                         }
@@ -302,13 +274,13 @@ namespace LccApiNet.DartLibGenerator
                     }
                 }
 
-                if (classDefStrIndex == -1) {
+                if (interfaceDefStrIndex == -1) {
                     throw new Exception("Class not found in file");
                 }
 
                 string[] classCommentLines = new string[0];
-                if (classCommentStartStrIndex != -1) {
-                    classCommentLines = ParseCommentLines(splittedFileContent, classCommentStartStrIndex, classDefStrIndex - 1);
+                if (interfaceCommentStartStrIndex != -1) {
+                    classCommentLines = ParseCommentLines(splittedFileContent, interfaceCommentStartStrIndex, interfaceDefStrIndex - 1);
                 }
 
                 int oldCsFilePos = csFilePos;
@@ -327,7 +299,7 @@ namespace LccApiNet.DartLibGenerator
 
                     int propertyCommentStartStrIndex = -1;
                     int propertyCommentEndStrIndex = -1;
-                    for (int i = csFilePos - 1; i > classDefStrIndex; i--) {
+                    for (int i = csFilePos - 1; i > interfaceDefStrIndex; i--) {
                         if (splittedFileContent[i].Contains('[')) {
                             continue;
                         } else {
@@ -352,8 +324,7 @@ namespace LccApiNet.DartLibGenerator
 
                     NullabilityInfoContext nullabilityInfoContext = new NullabilityInfoContext();
                     NullabilityInfo propertyNullabilityInfo = nullabilityInfoContext.Create(property);
-
-                    properties.Add(new CsPropertyInfo(propertyCommentLines, propertyNullabilityInfo.ReadState == NullabilityState.Nullable, property));
+                    properties.Add(new CsPropertyInfo(propertyCommentLines, propertyNullabilityInfo.ReadState == NullabilityState.Nullable, property, propertyNullabilityInfo));
                 }
 
                 csFilePos = oldCsFilePos;
@@ -373,7 +344,7 @@ namespace LccApiNet.DartLibGenerator
 
                     int fieldCommentStartStrIndex = -1;
                     int fieldCommentEndStrIndex = -1;
-                    for (int i = csFilePos - 1; i > classDefStrIndex; i--) {
+                    for (int i = csFilePos - 1; i > interfaceDefStrIndex; i--) {
                         if (splittedFileContent[i].Contains('[')) {
                             continue;
                         } else {
@@ -399,7 +370,7 @@ namespace LccApiNet.DartLibGenerator
                     fields.Add(new CsFieldInfo(propertyCommentLines, propertyMatch!.Groups[1].Value.Replace("\"", ""), field));
                 }
 
-                return new CsClassInfo(classCommentLines, new List<string>().ToArray(), properties.ToArray(), fields.ToArray());
+                return new CsClassInfo(classCommentLines, properties.ToArray(), fields.ToArray());
             }
 
             private static string[] ParseCommentLines(string[] splittedFileContent, int commentStartStrIndex, int commentEndStrIndex)
@@ -420,12 +391,14 @@ namespace LccApiNet.DartLibGenerator
             public string[] CommentLines;
             public bool Nullable;
             public PropertyInfo Property;
+            public NullabilityInfo Nullability;
 
-            public CsPropertyInfo(string[] commentLines, bool nullable, PropertyInfo property)
+            public CsPropertyInfo(string[] commentLines, bool nullable, PropertyInfo property, NullabilityInfo nullability)
             {
                 CommentLines = commentLines;
                 Nullable = nullable;
                 Property = property;
+                Nullability = nullability;
             }
         }
 

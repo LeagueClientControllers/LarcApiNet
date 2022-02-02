@@ -1,12 +1,14 @@
 ﻿using Ardalis.SmartEnum.JsonNet;
 
+using LccApiNet.Model.Device;
+
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace LccApiNet.Model.Client.Commands
 {
     /// <summary>
     /// Describes command that is sent to the client controller to execute.
-    /// Teststests
     /// </summary>
     public class Command
     {

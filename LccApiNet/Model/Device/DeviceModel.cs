@@ -8,7 +8,7 @@ namespace LccApiNet.Model.Device
     /// <summary>
     /// Represents remote device that is used to control league client
     /// </summary>
-    public class Device : INotifyPropertyChanged
+    public class DeviceModel : INotifyPropertyChanged
     {
         private int _id;
         private DeviceType _type = null!;

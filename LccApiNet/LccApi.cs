@@ -1,5 +1,4 @@
-﻿
-using JWT.Algorithms;
+﻿using JWT.Algorithms;
 using JWT.Builder;
 
 using LccApiNet.Categories;
@@ -192,7 +191,6 @@ namespace LccApiNet
             }
         }
 
-
         private async Task<TResponse> ExecuteBase<TResponse>(string methodPath, bool withAccessToken, CancellationToken token, string? payload = null)
             where TResponse : ApiResponse
         {
@@ -220,7 +218,6 @@ namespace LccApiNet
             throw new MethodException(methodPath, responseEntity.ErrorName, responseEntity.ErrorMessage);
         }
 
-
         private async Task<TResponse> ExecuteBase<TResponse>(string methodPath, string responseObjectKey, bool withAccessToken, CancellationToken token, string? payload = null)
         {
             string responseBody = await _ExecuteBase(methodPath, payload, withAccessToken, token).ConfigureAwait(false);
@@ -236,10 +233,12 @@ namespace LccApiNet
 
             if (apiResponse.Result != ExecutionResult.Error) {
                 PropertyInfo responseObjectProperty = type.GetProperty(string.Concat(responseObjectKey[0].ToString().ToUpper(), responseObjectKey.AsSpan(1)))!;
-                TResponse responseObjectPropertyValue = (TResponse)responseObjectProperty.GetValue(responseEntity);
+                TResponse? responseObjectPropertyValue = (TResponse?)responseObjectProperty.GetValue(responseEntity);
                 Console.WriteLine($"[ExecuteBase] TResponse type: {typeof(TResponse)}");
 
+#pragma warning disable CS8603 // Possible null reference return.
                 return responseObjectPropertyValue;
+#pragma warning restore CS8603 // Possible null reference return.
             }
 
             if (apiResponse.ErrorName == null || apiResponse.ErrorMessage == null) {

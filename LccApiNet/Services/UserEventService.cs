@@ -44,7 +44,7 @@ namespace LccApiNet.Services
         /// </summary>
         public async Task StartAsync(CancellationToken token = default, CancellationToken workerToken = default)
         {
-            _lastEventId = await _api.LongPoll.GetLastEventId(token);
+            _lastEventId = await _api.LongPoll.GetLastEventIdAsync(token);
             _ = WorkingTask(workerToken);
         }
 
@@ -52,7 +52,7 @@ namespace LccApiNet.Services
         {
 
             while (!token.IsCancellationRequested) {
-                LongPollEventsResponse response = await _api.LongPoll.GetEvents(_lastEventId, token: token);
+                LongPollEventsResponse response = await _api.LongPoll.GetEventsAsync(_lastEventId, token: token);
                 foreach (DeviceEvent de in response.Events.DeviceEvents) {
                     if (de.Type == DeviceEventType.DeviceAdded) {
                         DeviceAdded?.Invoke(this, new DeviceAddedEventArgs(de.DeviceId));

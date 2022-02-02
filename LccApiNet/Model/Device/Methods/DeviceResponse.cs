@@ -12,6 +12,6 @@ namespace LccApiNet.Model.Device.Methods
         /// Devices contained by the response
         /// </summary>
         [JsonProperty("device")]
-        public Device Device { get; set; } = default!;
+        public DeviceModel Device { get; set; } = default!;
     }
 }
