@@ -19,6 +19,13 @@ namespace LccApiNet.Categories.Abstraction
         Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, CancellationToken token = default);
 
         /// <summary>
+        /// Sends command to be executed on the client controller.
+        /// </summary>
+        /// <param name="controllerId">Id of the controller the command destined for</param>
+        /// <param name="commandName">Name of the command that determines it's type</param>
+        Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default); 
+
+        /// <summary>
         /// Sets result of the command after execution.
         /// </summary>
         /// <param name="commandId">Id of the command.</param>

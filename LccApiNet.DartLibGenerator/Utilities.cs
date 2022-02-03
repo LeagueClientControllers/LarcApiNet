@@ -70,7 +70,7 @@ namespace LccApiNet.DartLibGenerator
             if (CsTypeDartImportRequired(type)) {
                 if (type.Name.Contains("[]")) {
                     imports.AddRange(ConvertCsTypeToDartImportType(GetTypeByName(type.FullName!.Replace("[]", ""))!));
-                } else if (type.Name != "List`1" && type.Name != "Dictionary`2") {
+                } else if (!typeof(IEnumerable).IsAssignableFrom(type)) {
                     imports.Add(type);
                 }
                 

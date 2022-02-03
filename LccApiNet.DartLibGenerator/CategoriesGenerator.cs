@@ -47,6 +47,19 @@ namespace LccApiNet.DartLibGenerator
                     outputDir, 
                     categoryAbstractionType.Key);
             }
+
+            StringBuilder exportFileContentBuilder = new StringBuilder();
+            foreach (KeyValuePair<Type, string> dartCategoryAbstractionType in dartCategoriesAbstractionTypes) {
+                FileInfo dartCategoryAbstractionFile = new FileInfo(dartCategoryAbstractionType.Value);
+                exportFileContentBuilder.AppendLine($"export '{Path.GetRelativePath(Path.Combine(outputDir, "categories"), dartCategoryAbstractionFile.FullName).Replace("\\", "/")}';");
+
+                string implCategoryFilePath = Path.Combine(dartCategoryAbstractionFile.Directory!.Parent!.FullName, Path.GetFileName(dartCategoryAbstractionType.Value).Substring(2));
+                exportFileContentBuilder.AppendLine($"export '{Path.GetRelativePath(Path.Combine(outputDir, "categories"), implCategoryFilePath).Replace("\\", "/")}';");
+            }
+
+            using (StreamWriter writer = new StreamWriter(new FileStream(Path.Combine(outputDir, "categories", "lcc_api_dart_categories.dart"), FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))) {
+                writer.Write(exportFileContentBuilder);
+            }
         }
 
         private static List<string> LocateCategoriesAbstraction(DirectoryInfo info)
@@ -187,7 +200,8 @@ namespace LccApiNet.DartLibGenerator
 
             string implName = interfaceType.Name.Substring(1);
             StringBuilder implFileContentBuilder = new StringBuilder(
-                "import 'package:lcc_api_dart/src/i_lcc_api.dart';\r\n"
+                $"import 'package:lcc_api_dart/src/i_lcc_api.dart';\r\n" +
+                $"import 'package:lcc_api_dart/src/categories/abstraction/{Path.GetFileName(dartFilePath)}';\r\n"
             );
 
             implFileContentBuilder.AppendLine(string.Join("\r\n", imports));

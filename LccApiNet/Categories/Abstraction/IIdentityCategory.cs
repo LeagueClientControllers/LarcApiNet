@@ -14,10 +14,10 @@ namespace LccApiNet.Categories.Abstraction
         /// <summary>
         /// Trying to authorize current device in the system.
         /// </summary>
-        /// <param name="params">Login paramters.</param>
+        /// <param name="params">Login parameters.</param>
         /// <param name="saveCredentials">Whether user access token should be saved in the system.</param>
         /// <returns>true if user was authorized successfully; otherwise false</returns>
-        Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials, CancellationToken token = default);
+        Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials = false, CancellationToken token = default);
 
         /// <summary>
         /// Refreshes access token.

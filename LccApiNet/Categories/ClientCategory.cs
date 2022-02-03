@@ -23,15 +23,15 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, CancellationToken token = default)
-        {
+        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, CancellationToken token = default) => 
             await _api.ExecuteAsync("/client/setGameflowPhase", "gameflowPhase", gameflowPhase?.Name, true, token).ConfigureAwait(false);
-        }
 
         /// <inheritdoc />
-        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default)
-        {
+        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default) => 
+            await _api.ExecuteAsync<int, SendCommandParameters>("/client/sendCommand", new SendCommandParameters(controllerId, commandName), "commandId", true, token).ConfigureAwait(false);
+
+        /// <inheritdoc />
+        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default) => 
             await _api.ExecuteAsync("/client/setCommandResult", new SetCommandResultParameters(commandId, result), true, token).ConfigureAwait(false);
-        }
     }
 }

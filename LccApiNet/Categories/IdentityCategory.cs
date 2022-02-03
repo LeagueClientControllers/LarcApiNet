@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 namespace LccApiNet.Categories
 {
-    /// <summary>
-    /// API category that contains methods related to user identification
-    /// </summary>
+    /// <inheritdoc />
     class IdentityCategory : IIdentityCategory
     {
         private ILccApi _api;
@@ -24,7 +22,7 @@ namespace LccApiNet.Categories
 
 
         /// <inheritdoc />
-        public async Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials, CancellationToken token = default)
+        public async Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials = false, CancellationToken token = default)
         {
             try {
                 string response = await _api.ExecuteAsync<string, LoginParameters>("/identity/login", @params, "accessToken", false, token).ConfigureAwait(false);
