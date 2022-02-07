@@ -20,7 +20,6 @@ namespace LccApiNet.Categories
             _api = api;
         }
 
-
         /// <inheritdoc />
         public async Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials = false, CancellationToken token = default)
         {
@@ -54,7 +53,6 @@ namespace LccApiNet.Categories
         public async Task<ProfileInfo> GetProfileInfoAsync(CancellationToken token = default)
         {
             ProfileInfoResponse response = await _api.ExecuteAsync<ProfileInfoResponse>("/identity/getProfileInfo", true, token).ConfigureAwait(false);
-
             return response.Profile;
         }
     }

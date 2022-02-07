@@ -23,8 +23,19 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, CancellationToken token = default) => 
-            await _api.ExecuteAsync("/client/setGameflowPhase", "gameflowPhase", gameflowPhase?.Name, true, token).ConfigureAwait(false);
+        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted = null, CancellationToken token = default)
+        {
+            if (gameflowPhase == GameflowPhase.ReadyCheck) {
+                if (readyCheckStarted == null) {
+                    throw new ArgumentException("When game flow phase is ready check, ready check started is required.", "readyCheckStarted");
+                }
+
+                DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                await _api.ExecuteAsync("/client/setGameflowPhase", new SetGameflowPhaseParameters(gameflowPhase, (long)(readyCheckStarted - sTime).Value.TotalSeconds), true, token).ConfigureAwait(false);
+            } else {
+                await _api.ExecuteAsync("/client/setGameflowPhase", new SetGameflowPhaseParameters(gameflowPhase), true, token).ConfigureAwait(false);
+            }
+        } 
 
         /// <inheritdoc />
         public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default) => 

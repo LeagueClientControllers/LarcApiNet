@@ -10,8 +10,6 @@ namespace LccApiNet.Model.Device
     /// </summary>
     public class DeviceModel : INotifyPropertyChanged
     {
-        private int _id;
-        private DeviceType _type = null!;
         private string _name = null!;
         private bool _isOnline = false;
         
@@ -21,36 +19,14 @@ namespace LccApiNet.Model.Device
         /// Unique identifier of the device
         /// </summary>
         [JsonProperty("id")]
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                if (value != _id)
-                {
-                    _id = value;
-                    OnPropertyChanged(nameof(Id));
-                }
-            }
-        }
+        public int Id { get; set; }
 
         /// <summary>
         /// Type of the device
         /// </summary>
         [JsonProperty("type")]
         [JsonConverter(typeof(SmartEnumNameConverter<DeviceType, int>))]
-        public DeviceType Type
-        {
-            get => _type;
-            set
-            {
-                if (value != _type)
-                {
-                    _type = value;
-                    OnPropertyChanged(nameof(Type));
-                }
-            }
-        }
+        public DeviceType Type { get; set; } = null!;
 
         /// <summary>
         /// Name of the device
@@ -59,8 +35,7 @@ namespace LccApiNet.Model.Device
         public string Name
         {
             get => _name;
-            set
-            {
+            set {
                 if (value != _name)
                 {
                     _name = value;
@@ -76,10 +51,8 @@ namespace LccApiNet.Model.Device
         public bool IsOnline
         {
             get => _isOnline;
-            set
-            {
-                if (value != _isOnline)
-                {
+            set {
+                if (value != _isOnline) {
                     _isOnline = value;
                     OnPropertyChanged(nameof(IsOnline));
                 }
