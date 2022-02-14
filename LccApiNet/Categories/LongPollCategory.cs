@@ -33,7 +33,7 @@ namespace LccApiNet.Categories
         }
         
         /// <inheritdoc />
-        public async Task<LongPollEventsResponse> GetEventsAsync(int lastEventId, int timeout = 60, CancellationToken token = default)
+        public async Task<LongPollEventsResponse> GetEventsAsync(int lastEventId, int timeout = 30, CancellationToken token = default)
         {
             LongPollEventsParameters @params = new LongPollEventsParameters(lastEventId, timeout);
             LongPollEventsResponse response = await _api.ExecuteAsync<LongPollEventsResponse, LongPollEventsParameters>("/longpoll/getEvents", @params, true, token).ConfigureAwait(false);

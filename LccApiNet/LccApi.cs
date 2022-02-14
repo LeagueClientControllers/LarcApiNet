@@ -255,6 +255,7 @@ namespace LccApiNet
             request.Content = new StringContent(payload ?? "", Encoding.UTF8, "application/json");
 
             using (HttpClient client = new HttpClient()) {
+                client.Timeout = TimeSpan.FromSeconds(40);
                 client.BaseAddress = _baseUri;
                 client.DefaultRequestHeaders.Add("Accept", "application/json;charset=utf-8");
                 client.DefaultRequestHeaders.Add("x-api-key", ApiCredentials.API_KEY);
@@ -275,9 +276,21 @@ namespace LccApiNet
                         }
                     }
                 } catch (HttpRequestException e) {
-                    if (e.InnerException is SocketException sE && sE.SocketErrorCode == SocketError.ConnectionRefused) {
-                        throw new ServerUnreachableException();
+                    if (e.InnerException is SocketException sE) {
+                        if (sE.SocketErrorCode == SocketError.ConnectionRefused) {
+                            throw new ServerUnreachableException();
+                        } else if (sE.SocketErrorCode == SocketError.HostUnreachable) {
+                            throw new NetworkUnreachableException();
+                        }
                     }
+
+                    throw e;
+                } catch (TaskCanceledException e) {
+                    if (e.InnerException is TimeoutException) {
+                        throw new NetworkUnreachableException();
+                    }
+
+                    throw e;
                 }
             }
 

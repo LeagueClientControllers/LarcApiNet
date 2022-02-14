@@ -23,6 +23,6 @@ namespace LccApiNet.Categories.Abstraction
         /// or listening to the incoming events during <see cref="LongPollEventsParameters.Timeout"/> and returns collection of the one event
         /// </summary>
         /// <param name="params">Parameters of the method</param>
-        Task<LongPollEventsResponse> GetEventsAsync(int lastEventId, int timeout = 60, CancellationToken token = default);
+        Task<LongPollEventsResponse> GetEventsAsync(int lastEventId, int timeout = 30, CancellationToken token = default);
     }
 }

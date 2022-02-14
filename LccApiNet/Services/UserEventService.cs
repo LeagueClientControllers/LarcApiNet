@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using LccApiNet.EventHandlers;
@@ -15,6 +16,11 @@ namespace LccApiNet.Services
     {
         private ILccApi _api;
         private int _lastEventId;
+
+        /// <summary>
+        /// Fired when exception has been occurred while long poll event loop.
+        /// </summary>
+        public event Action<Exception>? ExceptionOccurred;
 
         /// <summary>
         /// Invoked when new remote devices is authorized
@@ -50,24 +56,28 @@ namespace LccApiNet.Services
 
         private async Task WorkingTask(CancellationToken token = default)
         {
-
             while (!token.IsCancellationRequested) {
-                LongPollEventsResponse response = await _api.LongPoll.GetEventsAsync(_lastEventId, token: token);
-                foreach (DeviceEvent de in response.Events.DeviceEvents) {
-                    if (de.Type == DeviceEventType.DeviceAdded) {
-                        DeviceAdded?.Invoke(this, new DeviceAddedEventArgs(de.DeviceId));
-                    } else if (de.Type == DeviceEventType.DeviceChanged) {
-                        DeviceChanged?.Invoke(this, new DeviceChangedEventArgs(de.DeviceId, de.Changes!));
+                try {
+                    LongPollEventsResponse response = await _api.LongPoll.GetEventsAsync(_lastEventId, token: token);
+                    foreach (DeviceEvent de in response.Events.DeviceEvents) {
+                        if (de.Type == DeviceEventType.DeviceAdded) {
+                            DeviceAdded?.Invoke(this, new DeviceAddedEventArgs(de.DeviceId));
+                        } else if (de.Type == DeviceEventType.DeviceChanged) {
+                            DeviceChanged?.Invoke(this, new DeviceChangedEventArgs(de.DeviceId, de.Changes!));
+                        }
                     }
-                }
 
-                foreach (CommandEvent ce in response.Events.CommandEvents) {
-                    if (ce.Type == CommandEventType.CommandSent) {
-                        CommandSent?.Invoke(this, new CommandSentEventArgs(ce.Command!));
+                    foreach (CommandEvent ce in response.Events.CommandEvents) {
+                        if (ce.Type == CommandEventType.CommandSent) {
+                            CommandSent?.Invoke(this, new CommandSentEventArgs(ce.Command!));
+                        }
                     }
-                }
 
-                _lastEventId = response.LastEventId;
+                    _lastEventId = response.LastEventId;
+                } catch (Exception e) {
+                    ExceptionOccurred?.Invoke(e);
+                    break;
+                }
             }
         }
     }

@@ -31,7 +31,7 @@ namespace LccApiNet.Categories
                 await _api.UpdateAccessToken(response, saveCredentials).ConfigureAwait(false);
                 return true;
             } catch (MethodException me) {
-                if (me.ErrorName == MethodError.WrongNicknameEmailOrPassword || me.ErrorName == MethodError.InvalidMethodParameter) {
+                if (me.ErrorName == MethodError.WrongNicknameEmailOrPassword) {
                     return false;
                 } else {
                     throw me;

@@ -20,6 +20,7 @@ namespace LccApiNet.Model.Client.Methods
         /// If game flow phase is ready check this property contains time stamp 
         /// when ready check was initiated in UNIX format.
         /// </summary>
+        [JsonProperty("readyCheckStarted")]
         public long? ReadyCheckStarted { get; set; }
 
         public SetGameflowPhaseParameters(GameflowPhase? gameflowPhase, long? readyCheckStarted = null)

@@ -23,7 +23,7 @@ namespace LccApiNet.Model.LongPoll.Methods
         [JsonProperty("timeout")]
         public int Timeout { get; set; }
 
-        public LongPollEventsParameters(int lastEventId, int timeout = 60)
+        public LongPollEventsParameters(int lastEventId, int timeout = 30)
         {
             this.LastEventId = lastEventId;
             this.Timeout = timeout;
