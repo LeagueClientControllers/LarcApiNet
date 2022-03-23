@@ -32,7 +32,7 @@ namespace LccApiNet
         /// <inheritdoc />
         public JwtPayload? AccessTokenContent { get; private set; }
 
-        private const int PORT = 56067;
+        private const int PORT = 55555;
         private const string API_HOST = "150.230.151.8";
         private Uri _baseUri = new Uri($"http://{API_HOST}:{PORT}");
         private IUserCreditionalsStorage _userCreditionalsStorage = null!;
@@ -80,7 +80,7 @@ namespace LccApiNet
         public async Task InitAsync(IUserCreditionalsStorage userCreditionalsStorage, CancellationToken token = default)
         {
             _userCreditionalsStorage = userCreditionalsStorage;
-            string? accessToken = await _userCreditionalsStorage.RetrieveAccessTokenAsync().ConfigureAwait(false);
+            string? accessToken = await _userCreditionalsStorage.RetrieveAccessTokenAsync(token).ConfigureAwait(false);
             if (accessToken == null)
                 return;
 
@@ -91,7 +91,7 @@ namespace LccApiNet
             } catch (MethodException me) {
                 if (me.ErrorName == MethodError.WrongAccessToken) {
                     AccessToken = null;
-                    await _userCreditionalsStorage.ClearAccessTokenAsync().ConfigureAwait(false);
+                    await _userCreditionalsStorage.ClearAccessTokenAsync(token).ConfigureAwait(false);
                 }
             }
         }

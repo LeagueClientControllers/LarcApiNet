@@ -8,7 +8,7 @@ namespace LccApiNet.Model.Identity.Methods
 {
     public class ProfileInfoResponse : ApiResponse
     {
-        [JsonProperty("profile")]
+        [JsonProperty("profileInfo")]
         public ProfileInfo Profile { get; set; } = default!;
     }
 }

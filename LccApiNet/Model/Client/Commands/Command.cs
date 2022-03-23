@@ -1,9 +1,5 @@
 ﻿using Ardalis.SmartEnum.JsonNet;
-
-using LccApiNet.Model.Device;
-
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace LccApiNet.Model.Client.Commands
 {

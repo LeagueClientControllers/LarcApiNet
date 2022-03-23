@@ -70,11 +70,8 @@ namespace LccApiNet.DartLibGenerator
             foreach (DirectoryInfo dir in info.EnumerateDirectories()) {
                 result.AddRange(LocateModel(dir));
             }
-
-            foreach (FileInfo file in info.EnumerateFiles()) {
-                result.Add(file.FullName);
-            }
-
+            
+            result.AddRange(info.EnumerateFiles().Select(file => file.FullName));
             return result;
         }
 
