@@ -32,9 +32,13 @@ namespace LccApiNet
         /// <inheritdoc />
         public JwtPayload? AccessTokenContent { get; private set; }
 
-        private const int PORT = 55555;
-        private const string API_HOST = "150.230.151.8";
-        private Uri _baseUri = new Uri($"http://{API_HOST}:{PORT}");
+#if DEBUG
+        private const string API_HOST = "www.larc.ml/dev";
+#else
+        private const string API_HOST = "www.larc.ml/api";
+#endif
+
+        private string _baseUri = $"http://{API_HOST}";
         private IUserCreditionalsStorage _userCreditionalsStorage = null!;
 
         /// <inheritdoc />
@@ -251,12 +255,11 @@ namespace LccApiNet
         private async Task<string> _ExecuteBase(string methodPath, string? payload, bool withAccessToken, CancellationToken token)
         {
             HttpResponseMessage? response = null;
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, methodPath);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"{_baseUri}{methodPath}");
             request.Content = new StringContent(payload ?? "", Encoding.UTF8, "application/json");
 
             using (HttpClient client = new HttpClient()) {
                 client.Timeout = TimeSpan.FromSeconds(40);
-                client.BaseAddress = _baseUri;
                 client.DefaultRequestHeaders.Add("Accept", "application/json;charset=utf-8");
                 client.DefaultRequestHeaders.Add("x-api-key", ApiCredentials.API_KEY);
 

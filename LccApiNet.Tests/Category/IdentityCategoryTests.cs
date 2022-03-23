@@ -1,4 +1,6 @@
-﻿using LccApiNet.Model.Device;
+﻿using LccApiNet.Exceptions;
+using LccApiNet.Model.Device;
+using LccApiNet.Model.General;
 using LccApiNet.Model.Identity.Methods;
 
 using NUnit.Framework;
@@ -20,29 +22,33 @@ namespace LccApiNet.Tests.Category
         public async Task LoginTest() {
 
             bool correctLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
-                "Test", 
-                "dXR)A!^tV93cCKr:;cc\'za*({MMg-R9\"Nm^8`&H]Tg_g)t\"xY<7hW97yr<EL,x,B`eFtX`46V8{TRtXeZXuP%jR<WdpZu$D*EU}KEwHnFN%UV2*^ZMu(\"f%S3`!xuFNj",
+                "Rayms",
+                "12345",
                 DeviceType.Controller,
                 "TestController"
             ), saveCredentials: false);
             
             bool incorrectLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
-                "Test",
-                "none",
+                "Rayms",
+                "123",
                 DeviceType.Controller,
                 "TestController"
             ), saveCredentials: false);
 
-            bool incorrectSecondLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
-                "Test",
-                "",
-                DeviceType.Controller,
-                "TestController"
-            ), saveCredentials: false);
-
+            
             Assert.True(correctLoginResponse);
             Assert.False(incorrectLoginResponse);
-            Assert.False(incorrectSecondLoginResponse);
+            
+            MethodException? exception = Assert.CatchAsync(typeof(MethodException), async () => {
+                bool incorrectSecondLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
+                    "Rayms",
+                    "",
+                    DeviceType.Controller,
+                    "TestController"
+                ), saveCredentials: false);
+            }) as MethodException;
+
+            Assert.True(exception != null && exception.ErrorName == MethodError.InvalidMethodParameter);
         }
     }
 }
