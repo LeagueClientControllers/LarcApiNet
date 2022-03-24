@@ -22,15 +22,15 @@ namespace LccApiNet.Tests.Category
         public async Task LoginTest() {
 
             bool correctLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
-                "Rayms",
-                "12345",
+                "Test",
+                ApiCredentials.TEST_ACCOUNT_PASSWORD,
                 DeviceType.Controller,
                 "TestController"
             ), saveCredentials: false);
             
             bool incorrectLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
-                "Rayms",
-                "123",
+                "Test",
+                "00000",
                 DeviceType.Controller,
                 "TestController"
             ), saveCredentials: false);
@@ -41,7 +41,7 @@ namespace LccApiNet.Tests.Category
             
             MethodException? exception = Assert.CatchAsync(typeof(MethodException), async () => {
                 bool incorrectSecondLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
-                    "Rayms",
+                    "Test",
                     "",
                     DeviceType.Controller,
                     "TestController"

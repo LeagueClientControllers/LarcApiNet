@@ -18,7 +18,7 @@ namespace LccApiNet.Tests.Category
             _api = new LccApi();
             await _api.Identity.LoginAsync(new LoginParameters(
                 "Test",
-                "dXR)A!^tV93cCKr:;cc\'za*({MMg-R9\"Nm^8`&H]Tg_g)t\"xY<7hW97yr<EL,x,B`eFtX`46V8{TRtXeZXuP%jR<WdpZu$D*EU}KEwHnFN%UV2*^ZMu(\"f%S3`!xuFNj",
+                ApiCredentials.TEST_ACCOUNT_PASSWORD,
                 DeviceType.Controller,
                 "TestController"
             ), saveCredentials: false);
