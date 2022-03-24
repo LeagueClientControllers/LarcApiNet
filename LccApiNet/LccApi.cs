@@ -282,7 +282,7 @@ namespace LccApiNet
                     if (e.InnerException is SocketException sE) {
                         if (sE.SocketErrorCode == SocketError.ConnectionRefused) {
                             throw new ServerUnreachableException();
-                        } else if (sE.SocketErrorCode == SocketError.HostUnreachable) {
+                        } else if (sE.SocketErrorCode == SocketError.HostUnreachable || sE.SocketErrorCode == SocketError.HostNotFound) {
                             throw new NetworkUnreachableException();
                         }
                     }
