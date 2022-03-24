@@ -50,8 +50,8 @@ namespace LccApiNet.Services
         /// </summary>
         public async Task StartAsync(CancellationToken token = default, CancellationToken workerToken = default)
         {
-            _lastEventId = await _api.LongPoll.GetLastEventIdAsync(token);
-            _ = WorkingTask(workerToken);
+            //_lastEventId = await _api.LongPoll.GetLastEventIdAsync(token);
+            //_ = WorkingTask(workerToken);
         }
 
         private async Task WorkingTask(CancellationToken token = default)
