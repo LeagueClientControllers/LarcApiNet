@@ -3,6 +3,7 @@ using LccApiNet.Model.Device;
 using LccApiNet.Model.Device.Methods;
 
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task<ReadOnlyCollection<ClientController>> GetControllersAsync(CancellationToken token = default)
+        public async Task<ReadOnlyCollection<ClientController>> GetControllersAsync([Optional] CancellationToken token)
         {
             ControllersResponse response = await _api.ExecuteAsync<ControllersResponse>("/device/getControllers", true, token).ConfigureAwait(false);
             return new ReadOnlyCollection<ClientController>(response.Controllers);

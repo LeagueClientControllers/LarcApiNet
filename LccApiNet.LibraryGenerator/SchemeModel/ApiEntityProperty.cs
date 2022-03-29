@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace LccApiNet.LibraryGenerator.Model;
+namespace LccApiNet.LibraryGenerator.SchemeModel;
 
 public class ApiEntityProperty
 {
@@ -17,5 +17,5 @@ public class ApiEntityProperty
     public object InitialValue { get; set; } = null!;
 
     [JsonProperty("docs")] 
-    public JsDocumentationNode Docs { get; set; } = null!;
+    public JsDocumentationNode[] Docs { get; set; } = null!;
 }

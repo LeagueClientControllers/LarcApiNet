@@ -7,6 +7,7 @@ using LccApiNet.Model.Device;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted = null, CancellationToken token = default)
+        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, [Optional] DateTime? readyCheckStarted, [Optional] CancellationToken token)
         {
             if (gameflowPhase == GameflowPhase.ReadyCheck) {
                 if (readyCheckStarted == null) {

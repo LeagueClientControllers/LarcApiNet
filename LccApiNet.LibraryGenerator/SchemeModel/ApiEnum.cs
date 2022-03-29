@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace LccApiNet.LibraryGenerator.Model;
+namespace LccApiNet.LibraryGenerator.SchemeModel;
 
 public class ApiEnum
 {
@@ -8,7 +8,7 @@ public class ApiEnum
     public int Id { get; set; }
     
     [JsonProperty("docs")]
-    public JsDocumentationNode Docs { get; set; } = null!;
+    public JsDocumentationNode[] Docs { get; set; } = null!;
 
     [JsonProperty("members")]
     public ApiEnumMember[] Members { get; set; } = null!;

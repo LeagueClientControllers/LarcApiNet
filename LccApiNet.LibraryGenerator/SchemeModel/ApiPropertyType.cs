@@ -1,19 +1,20 @@
 ﻿using Newtonsoft.Json;
 using Ardalis.SmartEnum;
+using Ardalis.SmartEnum.JsonNet;
 
-
-namespace LccApiNet.LibraryGenerator.Model;
+namespace LccApiNet.LibraryGenerator.SchemeModel;
 
 public class ApiPropertyType
 { 
-    [JsonProperty("primitive")] 
-    public PrimitiveType Primitive { get; set; } = null!;
+    [JsonProperty("primitive")]
+    [JsonConverter(typeof(SmartEnumNameConverter<PrimitiveType, int>))]
+    public PrimitiveType? Primitive { get; set; }
 
     [JsonProperty("nullable")]
     public bool Nullable { get; set; }
 
     [JsonProperty("referenceId")] 
-    public int ReferenceId { get; set; }
+    public int? ReferenceId { get; set; }
 
     [JsonProperty("genericTypeArguments")] 
     public ApiPropertyType[] GenericTypeArguments { get; set; } = null!;

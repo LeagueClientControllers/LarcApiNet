@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet.Tests", "LccApiNe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet.DartLibGenerator", "LccApiNet.DartLibGenerator\LccApiNet.DartLibGenerator.csproj", "{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LccApiNet.LibraryGenerator", "LccApiNet.LibraryGenerator\LccApiNet.LibraryGenerator.csproj", "{E1889C21-6317-4291-AAE5-CA16A1BF3495}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet.LibraryGenerator", "LccApiNet.LibraryGenerator\LccApiNet.LibraryGenerator.csproj", "{E1889C21-6317-4291-AAE5-CA16A1BF3495}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{973299FB-1D70-4799-A855-3EFB08366006}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

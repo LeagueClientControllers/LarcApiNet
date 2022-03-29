@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace LccApiNet.LibraryGenerator.Model;
+namespace LccApiNet.LibraryGenerator.SchemeModel;
 
 public class ApiEnumMember
 {

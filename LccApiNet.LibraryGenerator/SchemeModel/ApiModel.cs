@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace LccApiNet.LibraryGenerator.Model;
+namespace LccApiNet.LibraryGenerator.SchemeModel;
 
 public class ApiModel
 {
@@ -8,7 +8,10 @@ public class ApiModel
     public ApiEntityDeclaration[] Declarations { get; set; } = null!;
     
     [JsonProperty("entities")]
-    public ApiEntity[] Entity { get; set; } = null!;
+    public ApiEntity[] Entities { get; set; } = null!;
+
+    [JsonProperty("eventIds")]
+    public int[] EventIds { get; set; } = null!;
     
     [JsonProperty("enums")]
     public ApiEnum[] Enums { get; set; } = null!;
