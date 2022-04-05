@@ -8,6 +8,6 @@
         public const string CATEGORIES_ABSTRACTION_FOLDER_NAME = "Abstraction";
 
         public const string RESPONSE_BASE_CLASS_NAME = "ApiResponse";
-        public const string CORE_LIBRARY_CLASS_TYPE_NAME = "ILccApi";
+        public const string CORE_LIBRARY_TYPE_NAME = "ILccApi";
     }
 }

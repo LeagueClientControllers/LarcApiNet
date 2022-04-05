@@ -3,9 +3,6 @@ using LccApiNet.LibraryGenerator.SchemeModel;
 using LccApiNet.LibraryGenerator.Utilities;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
-
-using System.Runtime.CompilerServices;
 
 namespace LccApiNet.LibraryGenerator;
 

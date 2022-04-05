@@ -1,4 +1,7 @@
 ﻿
+using ICSharpCode.NRefactory.CSharp;
+using ICSharpCode.NRefactory.TypeSystem;
+
 using LccApiNet.LibraryGenerator.Attributes;
 using LccApiNet.LibraryGenerator.Model;
 using LccApiNet.LibraryGenerator.SchemeModel;
@@ -14,28 +17,37 @@ namespace LccApiNet.LibraryGenerator.Core
 {
     public class CategoriesGenerator
     {
-        private const string CATEGORIES_NAMESPACE = $"{Config.PROJECT_NAME}.{Config.CATEGORIES_FOLDER_NAME}";
-        private const string CATEGORIES_ABSTRACTION_NAMESPACE = $"{Config.PROJECT_NAME}.{Config.CATEGORIES_FOLDER_NAME}.{Config.CATEGORIES_ABSTRACTION_FOLDER_NAME}";
+        public const string CATEGORIES_NAMESPACE = $"{Config.PROJECT_NAME}.{Config.CATEGORIES_FOLDER_NAME}";
+        public const string CATEGORIES_ABSTRACTION_NAMESPACE = $"{Config.PROJECT_NAME}.{Config.CATEGORIES_FOLDER_NAME}.{Config.CATEGORIES_ABSTRACTION_FOLDER_NAME}";
 
-        public static void GenerateLocalCategories(string outputDirectory, ApiScheme scheme, LocalModel model)
+        public static List<LocalCategory> GenerateLocalCategories(string outputDirectory, ApiScheme scheme, LocalModel model)
         {
+            Console.WriteLine();
+            ConsoleUtils.ShowInfo("------------------------------- Generating categories -----------------------------------");
+
             ConsoleUtils.ShowInfo("Building categories abstraction code graphs...");
-            Dictionary<string, CodeCompileUnit> graphs = BuildCategoriesGraphs(scheme, model);
+            List<LocalCategory> localCategories = BuildCategoriesGraphs(scheme, model);
             ConsoleUtils.ShowInfo("Abstraction graphs are built");
 
-            foreach (KeyValuePair<string, CodeCompileUnit> graph in graphs) {
-                string outputPath = Path.Combine(outputDirectory, graph.Key);
-                Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-
-                IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(outputPath, false), "    ");
-                new CSharpCodeProvider().GenerateCodeFromCompileUnit(graph.Value, writer, new CodeGeneratorOptions());
-                writer.Close();
+            Console.WriteLine();
+            ConsoleUtils.ShowInfo("--------------------------------- Merging categories ------------------------------------");
+            List<LocalCategory> newCategories = new();
+            foreach (LocalCategory localCategory in localCategories) {
+                ConsoleUtils.ShowInfo($"{localCategory.Name}:");
+                bool categoryFound = CategoriesMerger.MergeCategory(outputDirectory, @"D:\Development\GitHub\LeagueClientControllers\LccApiNet\LccApiNet", localCategory);
+                if (!categoryFound) {
+                    ConsoleUtils.ShowInfo($"|—-Old implementation is not found");
+                    newCategories.Add(localCategory);
+                }
             }
+
+            newCategories = localCategories; //TODO: Remove after writing core class modifier generator 
+            return newCategories;
         }
 
-        public static Dictionary<string, CodeCompileUnit> BuildCategoriesGraphs(ApiScheme scheme, LocalModel model)
+        public static List<LocalCategory> BuildCategoriesGraphs(ApiScheme scheme, LocalModel model)
         {
-            Dictionary<string, CodeCompileUnit> graphs = new();
+            List<LocalCategory> localCategories = new();
 
             ApiEntityDeclaration? apiResponse = scheme.Model.Declarations.FirstOrDefault(d => d.Name == Config.RESPONSE_BASE_CLASS_NAME);
             if (apiResponse == null) {
@@ -50,21 +62,28 @@ namespace LccApiNet.LibraryGenerator.Core
 
                 ConsoleUtils.ShowInfo($"Building abstraction graph for {category.Name} category...");
                 CodeCompileUnit abstraction = BuildAbstractionGraph(category, categoryName, model, apiResponse.Id);
-                graphs.Add(abstractionPath, abstraction);
                 ConsoleUtils.ShowInfo($"Abstraction graph for {category.Name} category is built");
 
                 ConsoleUtils.ShowInfo($"Building implementation graph for {category.Name} category...");
                 CodeCompileUnit implementation = BuildImplementationGraph(abstraction, category, categoryName, model, apiResponse.Id);
-                graphs.Add(implementationPath, implementation);
-                ConsoleUtils.ShowInfo($"Abstraction graph for {category.Name} category is built");
+                ConsoleUtils.ShowInfo($"Implementation graph for {category.Name} category is built");
+
+                LocalCategory localCategory = new LocalCategory(categoryName, abstraction, implementation);
+                localCategories.Add(localCategory);
+
+                break;
             }
 
-            return graphs;
+            return localCategories;
         }
 
         public static CodeCompileUnit BuildAbstractionGraph(ApiCategory category, string categoryName, LocalModel model, int apiResponseId)
         {
             CodeCompileUnit compileUnit = new CodeCompileUnit();
+
+            CodeNamespace importNamespace = new CodeNamespace();
+            importNamespace.AddImportsForCategoryAbstraction();
+            compileUnit.Namespaces.Add(importNamespace);
 
             CodeNamespace entityNamespace = new CodeNamespace(CATEGORIES_ABSTRACTION_NAMESPACE);
             compileUnit.Namespaces.Add(entityNamespace);
@@ -77,20 +96,26 @@ namespace LccApiNet.LibraryGenerator.Core
             foreach (ApiMethod method in category.Methods) {
                 CodeMemberMethod categoryMethod = new CodeMemberMethod();
                 categoryMethod.Comments.Add(method.Docs.ToCSharpDoc());
-                categoryMethod.Name = method.Name.CaseTransform(Case.CamelCase, Case.PascalCase);
+                categoryMethod.Name = $"{method.Name.CaseTransform(Case.CamelCase, Case.PascalCase)}Async";
                 categoryInterface.Members.Add(categoryMethod);
 
-                if (method.ResponseId == apiResponseId) {
-                    categoryMethod.ReturnType = new CodeTypeReference(typeof(Task));
+                if (method.AccessibleFrom == MethodAccessPolicy.Controller) {
+                    categoryMethod.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference("ControllerOnly")));
                 } else {
-                    CodeTypeReference taskReference = new CodeTypeReference(typeof(Task<>));
+                    categoryMethod.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference("DeviceOnly")));
+                }
+
+                if (method.ResponseId == apiResponseId) {
+                    categoryMethod.ReturnType = new CodeTypeReference("Task");
+                } else {
+                    CodeTypeReference taskReference = new CodeTypeReference("Task");
                     LocalModelEntity? response = model[method.ResponseId];
                     if (response == null) {
                         throw new GeneratorException($"Response entity with id {method.ResponseId} not found in scheme.");
                     }
 
                     if (response.Properties.Count > 1) {
-                        taskReference.TypeArguments.Add(new CodeTypeReference(response.Declaration.Namespace));
+                        taskReference.TypeArguments.Add(new CodeTypeReference(response.Declaration.Name));
                     } else {
                         taskReference.TypeArguments.Add(response.Properties[0].Type);
                     }
@@ -98,15 +123,8 @@ namespace LccApiNet.LibraryGenerator.Core
                     categoryMethod.ReturnType = taskReference;
                 }
 
-                CodeParameterDeclarationExpression cancellationToken = new CodeParameterDeclarationExpression(typeof(CancellationToken), "token");
-                cancellationToken.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(OptionalAttribute))));
+                CodeParameterDeclarationExpression cancellationToken = new CodeParameterDeclarationExpression("CancellationToken", "token = default");
                 categoryMethod.Parameters.Add(cancellationToken);
-
-                if (method.AccessibleFrom == MethodAccessPolicy.Controller) {
-                    categoryMethod.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(ControllerOnlyAttribute))));
-                } else {
-                    categoryMethod.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(DeviceOnlyAttribute))));
-                }
 
                 if (method.ParametersId == null) {
                     continue;
@@ -116,9 +134,10 @@ namespace LccApiNet.LibraryGenerator.Core
                 LocalModelEntity parameters = model[(int)method.ParametersId];
                 foreach (LocalEntityProperty property in parameters.Properties) {
                     CodeParameterDeclarationExpression parameterExpression = new CodeParameterDeclarationExpression(property.Type, property.SchemePropertyName);
+                    categoryMethod.Comments.Add(property.Docs.ToParamDoc(property.SchemePropertyName));
 
                     if (property.InitialValue != null) {
-                        parameterExpression.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(OptionalAttribute))));
+                        parameterExpression.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference("Optional")));
                         parameterExpression.CustomAttributes.Add(ModelGenerator.BuildDefaultValueAttributeDeclaration(property.InitialValue));
                     }
 
@@ -134,15 +153,19 @@ namespace LccApiNet.LibraryGenerator.Core
         {
             CodeCompileUnit compileUnit = new CodeCompileUnit();
 
+            CodeNamespace importNamespace = new CodeNamespace();
+            importNamespace.AddImportsForCategoryImplementation();
+            compileUnit.Namespaces.Add(importNamespace);
+
             CodeNamespace entityNamespace = new CodeNamespace(CATEGORIES_NAMESPACE);
             compileUnit.Namespaces.Add(entityNamespace);
 
             CodeTypeDeclaration categoryClass = new CodeTypeDeclaration(categoryName);
             categoryClass.Comments.Add(new CodeCommentStatement("<inheritdoc />", true));
-            categoryClass.BaseTypes.Add(new CodeTypeReference($"{CATEGORIES_ABSTRACTION_NAMESPACE}.I{categoryName}"));
+            categoryClass.BaseTypes.Add(new CodeTypeReference($"I{categoryName}"));
             entityNamespace.Types.Add(categoryClass);
 
-            CodeTypeReference coreClassReference = new CodeTypeReference($"{Config.PROJECT_NAME}.{Config.CORE_LIBRARY_CLASS_TYPE_NAME}");
+            CodeTypeReference coreClassReference = new CodeTypeReference(Config.CORE_LIBRARY_TYPE_NAME);
             CodeMemberField apiField = new CodeMemberField(coreClassReference, "_api");
             apiField.Attributes = MemberAttributes.Private | MemberAttributes.Final;
             categoryClass.Members.Add(apiField);
@@ -154,7 +177,7 @@ namespace LccApiNet.LibraryGenerator.Core
 
 
             List<CodeMemberMethod> methods = new List<CodeMemberMethod>();
-            foreach (CodeTypeMember member in abstraction.Namespaces[0].Types[0].Members) {
+            foreach (CodeTypeMember member in abstraction.Namespaces[1].Types[0].Members) {
                 if (member is CodeMemberMethod method) {
                     methods.Add(method);
                 }
@@ -177,7 +200,7 @@ namespace LccApiNet.LibraryGenerator.Core
 
                 if (method.ParametersId != null) {
                     LocalModelEntity parameters = model[(int)method.ParametersId];
-                    CodeTypeReference parametersType = new CodeTypeReference($"{parameters.Declaration.Namespace}.{parameters.Declaration.Name}");
+                    CodeTypeReference parametersType = new CodeTypeReference(parameters.Declaration.Name);
                     CodeVariableDeclarationStatement parametersCreationStatement = new CodeVariableDeclarationStatement(parametersType, "parameters");
                     executeMethodInvokation.Method.TypeArguments.Add(parametersType);
                     

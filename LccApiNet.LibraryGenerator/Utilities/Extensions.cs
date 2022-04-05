@@ -1,5 +1,10 @@
-﻿using LccApiNet.LibraryGenerator.Model;
+﻿using ICSharpCode.NRefactory.CSharp;
+using ICSharpCode.NRefactory.TypeSystem;
+
+using LccApiNet.LibraryGenerator.Model;
 using LccApiNet.LibraryGenerator.SchemeModel;
+
+using Mono.CSharp;
 
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -16,11 +21,27 @@ namespace LccApiNet.LibraryGenerator.Utilities
                 if (node.IsReference) {
                     comment += $"<see cref=\"{node.Text}\"/>";
                 } else {
-                    comment += node.Text;
+                    comment += node.Text.Replace("\r\n", "\r\n ");
                 }
             }
 
             comment += "\r\n </summary>";
+            return new CodeCommentStatement(comment, true);
+        }
+
+        public static CodeCommentStatement ToParamDoc(this IEnumerable<JsDocumentationNode> nodes, string paramName)
+        {
+            bool unfoldedComment = nodes.Any(n => n.Text.Contains("\r\n"));
+            string comment = $"<param name=\"{paramName}\">{(unfoldedComment ? "\r\n " : "")}";
+            foreach (JsDocumentationNode node in nodes) {
+                if (node.IsReference) {
+                    comment += $"<see cref=\"{node.Text}\"/>";
+                } else {
+                    comment += node.Text.Replace("\r\n", "\r\n ");
+                }
+            }
+
+            comment += $"{(unfoldedComment ? "\r\n " : "")}</param>";
             return new CodeCommentStatement(comment, true);
         }
 
@@ -30,24 +51,24 @@ namespace LccApiNet.LibraryGenerator.Utilities
 
             if (type.ReferenceId != null) {
                 LocalEntityDeclaration referencedDeclaration = localTypes[(int)type.ReferenceId - 1];
-                typeReference = new CodeTypeReference($"{referencedDeclaration.Namespace}.{referencedDeclaration.Name}");
+                typeReference = new CodeTypeReference(referencedDeclaration.Name);
             } else if (type.Primitive != null) { 
-                if (type.Primitive == PrimitiveType.Number) {
+                if (type.Primitive == SchemeModel.PrimitiveType.Number) {
                     typeReference = new CodeTypeReference(typeof(int));
-                } else if (type.Primitive == PrimitiveType.Decimal) {
+                } else if (type.Primitive == SchemeModel.PrimitiveType.Decimal) {
                     typeReference = new CodeTypeReference(typeof(decimal));
-                } else if (type.Primitive == PrimitiveType.String) {
+                } else if (type.Primitive == SchemeModel.PrimitiveType.String) {
                     typeReference = new CodeTypeReference(typeof(string));
-                } else if (type.Primitive == PrimitiveType.Boolean) {
+                } else if (type.Primitive == SchemeModel.PrimitiveType.Boolean) {
                     typeReference = new CodeTypeReference(typeof(bool));
-                } else if (type.Primitive == PrimitiveType.Object) {
+                } else if (type.Primitive == SchemeModel.PrimitiveType.Object) {
                     typeReference = new CodeTypeReference(typeof(object));
-                } else if (type.Primitive == PrimitiveType.Date) {
+                } else if (type.Primitive == SchemeModel.PrimitiveType.Date) {
                     typeReference = new CodeTypeReference(typeof(DateTime));
-                } else if (type.Primitive == PrimitiveType.Array) {
-                    typeReference = new CodeTypeReference(typeof(Array));
-                } else if (type.Primitive == PrimitiveType.Dictionary) {
-                    typeReference = new CodeTypeReference("System.Collections.Generic.Dictionary");
+                } else if (type.Primitive == SchemeModel.PrimitiveType.Array) {
+                    typeReference = new CodeTypeReference("List");
+                } else if (type.Primitive == SchemeModel.PrimitiveType.Dictionary) {
+                    typeReference = new CodeTypeReference("Dictionary");
                 } else {
                     throw new ArgumentException("Primitive type is defined but is not recognizable.");
                 }
@@ -76,6 +97,20 @@ namespace LccApiNet.LibraryGenerator.Utilities
             }
 
             return typeReference;
+        }
+
+        public static List<MethodDeclaration> ExtractTypeMethods(this SyntaxTree entity, string typeName)
+        {
+            NamespaceDeclaration oldAbstractionNamespace = (NamespaceDeclaration)entity.Members.Last();
+            TypeDeclaration oldAbstractionInterface = (TypeDeclaration)oldAbstractionNamespace.Members.First(m => m is TypeDeclaration tD && tD.Name == typeName);
+            return oldAbstractionInterface.Members.Where(m => m is MethodDeclaration).Cast<MethodDeclaration>().ToList();
+        }
+
+        public static List<PropertyDeclaration> ExtractTypeProperties(this SyntaxTree entity, string typeName)
+        {
+            NamespaceDeclaration oldAbstractionNamespace = (NamespaceDeclaration)entity.Members.Last();
+            TypeDeclaration oldAbstractionInterface = (TypeDeclaration)oldAbstractionNamespace.Members.First(m => m is TypeDeclaration tD && tD.Name == typeName);
+            return oldAbstractionInterface.Members.Where(m => m is PropertyDeclaration).Cast<PropertyDeclaration>().ToList();
         }
     }
 }

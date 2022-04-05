@@ -2,11 +2,8 @@
 using LccApiNet.Model.Client;
 using LccApiNet.Model.Client.Commands;
 using LccApiNet.Model.Client.Methods;
-using LccApiNet.Model.Device;
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +21,7 @@ namespace LccApiNet.Categories
         }
 
         /// <inheritdoc />
-        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, [Optional] DateTime? readyCheckStarted, [Optional] CancellationToken token)
+        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted = null, CancellationToken token = default)
         {
             if (gameflowPhase == GameflowPhase.ReadyCheck) {
                 if (readyCheckStarted == null) {
@@ -39,11 +36,15 @@ namespace LccApiNet.Categories
         } 
 
         /// <inheritdoc />
-        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default) => 
-            await _api.ExecuteAsync<int, SendCommandParameters>("/client/sendCommand", new SendCommandParameters(controllerId, commandName), "commandId", true, token).ConfigureAwait(false);
+        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default)
+        {
+            return await _api.ExecuteAsync<int, SendCommandParameters>("/client/sendCommand", new SendCommandParameters(controllerId, commandName), "commandId", true, token).ConfigureAwait(false);
+        }
 
         /// <inheritdoc />
-        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default) => 
+        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default)
+        {
             await _api.ExecuteAsync("/client/setCommandResult", new SetCommandResultParameters(commandId, result), true, token).ConfigureAwait(false);
+        } 
     }
 }

@@ -1,4 +1,5 @@
-﻿using LccApiNet.Model.Client;
+﻿using LccApiNet.LibraryGenerator.Attributes;
+using LccApiNet.Model.Client;
 using LccApiNet.Model.Client.Commands;
 using LccApiNet.Model.Device;
 
@@ -17,6 +18,7 @@ namespace LccApiNet.Categories.Abstraction
         /// <summary>
         /// Sets current game flow phase of the league client.
         /// </summary>
+        [ControllerOnly()]
         Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted = null, CancellationToken token = default);
 
         /// <summary>
@@ -24,13 +26,15 @@ namespace LccApiNet.Categories.Abstraction
         /// </summary>
         /// <param name="controllerId">Id of the controller the command destined for</param>
         /// <param name="commandName">Name of the command that determines it's type</param>
-        Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default); 
+        [DeviceOnly()]
+        Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default);
 
         /// <summary>
         /// Sets result of the command after execution.
         /// </summary>
         /// <param name="commandId">Id of the command.</param>
         /// <param name="result">Result of the command.</param>
+        [ControllerOnly()]
         Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default);
     }
 }

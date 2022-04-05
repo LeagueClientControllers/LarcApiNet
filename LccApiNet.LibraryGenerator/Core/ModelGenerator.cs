@@ -15,8 +15,13 @@ namespace LccApiNet.LibraryGenerator.Core
 {
     public class ModelGenerator
     {
+        public const string MODEL_NAMESPACE = $"{Config.PROJECT_NAME}.{Config.MODEL_FOLDER_NAME}";
+
         public static LocalModel GenerateLocalModel(string outputDirectory, ApiScheme scheme, List<LocalEntityDeclaration> modelDeclarations)
         {
+            Console.WriteLine();
+            ConsoleUtils.ShowInfo("------------------------------- Generating model -----------------------------------");
+
             ConsoleUtils.ShowInfo("Building model code graphs...");
             Dictionary<string, LocalModelEntity> graphs = BuildModelGraphs(scheme, modelDeclarations);
             ConsoleUtils.ShowInfo("Code graphs are built");
@@ -46,6 +51,7 @@ namespace LccApiNet.LibraryGenerator.Core
                 }   
             }
             ConsoleUtils.ShowInfo("Local model info is generated");
+            
 
             return model;
         }
@@ -84,7 +90,11 @@ namespace LccApiNet.LibraryGenerator.Core
         {
             CodeCompileUnit compileUnit = new CodeCompileUnit();
 
-            CodeNamespace entityNamespace = new CodeNamespace(declaration.Namespace);
+            CodeNamespace importNamespace = new CodeNamespace();
+            importNamespace.AddImportsForModelEntity();
+            compileUnit.Namespaces.Add(importNamespace);
+
+            CodeNamespace entityNamespace = new CodeNamespace(MODEL_NAMESPACE);
             compileUnit.Namespaces.Add(entityNamespace);
 
             CodeTypeDeclaration entityClass = new CodeTypeDeclaration(declaration.Name);
@@ -92,7 +102,7 @@ namespace LccApiNet.LibraryGenerator.Core
             entityNamespace.Types.Add(entityClass);
 
             if (declaration.Kind == ApiEntityKind.Response) {
-                entityClass.BaseTypes.Add(new CodeTypeReference($"{apiResponseReference}.{Config.RESPONSE_BASE_CLASS_NAME}"));
+                entityClass.BaseTypes.Add(new CodeTypeReference(Config.RESPONSE_BASE_CLASS_NAME));
             }
 
             CodeConstructor? entityConstructor = null;
@@ -134,7 +144,7 @@ namespace LccApiNet.LibraryGenerator.Core
                     entityConstructor.Parameters.Add(new CodeParameterDeclarationExpression(entityProperty.Type, property.Name));
                 } else {
                     CodeParameterDeclarationExpression parameterDeclaration = new CodeParameterDeclarationExpression(entityProperty.Type, property.Name.CaseTransform(Case.PascalCase, Case.CamelCase));
-                    parameterDeclaration.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(OptionalAttribute))));
+                    parameterDeclaration.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference("Optional")));
                     if (property.InitialValue != null) {
                         parameterDeclaration.CustomAttributes.Add(BuildDefaultValueAttributeDeclaration(property.InitialValue));
                     }
@@ -158,14 +168,18 @@ namespace LccApiNet.LibraryGenerator.Core
         {
             CodeCompileUnit compileUnit = new CodeCompileUnit();
 
-            CodeNamespace entityNamespace = new CodeNamespace(declaration.Namespace);
+            CodeNamespace importNamespace = new CodeNamespace();
+            importNamespace.AddImportsForEnum();
+            compileUnit.Namespaces.Add(importNamespace);
+
+            CodeNamespace entityNamespace = new CodeNamespace(MODEL_NAMESPACE);
             compileUnit.Namespaces.Add(entityNamespace);
 
             CodeTypeDeclaration entityEnum = new CodeTypeDeclaration(declaration.Name);
             entityEnum.Comments.Add(entity.Docs.ToCSharpDoc());
             entityNamespace.Types.Add(entityEnum);
 
-            CodeTypeReference smartEnum = new CodeTypeReference(typeof(SmartEnum<>));
+            CodeTypeReference smartEnum = new CodeTypeReference("SmartEnum");
             smartEnum.TypeArguments.Add(new CodeTypeReference(declaration.Name));
             entityEnum.BaseTypes.Add(smartEnum);
 
@@ -197,14 +211,14 @@ namespace LccApiNet.LibraryGenerator.Core
 
         private static CodeAttributeDeclaration BuildJsonPropertyAttributeDeclaration(string jsonKey)
         {
-            CodeTypeReference propertyAttributeReference = new CodeTypeReference(typeof(JsonPropertyAttribute));
+            CodeTypeReference propertyAttributeReference = new CodeTypeReference("JsonProperty");
             CodeAttributeArgument jsonKeyArgument = new CodeAttributeArgument(new CodePrimitiveExpression(jsonKey));
             return new CodeAttributeDeclaration(propertyAttributeReference, jsonKeyArgument);
         }
 
         public static CodeAttributeDeclaration BuildDefaultValueAttributeDeclaration(object defaultValue)
         {
-            CodeTypeReference propertyAttributeReference = new CodeTypeReference(typeof(DefaultParameterValueAttribute));
+            CodeTypeReference propertyAttributeReference = new CodeTypeReference("DefaultParameterValue");
             CodeAttributeArgument jsonKeyArgument = new CodeAttributeArgument(new CodePrimitiveExpression(defaultValue));
             return new CodeAttributeDeclaration(propertyAttributeReference, jsonKeyArgument);
         }
