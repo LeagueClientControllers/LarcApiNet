@@ -6,7 +6,7 @@
         {
             get {
                 return Responses.FirstOrDefault(r => r.Declaration.Id == index) ??
-                       Parameters.FirstOrDefault(p => p.Declaration.Id == index) ??  
+                       Parameters.FirstOrDefault(p => p.Declaration.Id == index) ??
                        throw new KeyNotFoundException($"Entity with id {index} not found in local model.");
             }
         }

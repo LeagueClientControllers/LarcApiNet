@@ -1,10 +1,10 @@
-﻿using JWT.Algorithms;
+using JWT.Algorithms;
 using JWT.Builder;
 
 using LccApiNet.Categories;
 using LccApiNet.Categories.Abstraction;
 using LccApiNet.Exceptions;
-using LccApiNet.Model.General;
+using LccApiNet.Model;
 using LccApiNet.Security;
 using LccApiNet.Services;
 using LccApiNet.Utilities;
@@ -32,32 +32,20 @@ namespace LccApiNet
         /// <inheritdoc />
         public JwtPayload? AccessTokenContent { get; private set; }
 
-#if DEBUG
-        private const string API_HOST = "www.larc.ml/dev";
-#else
-        private const string API_HOST = "www.larc.ml/api";
-#endif
-
-        private string _baseUri = $"http://{API_HOST}";
+        private string _baseUri = $"http://{ILccApi.API_HOST}";
         private IUserCreditionalsStorage _userCreditionalsStorage = null!;
 
         /// <inheritdoc />
         public string? AccessToken { get; private set; }
 
         /// <inheritdoc />
-        public IIdentityCategory Identity { get; }
+        public IClientCategory Client { get; }
 
         /// <inheritdoc />
         public IDeviceCategory Device { get; }
 
         /// <inheritdoc />
-        public ITeamsCategory Teams { get; }
-
-        /// <inheritdoc />
-        public ILongPollCategory LongPoll { get; }
-
-        /// <inheritdoc />  
-        public IClientCategory Client { get; }
+        public IIdentityCategory Identity { get; }
 
         /// <inheritdoc />
         public UserEventService UserEvents { get; }
@@ -68,13 +56,10 @@ namespace LccApiNet
         /// <summary>
         /// Creates new instance of the main API class
         /// </summary>
-        public LccApi()
-        {
-            Identity = new IdentityCategory(this);
-            Device = new DeviceCategory(this);
-            Teams = new TeamsCategory(this);
-            LongPoll = new LongPollCategory(this);
+        public LccApi() {
             Client = new ClientCategory(this);
+            Device = new DeviceCategory(this);
+            Identity = new IdentityCategory(this);
 
             UserEvents = new UserEventService(this);
             Commands = new CommandService(this);
@@ -117,7 +102,10 @@ namespace LccApiNet
 
         /// <inheritdoc />
         public Task<TResponse> ExecuteAsync<TResponse>(string methodPath, bool withAccessToken = true, CancellationToken token = default)
-            where TResponse : ApiResponse => ExecuteBase<TResponse>(methodPath, withAccessToken, token);
+            where TResponse : ApiResponse
+        {
+            return ExecuteBase<TResponse>(methodPath, withAccessToken, token);
+        }
 
         /// <inheritdoc />
         public async Task UpdateAccessToken(string accessToken, bool storeInSystem = false)
@@ -136,7 +124,9 @@ namespace LccApiNet
 
         /// <inheritdoc />
         public Task ExecuteAsync(string methodPath, bool withAccessToken = true, CancellationToken token = default)
-            => ExecuteBase<ApiResponse>(methodPath, withAccessToken, token);
+        {
+            return ExecuteBase<ApiResponse>(methodPath, withAccessToken, token);
+        }
 
         /// <inheritdoc />
         public async Task<TResponse> ExecuteAsync<TResponse, TParameters>(string methodPath, TParameters @params, string responseObjectKey, bool withAccessToken = true, CancellationToken token = default)
@@ -176,7 +166,9 @@ namespace LccApiNet
 
         /// <inheritdoc />
         public Task<TResponse> ExecuteAsync<TResponse>(string methodPath, string responseObjectKey, bool withAccessToken = true, CancellationToken token = default)
-            => ExecuteBase<TResponse>(methodPath, responseObjectKey, withAccessToken, token);
+        {
+            return ExecuteBase<TResponse>(methodPath, responseObjectKey, withAccessToken, token);
+        }
 
         /// <inheritdoc />
         public async Task ExecuteAsync<TParameter>(string methodPath, string paramKey, TParameter param, bool withAccessToken = true, CancellationToken token = default)

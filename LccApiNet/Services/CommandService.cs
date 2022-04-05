@@ -1,5 +1,5 @@
 ﻿using LccApiNet.EventHandlers;
-using LccApiNet.Model.Client.Commands;
+using LccApiNet.Model;
 
 namespace LccApiNet.Services
 {
@@ -18,7 +18,7 @@ namespace LccApiNet.Services
         public CommandService(ILccApi api)
         {
             _api = api;
-            _api.UserEvents.CommandSent += OnCommandSent;
+            //_api.UserEvents.CommandSent += OnCommandSent;
         }
 
         private void OnCommandSent(object sender, CommandSentEventArgs args)

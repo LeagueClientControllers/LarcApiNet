@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
 using LccApiNet.EventHandlers;
-using LccApiNet.Model.LongPoll;
-using LccApiNet.Model.LongPoll.Methods;
+using LccApiNet.Exceptions;
+using LccApiNet.Security;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using Websocket.Client;
 
 namespace LccApiNet.Services
 {
@@ -12,73 +18,54 @@ namespace LccApiNet.Services
     /// Simplifies work with long poll system
     /// and allows to get user events 
     /// </summary>
-    public class UserEventService
+    public partial class UserEventService : IDisposable
     {
         private ILccApi _api;
-        private int _lastEventId;
-
-        /// <summary>
-        /// Fired when exception has been occurred while long poll event loop.
-        /// </summary>
-        public event Action<Exception>? ExceptionOccurred;
-
-        /// <summary>
-        /// Invoked when new remote devices is authorized
-        /// </summary>
-        public event DeviceAddedEventHandler? DeviceAdded;
-
-        /// <summary>
-        /// Invoked when device was changed
-        /// </summary>
-        public event DeviceChangedEventHandler? DeviceChanged;
-
-        /// <summary>
-        /// Invoked when command was sent;
-        /// </summary>
-        public event CommandSentEventHandler? CommandSent;
+        private WebsocketClient? _socket;
+        private Uri _webSocketUrl = new Uri($"ws://{ILccApi.API_HOST}/ws");
 
         public UserEventService(ILccApi api)
         {
             _api = api;
         }
 
-        /// <summary>
-        /// Starts the process of getting new events
-        /// and handling them
-        /// <param name="token">Token to be able to cancel initialization task</param>
-        /// <param name="workerToken">Token to be able to cancel events handling</param>
-        /// </summary>
-        public async Task StartAsync(CancellationToken token = default, CancellationToken workerToken = default)
+        public async Task ConnectToEventProviderAsync(CancellationToken token = default)
         {
-            //_lastEventId = await _api.LongPoll.GetLastEventIdAsync(token);
-            //_ = WorkingTask(workerToken);
+            _socket = new WebsocketClient(_webSocketUrl, () => { 
+                ClientWebSocket socket = new ClientWebSocket {
+                    Options = {
+                        RemoteCertificateValidationCallback = (_, _, _, _) => true,
+                    },
+                };
+
+                socket.Options.SetRequestHeader("x-api-key", ApiCredentials.API_KEY);
+                socket.Options.SetRequestHeader("Authorization", $"Bearer {_api.AccessToken}");
+                return socket;
+            });
+
+            _socket.MessageReceived.Subscribe(HandleWebSocketMessage);
+            await _socket.Start();
         }
 
-        private async Task WorkingTask(CancellationToken token = default)
+        private void HandleWebSocketMessage(ResponseMessage message)
         {
-            while (!token.IsCancellationRequested) {
-                try {
-                    LongPollEventsResponse response = await _api.LongPoll.GetEventsAsync(_lastEventId, token: token);
-                    foreach (DeviceEvent de in response.Events.DeviceEvents) {
-                        if (de.Type == DeviceEventType.DeviceAdded) {
-                            DeviceAdded?.Invoke(this, new DeviceAddedEventArgs(de.DeviceId));
-                        } else if (de.Type == DeviceEventType.DeviceChanged) {
-                            DeviceChanged?.Invoke(this, new DeviceChangedEventArgs(de.DeviceId, de.Changes!));
-                        }
-                    }
-
-                    foreach (CommandEvent ce in response.Events.CommandEvents) {
-                        if (ce.Type == CommandEventType.CommandSent) {
-                            CommandSent?.Invoke(this, new CommandSentEventArgs(ce.Command!));
-                        }
-                    }
-
-                    _lastEventId = response.LastEventId;
-                } catch (Exception e) {
-                    ExceptionOccurred?.Invoke(e);
-                    break;
-                }
+            if (message.MessageType != WebSocketMessageType.Text) {
+                throw new EventProviderException($"Incoming message type is '{message.MessageType}' that is invalid.");
             }
+
+            JObject eventMessage;
+            try {
+                eventMessage = JObject.Parse(message.Text);
+            } catch (JsonReaderException) {
+                throw new EventProviderException($"Incoming message parsing error occurred.");
+            }
+
+            ;
+        }
+
+        public void Dispose()
+        {
+            _socket?.Dispose();
         }
     }
 }

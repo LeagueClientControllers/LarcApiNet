@@ -125,6 +125,18 @@ namespace LccApiNet.LibraryGenerator.Core
             string mergedImplementationContent = MergeMethods(alreadyImplementedMethod, oldImplementationContent, newImplementationContent);
             ConsoleUtils.ShowInfo($"|—-Implementation is merged.");
 
+            using (StreamWriter writer = new StreamWriter(new FileStream(oldAbstractionPath, FileMode.Create, FileAccess.Write))) {
+                writer.Write(mergedAbstractionContent);
+            }
+
+            ConsoleUtils.ShowInfo($"|—-Abstraction is updated.");
+
+            using (StreamWriter writer = new StreamWriter(new FileStream(oldImplementationPath, FileMode.Create, FileAccess.Write))) {
+                writer.Write(mergedImplementationContent);
+            }
+
+            ConsoleUtils.ShowInfo($"|—-Implementation is updated.");
+
             return true;
         } 
 

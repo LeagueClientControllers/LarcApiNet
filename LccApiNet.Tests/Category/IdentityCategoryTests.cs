@@ -1,7 +1,5 @@
 ﻿using LccApiNet.Exceptions;
-using LccApiNet.Model.Device;
-using LccApiNet.Model.General;
-using LccApiNet.Model.Identity.Methods;
+using LccApiNet.Model;
 
 using NUnit.Framework;
 
@@ -24,15 +22,15 @@ namespace LccApiNet.Tests.Category
             bool correctLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
                 "Test",
                 ApiCredentials.TEST_ACCOUNT_PASSWORD,
-                DeviceType.Controller,
-                "TestController"
+                "TestController",
+                DeviceType.Controller
             ), saveCredentials: false);
             
             bool incorrectLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
                 "Test",
                 "00000",
-                DeviceType.Controller,
-                "TestController"
+                "TestController",
+                DeviceType.Controller
             ), saveCredentials: false);
 
             
@@ -43,8 +41,8 @@ namespace LccApiNet.Tests.Category
                 bool incorrectSecondLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
                     "Test",
                     "",
-                    DeviceType.Controller,
-                    "TestController"
+                    "TestController",
+                    DeviceType.Controller
                 ), saveCredentials: false);
             }) as MethodException;
 

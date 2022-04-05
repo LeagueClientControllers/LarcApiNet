@@ -27,9 +27,9 @@ namespace LccApiNet.LibraryGenerator.Core
 
             ConsoleUtils.ShowInfo("Declarations transformed");
 
-            LocalModel model = ModelGenerator.GenerateLocalModel(Path.Combine(Environment.CurrentDirectory, "output"), scheme, localDeclarations);
+            LocalModel model = ModelGenerator.GenerateLocalModel(@"D:\Development\GitHub\LeagueClientControllers\LccApiNet\LccApiNet", scheme, localDeclarations);
             List<LocalCategory> newCategories = CategoriesGenerator.GenerateLocalCategories(Path.Combine(Environment.CurrentDirectory, "output"), scheme, model);
-            
+            CoreClassModifier.CorrectCore(@"D:\Development\GitHub\LeagueClientControllers\LccApiNet\LccApiNet", newCategories);
 
             ;
         }

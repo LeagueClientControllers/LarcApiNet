@@ -17,25 +17,25 @@ namespace LccApiNet.LibraryGenerator.Core
     {
         public const string MODEL_NAMESPACE = $"{Config.PROJECT_NAME}.{Config.MODEL_FOLDER_NAME}";
 
-        public static LocalModel GenerateLocalModel(string outputDirectory, ApiScheme scheme, List<LocalEntityDeclaration> modelDeclarations)
+        public static LocalModel GenerateLocalModel(string libraryPath, ApiScheme scheme, List<LocalEntityDeclaration> modelDeclarations)
         {
             Console.WriteLine();
             ConsoleUtils.ShowInfo("------------------------------- Generating model -----------------------------------");
 
-            ConsoleUtils.ShowInfo("Building model code graphs...");
             Dictionary<string, LocalModelEntity> graphs = BuildModelGraphs(scheme, modelDeclarations);
             ConsoleUtils.ShowInfo("Code graphs are built");
 
+            Directory.Delete(Path.Combine(libraryPath, Config.MODEL_FOLDER_NAME), true);
             foreach (KeyValuePair<string, LocalModelEntity> graph in graphs) {
-                string outputPath = Path.Combine(outputDirectory, graph.Key);
+                string outputPath = Path.Combine(libraryPath, graph.Key);
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
                 IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(outputPath, false), "    ");
                 new CSharpCodeProvider().GenerateCodeFromCompileUnit(graph.Value.Implementation, writer, new CodeGeneratorOptions());
                 writer.Close();
             }
+            ConsoleUtils.ShowInfo("New code is generated and inserted into library");
 
-            ConsoleUtils.ShowInfo("Generating local model info...");
             LocalModel model = new LocalModel();
             foreach (LocalEntityDeclaration declaration in modelDeclarations) {
                 foreach (LocalModelEntity entity in graphs.Values) {
@@ -65,21 +65,21 @@ namespace LccApiNet.LibraryGenerator.Core
                 throw new GeneratorException($"Class named {Config.RESPONSE_BASE_CLASS_NAME} not found in API model.");
             }
 
+            ConsoleUtils.ShowInfo($"Models:");
             foreach (ApiEntity entity in scheme.Model.Entities) {
                 LocalEntityDeclaration declaration = modelDeclarations[entity.Id - 1];
-                string filePath = Path.Combine(Config.PROJECT_NAME, Config.MODEL_FOLDER_NAME, declaration.LocalPath);
+                string filePath = Path.Combine(Config.MODEL_FOLDER_NAME, declaration.LocalPath);
 
-                ConsoleUtils.ShowInfo($"Building graph for model entity - {declaration.Name} located at {declaration.LocalPath} that is {declaration.Kind.Name} entity...");
                 graphs.Add(filePath, BuildEntityGraph(entity, declaration, modelDeclarations, apiResponse.Namespace));
-                ConsoleUtils.ShowInfo($"Entity graph for {declaration.Name} is built");
+                ConsoleUtils.ShowInfo($"|--Entity graph for {declaration.Name} is built");
             }
 
+            ConsoleUtils.ShowInfo($"Enums:");
             foreach (ApiEnum entity in scheme.Model.Enums) {
                 LocalEntityDeclaration declaration = modelDeclarations[entity.Id - 1];
                
-                ConsoleUtils.ShowInfo($"Building graph for model enum - {declaration.Name} located at {declaration.LocalPath}...");
-                graphs.Add(Path.Combine(Config.PROJECT_NAME, Config.MODEL_FOLDER_NAME, declaration.LocalPath), BuildEnumGraph(entity, declaration));
-                ConsoleUtils.ShowInfo($"Enum graph for {declaration.Name} is built");
+                graphs.Add(Path.Combine(Config.MODEL_FOLDER_NAME, declaration.LocalPath), BuildEnumGraph(entity, declaration));
+                ConsoleUtils.ShowInfo($"|--Enum graph for {declaration.Name} is built");
             }
 
             return graphs;

@@ -1,10 +1,10 @@
-﻿using LccApiNet.Categories.Abstraction;
-using LccApiNet.Model.General;
+using LccApiNet.Categories.Abstraction;
 using LccApiNet.Exceptions;
 using System.Threading;
 using System.Threading.Tasks;
 using LccApiNet.Security;
 using LccApiNet.Services;
+using LccApiNet.Model;
 
 namespace LccApiNet
 {
@@ -13,6 +13,12 @@ namespace LccApiNet
     /// </summary>
     public interface ILccApi
     {
+#if DEBUG
+        internal const string API_HOST = "www.larc.ml/dev";
+#else
+        internal const string API_HOST = "www.larc.ml/api";
+#endif
+
         /// <summary>
         /// Payload of the <see cref="AccessToken"/>
         /// </summary>
@@ -24,29 +30,19 @@ namespace LccApiNet
         string? AccessToken { get; }
 
         /// <summary>
-        /// API Identity category
+        /// Contains methods that are used to control the league game client.
         /// </summary>
-        IIdentityCategory Identity { get; }
+        IClientCategory Client { get; }
 
         /// <summary>
-        /// API Device category
+        /// Contains methods that are used to retrieve or update information about user's devices.
         /// </summary>
         IDeviceCategory Device { get; }
 
         /// <summary>
-        /// API Teams category
+        /// Contains methods that are used to get user information or related to the authentication.
         /// </summary>
-        ITeamsCategory Teams { get; }
-
-        /// <summary>
-        /// API Long poll category
-        /// </summary>
-        ILongPollCategory LongPoll { get; }
-
-        /// <summary>
-        /// API Client category
-        /// </summary>
-        IClientCategory Client { get; }
+        IIdentityCategory Identity { get; }
 
         /// <summary>
         /// Service that manages user events.

@@ -21,23 +21,27 @@ namespace LccApiNet.LibraryGenerator.Utilities
 
         public static void AddImportsForCategoryAbstraction(this CodeNamespace @namespace)
         {
-            @namespace.Imports.Add(new CodeNamespaceImport($"System"));
-            @namespace.Imports.Add(new CodeNamespaceImport($"System.Collections.Generic"));
-            @namespace.Imports.Add(new CodeNamespaceImport($"System.Runtime.InteropServices"));
-            @namespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks.Task"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Threading"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Runtime.InteropServices"));
             @namespace.Imports.Add(new CodeNamespaceImport(ModelGenerator.MODEL_NAMESPACE));
+            @namespace.Imports.Add(new CodeNamespaceImport($"{Config.PROJECT_NAME}.{Config.EXCEPTIONS_FOLDER_NAME}"));
             @namespace.Imports.Add(new CodeNamespaceImport($"{Config.PROJECT_NAME}.LibraryGenerator.Attributes"));
         }
 
         public static void AddImportsForCategoryImplementation(this CodeNamespace @namespace)
         {
             @namespace.Imports.Add(new CodeNamespaceImport($"System"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Threading"));
+            @namespace.Imports.Add(new CodeNamespaceImport("System.Threading.Tasks"));
             @namespace.Imports.Add(new CodeNamespaceImport($"System.Collections.Generic"));
             @namespace.Imports.Add(new CodeNamespaceImport($"System.Runtime.InteropServices"));
-            @namespace.Imports.Add(new CodeNamespaceImport($"System.Threading.Tasks.Task"));
             @namespace.Imports.Add(new CodeNamespaceImport(Config.PROJECT_NAME));
-            @namespace.Imports.Add(new CodeNamespaceImport(CategoriesGenerator.CATEGORIES_ABSTRACTION_NAMESPACE));
             @namespace.Imports.Add(new CodeNamespaceImport(ModelGenerator.MODEL_NAMESPACE));
+            @namespace.Imports.Add(new CodeNamespaceImport(CategoriesGenerator.CATEGORIES_ABSTRACTION_NAMESPACE));
+            @namespace.Imports.Add(new CodeNamespaceImport($"{Config.PROJECT_NAME}.{Config.EXCEPTIONS_FOLDER_NAME}"));
         }
     }
 }

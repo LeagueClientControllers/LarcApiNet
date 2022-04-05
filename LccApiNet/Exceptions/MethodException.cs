@@ -1,4 +1,4 @@
-﻿using LccApiNet.Model.General;
+﻿using LccApiNet.Model;
 
 using System;
 

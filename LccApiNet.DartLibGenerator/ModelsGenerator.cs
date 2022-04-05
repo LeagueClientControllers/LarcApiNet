@@ -1,4 +1,4 @@
-﻿using LccApiNet.Model.Device.Methods;
+﻿using LccApiNet.Model;
 
 using Newtonsoft.Json;
 

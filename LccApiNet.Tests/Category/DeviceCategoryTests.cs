@@ -1,8 +1,8 @@
-﻿using LccApiNet.Model.Device;
-using LccApiNet.Model.Identity.Methods;
+﻿using LccApiNet.Model;
 
 using NUnit.Framework;
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -19,14 +19,14 @@ namespace LccApiNet.Tests.Category
             await _api.Identity.LoginAsync(new LoginParameters(
                 "Test",
                 ApiCredentials.TEST_ACCOUNT_PASSWORD,
-                DeviceType.Controller,
-                "TestController"
+                "TestController",
+                DeviceType.Controller
             ), saveCredentials: false);
         }
 
         [Test]
         public async Task GetDevicesTest() {
-            ReadOnlyCollection<DeviceModel> devices = await _api.Device.GetDevicesAsync();
+            List<Device> devices = await _api.Device.GetDevicesAsync();
             
             Assert.AreEqual(2, devices.Count);
             

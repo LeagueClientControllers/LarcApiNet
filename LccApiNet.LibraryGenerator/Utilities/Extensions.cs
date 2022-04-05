@@ -14,6 +14,16 @@ namespace LccApiNet.LibraryGenerator.Utilities
 {
     public static class Extensions
     {
+        public static int GetLength(this Range range)
+        {
+            return range.End.Value - range.Start.Value + 1;
+        }
+
+        public static void RemoveRange<T>(this List<T> list, Range range) {
+            (int offset, int length) = range.GetOffsetAndLength(list.Count);
+            list.RemoveRange(offset, length + 1);
+        }
+
         public static CodeCommentStatement ToCSharpDoc(this IEnumerable<JsDocumentationNode> nodes)
         {
             string comment = "<summary>\r\n ";
@@ -111,6 +121,13 @@ namespace LccApiNet.LibraryGenerator.Utilities
             NamespaceDeclaration oldAbstractionNamespace = (NamespaceDeclaration)entity.Members.Last();
             TypeDeclaration oldAbstractionInterface = (TypeDeclaration)oldAbstractionNamespace.Members.First(m => m is TypeDeclaration tD && tD.Name == typeName);
             return oldAbstractionInterface.Members.Where(m => m is PropertyDeclaration).Cast<PropertyDeclaration>().ToList();
+        }
+
+        public static List<ConstructorDeclaration> ExtractTypeConstructors(this SyntaxTree entity, string typeName)
+        {
+            NamespaceDeclaration oldAbstractionNamespace = (NamespaceDeclaration)entity.Members.Last();
+            TypeDeclaration oldAbstractionInterface = (TypeDeclaration)oldAbstractionNamespace.Members.First(m => m is TypeDeclaration tD && tD.Name == typeName);
+            return oldAbstractionInterface.Members.Where(m => m is ConstructorDeclaration).Cast<ConstructorDeclaration>().ToList();
         }
     }
 }

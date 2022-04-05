@@ -1,4 +1,4 @@
-﻿using LccApiNet.Model.General;
+﻿using LccApiNet.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

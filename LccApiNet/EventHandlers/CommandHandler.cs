@@ -1,4 +1,4 @@
-﻿using LccApiNet.Model.Client.Commands;
+﻿using LccApiNet.Model;
 
 using System.Threading.Tasks;
 
