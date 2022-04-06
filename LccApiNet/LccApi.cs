@@ -48,7 +48,7 @@ namespace LccApiNet
         public IIdentityCategory Identity { get; }
 
         /// <inheritdoc />
-        public UserEventService UserEvents { get; }
+        public EventService UserEvents { get; }
 
         /// <inheritdoc />
         public CommandService Commands { get; }
@@ -61,7 +61,7 @@ namespace LccApiNet
             Device = new DeviceCategory(this);
             Identity = new IdentityCategory(this);
 
-            UserEvents = new UserEventService(this);
+            UserEvents = new EventService(this);
             Commands = new CommandService(this);
         }
 

@@ -1,5 +1,7 @@
 ﻿using Ardalis.SmartEnum;
 
+using ICSharpCode.NRefactory.CSharp;
+
 using LccApiNet.LibraryGenerator.Model;
 using LccApiNet.LibraryGenerator.SchemeModel;
 using LccApiNet.LibraryGenerator.Utilities;
@@ -25,14 +27,28 @@ namespace LccApiNet.LibraryGenerator.Core
             Dictionary<string, LocalModelEntity> graphs = BuildModelGraphs(scheme, modelDeclarations);
             ConsoleUtils.ShowInfo("Code graphs are built");
 
-            Directory.Delete(Path.Combine(libraryPath, Config.MODEL_FOLDER_NAME), true);
+            DirectoryInfo modelDirectory = new DirectoryInfo(Path.Combine(libraryPath, Config.MODEL_FOLDER_NAME));
+            foreach (DirectoryInfo directory in modelDirectory.EnumerateDirectories()) {
+                if (directory.Name != Config.SAFE_MODEL_FOLDER_NAME) {
+                    Directory.Delete(directory.FullName, true);
+                }
+            }
+
+            foreach (FileInfo file in modelDirectory.EnumerateFiles()) {
+                File.Delete(file.FullName);
+            }
+            ConsoleUtils.ShowInfo("Old model is cleared");
+
             foreach (KeyValuePair<string, LocalModelEntity> graph in graphs) {
                 string outputPath = Path.Combine(libraryPath, graph.Key);
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
 
-                IndentedTextWriter writer = new IndentedTextWriter(new StreamWriter(outputPath, false), "    ");
-                new CSharpCodeProvider().GenerateCodeFromCompileUnit(graph.Value.Implementation, writer, new CodeGeneratorOptions());
-                writer.Close();
+                using (StreamWriter writer = new StreamWriter(new FileStream(outputPath, FileMode.Create, FileAccess.Write))) {
+                    writer.WriteLine("#nullable enable");
+                    Generator.CodeProvider.GenerateCodeFromCompileUnit(graph.Value.Implementation, writer, new CodeGeneratorOptions());
+                    writer.WriteLine("");
+                    writer.WriteLine("#nullable restore");
+                }
             }
             ConsoleUtils.ShowInfo("New code is generated and inserted into library");
 
@@ -122,6 +138,13 @@ namespace LccApiNet.LibraryGenerator.Core
                 entityProperty.Type = property.Type.ToTypeReference(allDeclarations);
                 entityProperty.Comments.Add(property.Docs.ToCSharpDoc());
                 entityProperty.CustomAttributes.Add(BuildJsonPropertyAttributeDeclaration(property.JsonName));
+
+                if (property.Type.ReferenceId != null) {
+                    LocalEntityDeclaration referenceType = allDeclarations[(int)property.Type.ReferenceId - 1];
+                    if (referenceType.Kind == ApiEntityKind.Enum) {
+                        entityProperty.CustomAttributes.Add(BuildJsonEnumConverterAttributeDeclaration(referenceType.Name));
+                    }
+                }
 
                 string namePostfix = " { get; set; }//";                
                 if (property.InitialValue == null) {
@@ -213,6 +236,17 @@ namespace LccApiNet.LibraryGenerator.Core
         {
             CodeTypeReference propertyAttributeReference = new CodeTypeReference("JsonProperty");
             CodeAttributeArgument jsonKeyArgument = new CodeAttributeArgument(new CodePrimitiveExpression(jsonKey));
+            return new CodeAttributeDeclaration(propertyAttributeReference, jsonKeyArgument);
+        }
+
+        private static CodeAttributeDeclaration BuildJsonEnumConverterAttributeDeclaration(string enumType)
+        {
+            CodeTypeReference propertyAttributeReference = new CodeTypeReference("JsonConverter");
+            CodeTypeReference smartEnumConverterType = new CodeTypeReference("SmartEnumNameConverter");
+            smartEnumConverterType.TypeArguments.Add(new CodeTypeReference(enumType));
+            smartEnumConverterType.TypeArguments.Add(new CodeTypeReference(typeof(int)));
+
+            CodeAttributeArgument jsonKeyArgument = new CodeAttributeArgument(new CodeTypeOfExpression(smartEnumConverterType));
             return new CodeAttributeDeclaration(propertyAttributeReference, jsonKeyArgument);
         }
 

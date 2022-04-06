@@ -3,12 +3,12 @@
 namespace LccApiNet.EventHandlers
 {
     /// <summary>
-    /// Represents a function that will handle <see cref="UserEventService.DeviceAdded"/> event.
+    /// Represents a function that will handle <see cref="EventService.DeviceAdded"/> event.
     /// </summary>
     public delegate void DeviceAddedEventHandler(object sender, DeviceAddedEventArgs args);
 
     /// <summary>
-    /// Provides data for <see cref="UserEventService.DeviceAdded"/>.
+    /// Provides data for <see cref="EventService.DeviceAdded"/>.
     /// </summary>
     public class DeviceAddedEventArgs
     {

@@ -47,7 +47,7 @@ namespace LccApiNet
         /// <summary>
         /// Service that manages user events.
         /// </summary>
-        UserEventService UserEvents { get; }
+        EventService UserEvents { get; }
 
         /// <summary>
         /// Service that manages command execution flow.

@@ -126,13 +126,19 @@ namespace LccApiNet.LibraryGenerator.Core
             ConsoleUtils.ShowInfo($"|—-Implementation is merged.");
 
             using (StreamWriter writer = new StreamWriter(new FileStream(oldAbstractionPath, FileMode.Create, FileAccess.Write))) {
+                writer.WriteLine("#nullable enable");
                 writer.Write(mergedAbstractionContent);
+                writer.WriteLine("");
+                writer.WriteLine("#nullable restore");
             }
 
             ConsoleUtils.ShowInfo($"|—-Abstraction is updated.");
 
             using (StreamWriter writer = new StreamWriter(new FileStream(oldImplementationPath, FileMode.Create, FileAccess.Write))) {
+                writer.WriteLine("#nullable enable");
                 writer.Write(mergedImplementationContent);
+                writer.WriteLine("");
+                writer.WriteLine("#nullable restore");
             }
 
             ConsoleUtils.ShowInfo($"|—-Implementation is updated.");

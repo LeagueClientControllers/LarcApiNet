@@ -10,6 +10,20 @@ namespace LccApiNet.LibraryGenerator.Utilities
             @namespace.Imports.Add(new CodeNamespaceImport($"Ardalis.SmartEnum"));
         }
 
+        public static void AddImportsForEventHandler(this CodeNamespace @namespace)
+        {
+            @namespace.Imports.Add(new CodeNamespaceImport(ModelGenerator.MODEL_NAMESPACE));
+            @namespace.Imports.Add(new CodeNamespaceImport(EventsGenerator.EVENT_SERVICE_NAMESPACE));
+        }
+
+        public static void AddImportsForEventService(this CodeNamespace @namespace)
+        {
+            @namespace.Imports.Add(new CodeNamespaceImport(ModelGenerator.MODEL_NAMESPACE));
+            @namespace.Imports.Add(new CodeNamespaceImport($"{ModelGenerator.MODEL_NAMESPACE}.Local"));
+            @namespace.Imports.Add(new CodeNamespaceImport($"{Config.PROJECT_NAME}.{Config.EXCEPTIONS_FOLDER_NAME}"));
+            @namespace.Imports.Add(new CodeNamespaceImport($"{Config.PROJECT_NAME}.{Config.EVENT_HANDLERS_FOLDER_NAME}"));
+        }
+
         public static void AddImportsForModelEntity(this CodeNamespace @namespace)
         {
             @namespace.Imports.Add(new CodeNamespaceImport($"System"));

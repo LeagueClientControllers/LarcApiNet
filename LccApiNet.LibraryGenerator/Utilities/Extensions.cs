@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.NRefactory.CSharp;
 using ICSharpCode.NRefactory.TypeSystem;
 
+using LccApiNet.LibraryGenerator.Core;
 using LccApiNet.LibraryGenerator.Model;
 using LccApiNet.LibraryGenerator.SchemeModel;
 
@@ -94,7 +95,7 @@ namespace LccApiNet.LibraryGenerator.Utilities
                 string typeString;
                 using (MemoryStream stream = new MemoryStream()) {
                     StreamWriter writer = new StreamWriter(stream);
-                    CodeDomProvider.CreateProvider("CSharp").GenerateCodeFromExpression(new CodeTypeReferenceExpression(typeReference), writer, new CodeGeneratorOptions());
+                    Generator.CodeProvider.GenerateCodeFromExpression(new CodeTypeReferenceExpression(typeReference), writer, new CodeGeneratorOptions());
                     writer.Flush();
                     stream.Position = 0;
 

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 namespace LccApiNet.EventHandlers
 {
     /// <summary>
-    /// Represents a function that will handle <see cref="UserEventService.DeviceChanged"/> event.
+    /// Represents a function that will handle <see cref="EventService.DeviceChanged"/> event.
     /// </summary>
     public delegate void DeviceChangedEventHandler(object sender, DeviceChangedEventArgs args);
 
     /// <summary>
-    /// Provides data for the <see cref="UserEventService.DeviceChanged"/> event.
+    /// Provides data for the <see cref="EventService.DeviceChanged"/> event.
     /// </summary>
     public class DeviceChangedEventArgs
     {

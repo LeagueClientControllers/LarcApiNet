@@ -25,8 +25,9 @@ public class ApiEntityKind : SmartEnum<ApiEntityKind> {
     
     public ApiEntityKind(string name, int value) : base(name, value) { }
 
-    public static readonly ApiEntityKind Event      = new ApiEntityKind("Event", 1);
-    public static readonly ApiEntityKind Simple     = new ApiEntityKind("Simple", 2);
-    public static readonly ApiEntityKind Response   = new ApiEntityKind("Response", 3);
-    public static readonly ApiEntityKind Parameters = new ApiEntityKind("Parameters", 4);
+    public static readonly ApiEntityKind Enum       = new ApiEntityKind("Enum", 1);
+    public static readonly ApiEntityKind Event      = new ApiEntityKind("Event", 2);
+    public static readonly ApiEntityKind Simple     = new ApiEntityKind("Simple", 3);
+    public static readonly ApiEntityKind Response   = new ApiEntityKind("Response", 4);
+    public static readonly ApiEntityKind Parameters = new ApiEntityKind("Parameters", 5);
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using LccApiNet.EventHandlers;
 using LccApiNet.Exceptions;
+using LccApiNet.Model.Local;
 using LccApiNet.Security;
 
 using Newtonsoft.Json;
@@ -18,13 +19,13 @@ namespace LccApiNet.Services
     /// Simplifies work with long poll system
     /// and allows to get user events 
     /// </summary>
-    public partial class UserEventService : IDisposable
+    public partial class EventService : IDisposable
     {
         private ILccApi _api;
         private WebsocketClient? _socket;
         private Uri _webSocketUrl = new Uri($"ws://{ILccApi.API_HOST}/ws");
 
-        public UserEventService(ILccApi api)
+        public EventService(ILccApi api)
         {
             _api = api;
         }
@@ -53,14 +54,18 @@ namespace LccApiNet.Services
                 throw new EventProviderException($"Incoming message type is '{message.MessageType}' that is invalid.");
             }
 
-            JObject eventMessage;
+            EventMessage? eventMessage;
             try {
-                eventMessage = JObject.Parse(message.Text);
+                eventMessage = JsonConvert.DeserializeObject<EventMessage>(message.Text);
             } catch (JsonReaderException) {
                 throw new EventProviderException($"Incoming message parsing error occurred.");
             }
 
-            ;
+            if (eventMessage is null) {
+                throw new EventProviderException($"Incoming message is missing.");
+            }
+
+            HandleEventMessage(eventMessage);
         }
 
         public void Dispose()

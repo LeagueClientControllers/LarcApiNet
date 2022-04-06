@@ -30,7 +30,7 @@ namespace LccApiNet.LibraryGenerator.Core
             LocalModel model = ModelGenerator.GenerateLocalModel(@"D:\Development\GitHub\LeagueClientControllers\LccApiNet\LccApiNet", scheme, localDeclarations);
             List<LocalCategory> newCategories = CategoriesGenerator.GenerateLocalCategories(Path.Combine(Environment.CurrentDirectory, "output"), scheme, model);
             CoreClassModifier.CorrectCore(@"D:\Development\GitHub\LeagueClientControllers\LccApiNet\LccApiNet", newCategories);
-
+            EventsGenerator.GenerateEventSystem(@"D:\Development\GitHub\LeagueClientControllers\LccApiNet\LccApiNet", localDeclarations);
             ;
         }
     }

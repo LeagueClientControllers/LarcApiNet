@@ -8,27 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Ardalis.SmartEnum.JsonNet;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using LccApiNet.Model;
+using LccApiNet.Services;
 
 
-namespace LccApiNet.Model {
+namespace LccApiNet.EventHandlers {
     
     
     /// <summary>
-    /// 
+    /// Represents a function that will handle <see cref="EventService.OnClientEvent"/> event.
     /// </summary>
-    public class ProfileInfoResponse : ApiResponse {
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        [JsonProperty("profile")]
-        public ProfileInfo Profile { get; set; } = default!;
-    }
+    public delegate void ClientEventHandler(object sender, ClientEvent args);
 }
 
 #nullable restore
