@@ -11,7 +11,7 @@ namespace LarcApiNet
     /// <summary>
     /// Abstraction of the main API class
     /// </summary>
-    public interface ILccApi
+    public interface ILarcApi
     {
 #if DEBUG
         internal const string API_HOST = "www.larc.ml/dev";

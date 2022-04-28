@@ -15,14 +15,14 @@ namespace LarcApiNet.Services
     /// </summary>
     public class CommandService
     {
-        private ILccApi _api;
+        private ILarcApi _api;
 
         /// <summary>
         /// Handler function of the commands.
         /// </summary>
         public CommandHandler? Handler { private get; set; }
 
-        public CommandService(ILccApi api)
+        public CommandService(ILarcApi api)
         {
             _api = api;
             _api.Events.OnCommandEvent += (s, e) => { 

@@ -1,2 +1,2 @@
 # LarcApiNet
-LeagueClientControllers C# .NET Core library
+LARC C# .NET Core library

@@ -10,12 +10,12 @@ namespace LarcApiNet.Tests.Category
 {
     public class DeviceCategoryTests
     {
-        private ILccApi _api = null!;
+        private ILarcApi _api = null!;
 
         [SetUp]
         public async Task Setup()
         {
-            _api = new LccApi();
+            _api = new LarcApi();
             await _api.AuthorizeDevice(
                 "Test",
                 ApiCredentials.TEST_ACCOUNT_PASSWORD,

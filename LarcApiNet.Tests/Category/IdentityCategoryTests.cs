@@ -9,11 +9,11 @@ namespace LarcApiNet.Tests.Category
 {
     public class IdentityCategoryTests
     {
-        private ILccApi _api = null!;
+        private ILarcApi _api = null!;
         
         [SetUp]
         public void Setup() {
-            _api = new LccApi();
+            _api = new LarcApi();
         }
 
         [Test]

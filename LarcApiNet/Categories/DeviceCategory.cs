@@ -25,9 +25,9 @@ namespace LarcApiNet.Categories {
     /// <inheritdoc />
     public class DeviceCategory : IDeviceCategory {
         
-        private ILccApi _api;
+        private ILarcApi _api;
         
-        public DeviceCategory(ILccApi api) {
+        public DeviceCategory(ILarcApi api) {
             _api = api;
         }
         

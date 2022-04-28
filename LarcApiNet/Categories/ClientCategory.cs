@@ -25,9 +25,9 @@ namespace LarcApiNet.Categories {
     /// <inheritdoc />
     public class ClientCategory : IClientCategory {
         
-        private ILccApi _api;
+        private ILarcApi _api;
         
-        public ClientCategory(ILccApi api) {
+        public ClientCategory(ILarcApi api) {
             _api = api;
         }
         

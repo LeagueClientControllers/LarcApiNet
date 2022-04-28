@@ -21,11 +21,11 @@ namespace LarcApiNet.Services
     /// </summary>
     public partial class EventService : IDisposable
     {
-        private ILccApi _api;
+        private ILarcApi _api;
         private WebsocketClient? _socket;
-        private Uri _webSocketUrl = new Uri($"ws://{ILccApi.API_HOST}/ws");
+        private Uri _webSocketUrl = new Uri($"ws://{ILarcApi.API_HOST}/ws");
 
-        public EventService(ILccApi api)
+        public EventService(ILarcApi api)
         {
             _api = api;
         }
