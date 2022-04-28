@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LccApiNet\LccApiNet.csproj" />
+    <ProjectReference Include="..\LarcApiNet\LarcApiNet.csproj" />
   </ItemGroup>
 
 </Project>
