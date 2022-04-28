@@ -19,8 +19,8 @@ namespace LccApiNet.Tests.Category
         [Test]
         public async Task LoginTest() {
             bool correctLoginResponse = await _api.AuthorizeDevice(
-                "Test",
-                ApiCredentials.TEST_ACCOUNT_PASSWORD,
+                "Rayms",
+                "12345",
                 "TestController",
                 DeviceType.Controller);
             
