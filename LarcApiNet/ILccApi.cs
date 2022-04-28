@@ -1,12 +1,12 @@
-using LccApiNet.Categories.Abstraction;
-using LccApiNet.Exceptions;
+using LarcApiNet.Categories.Abstraction;
+using LarcApiNet.Exceptions;
 using System.Threading;
 using System.Threading.Tasks;
-using LccApiNet.Security;
-using LccApiNet.Services;
-using LccApiNet.Model;
+using LarcApiNet.Security;
+using LarcApiNet.Services;
+using LarcApiNet.Model;
 
-namespace LccApiNet
+namespace LarcApiNet
 {
     /// <summary>
     /// Abstraction of the main API class

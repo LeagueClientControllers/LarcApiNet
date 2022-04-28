@@ -1,7 +1,7 @@
-﻿using LccApiNet.Model;
+﻿using LarcApiNet.Model;
 
 using System.Threading.Tasks;
 
-namespace LccApiNet.EventHandlers
+namespace LarcApiNet.EventHandlers
 {
 }

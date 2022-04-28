@@ -11,7 +11,7 @@
 using Ardalis.SmartEnum;
 
 
-namespace LccApiNet.Model {
+namespace LarcApiNet.Model {
     
     
     /// <summary>

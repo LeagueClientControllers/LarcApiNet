@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when internal server error occurred when trying to execute API method

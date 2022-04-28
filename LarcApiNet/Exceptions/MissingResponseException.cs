@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when API method response is required, but was not received

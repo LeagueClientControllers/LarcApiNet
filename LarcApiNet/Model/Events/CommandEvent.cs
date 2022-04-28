@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 
-namespace LccApiNet.Model {
+namespace LarcApiNet.Model {
     
     
     /// <summary>

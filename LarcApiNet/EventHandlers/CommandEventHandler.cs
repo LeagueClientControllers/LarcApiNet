@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using LccApiNet.Model;
-using LccApiNet.Services;
+using LarcApiNet.Model;
+using LarcApiNet.Services;
 
 
-namespace LccApiNet.EventHandlers {
+namespace LarcApiNet.EventHandlers {
     
     
     /// <summary>

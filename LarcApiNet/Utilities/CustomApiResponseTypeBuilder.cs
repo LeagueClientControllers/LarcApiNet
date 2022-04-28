@@ -1,4 +1,4 @@
-﻿using LccApiNet.Model;
+﻿using LarcApiNet.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Utilities
+namespace LarcApiNet.Utilities
 {
     public class CustomApiResponseTypeBuilder
     {

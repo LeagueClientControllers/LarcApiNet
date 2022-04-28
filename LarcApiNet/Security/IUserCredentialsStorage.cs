@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Security
+namespace LarcApiNet.Security
 {
 
     public interface IUserCredentialsStorage

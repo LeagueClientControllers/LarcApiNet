@@ -3,17 +3,17 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-using LccApiNet.EventHandlers;
-using LccApiNet.Exceptions;
-using LccApiNet.Model.Local;
-using LccApiNet.Security;
+using LarcApiNet.EventHandlers;
+using LarcApiNet.Exceptions;
+using LarcApiNet.Model.Local;
+using LarcApiNet.Security;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Websocket.Client;
 
-namespace LccApiNet.Services
+namespace LarcApiNet.Services
 {
     /// <summary>
     /// Simplifies work with long poll system

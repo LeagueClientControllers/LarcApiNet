@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     /// <summary>
     /// The exception that occurred when API server host reject incoming request

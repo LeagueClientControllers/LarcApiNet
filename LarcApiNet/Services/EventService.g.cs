@@ -8,13 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using LccApiNet.EventHandlers;
-using LccApiNet.Exceptions;
-using LccApiNet.Model;
-using LccApiNet.Model.Local;
+using LarcApiNet.EventHandlers;
+using LarcApiNet.Exceptions;
+using LarcApiNet.Model;
+using LarcApiNet.Model.Local;
 
 
-namespace LccApiNet.Services {
+namespace LarcApiNet.Services {
     
     
     public partial class EventService {

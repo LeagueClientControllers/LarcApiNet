@@ -3,7 +3,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LccApiNet.Model.Local
+namespace LarcApiNet.Model.Local
 {
     public class EventMessage
     {

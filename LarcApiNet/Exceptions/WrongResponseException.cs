@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when method response is incorrect

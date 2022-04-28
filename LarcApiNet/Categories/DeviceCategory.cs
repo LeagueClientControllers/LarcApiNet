@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using LccApiNet;
-using LccApiNet.Categories.Abstraction;
-using LccApiNet.Exceptions;
-using LccApiNet.Model;
+using LarcApiNet;
+using LarcApiNet.Categories.Abstraction;
+using LarcApiNet.Exceptions;
+using LarcApiNet.Model;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -19,7 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace LccApiNet.Categories {
+namespace LarcApiNet.Categories {
     
     
     /// <inheritdoc />

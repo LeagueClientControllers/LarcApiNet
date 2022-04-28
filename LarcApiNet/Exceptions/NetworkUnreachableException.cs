@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when <see cref="SocketException"/> exception occurred with <see cref="SocketError.HostUnreachable"/> code

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     class WrongSimpleParameterTypeExeption : Exception
     {

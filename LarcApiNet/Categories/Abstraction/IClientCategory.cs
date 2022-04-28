@@ -8,8 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using LccApiNet.Exceptions;
-using LccApiNet.Model;
+using LarcApiNet.Exceptions;
+using LarcApiNet.Model;
 using NetLibraryGenerator.Attributes;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace LccApiNet.Categories.Abstraction {
+namespace LarcApiNet.Categories.Abstraction {
     
     
     /// <summary>

@@ -1,8 +1,8 @@
-﻿using LccApiNet.Model;
+﻿using LarcApiNet.Model;
 
 using System;
 
-namespace LccApiNet.Exceptions
+namespace LarcApiNet.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when method was executed with errors.

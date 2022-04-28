@@ -1,9 +1,9 @@
-﻿using LccApiNet.EventHandlers;
-using LccApiNet.Model;
+﻿using LarcApiNet.EventHandlers;
+using LarcApiNet.Model;
 
 using System.Threading.Tasks;
 
-namespace LccApiNet.Services
+namespace LarcApiNet.Services
 {
     /// <summary>
     /// Represents a function that will execute command asynchronously and return its result to the sender.

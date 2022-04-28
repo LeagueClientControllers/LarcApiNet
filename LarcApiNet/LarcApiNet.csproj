@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>LccApiNet</AssemblyName>
-    <RootNamespace>LccApiNet</RootNamespace>
+    <AssemblyName>LarcApiNet</AssemblyName>
+    <RootNamespace>LarcApiNet</RootNamespace>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;netcore3.0D;netcore5.0D</Configurations>
     <LangVersion>9</LangVersion>

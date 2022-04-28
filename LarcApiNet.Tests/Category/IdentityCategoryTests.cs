@@ -1,11 +1,11 @@
-﻿using LccApiNet.Exceptions;
-using LccApiNet.Model;
+﻿using LarcApiNet.Exceptions;
+using LarcApiNet.Model;
 
 using NUnit.Framework;
 
 using System.Threading.Tasks;
 
-namespace LccApiNet.Tests.Category
+namespace LarcApiNet.Tests.Category
 {
     public class IdentityCategoryTests
     {

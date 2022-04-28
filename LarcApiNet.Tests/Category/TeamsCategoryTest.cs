@@ -1,10 +1,10 @@
-﻿using LccApiNet.Model;
+﻿using LarcApiNet.Model;
 
 using NUnit.Framework;
 
 using System.Threading.Tasks;
 
-namespace LccApiNet.Tests.Category
+namespace LarcApiNet.Tests.Category
 {
     public class TeamsCategoryTest
     {

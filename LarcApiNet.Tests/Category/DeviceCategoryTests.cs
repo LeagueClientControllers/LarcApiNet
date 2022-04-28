@@ -1,4 +1,4 @@
-﻿using LccApiNet.Model;
+﻿using LarcApiNet.Model;
 
 using NUnit.Framework;
 
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace LccApiNet.Tests.Category
+namespace LarcApiNet.Tests.Category
 {
     public class DeviceCategoryTests
     {

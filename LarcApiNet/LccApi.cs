@@ -1,13 +1,13 @@
 using JWT.Algorithms;
 using JWT.Builder;
 
-using LccApiNet.Categories;
-using LccApiNet.Categories.Abstraction;
-using LccApiNet.Exceptions;
-using LccApiNet.Model;
-using LccApiNet.Security;
-using LccApiNet.Services;
-using LccApiNet.Utilities;
+using LarcApiNet.Categories;
+using LarcApiNet.Categories.Abstraction;
+using LarcApiNet.Exceptions;
+using LarcApiNet.Model;
+using LarcApiNet.Security;
+using LarcApiNet.Services;
+using LarcApiNet.Utilities;
 
 using Newtonsoft.Json;
 
@@ -22,7 +22,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LccApiNet
+namespace LarcApiNet
 {
     /// <summary>
     /// Main API class
