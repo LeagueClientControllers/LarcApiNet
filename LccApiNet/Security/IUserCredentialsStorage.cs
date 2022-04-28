@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace LccApiNet.Security
 {
 
-    public interface IUserCreditionalsStorage
+    public interface IUserCredentialsStorage
     {
         Task StoreAccessTokenAsync(string accessToken, CancellationToken token = default);
         Task<string?> RetrieveAccessTokenAsync(CancellationToken token = default);

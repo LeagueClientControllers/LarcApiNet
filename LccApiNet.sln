@@ -7,14 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet", "LccApiNet\LccA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet.Tests", "LccApiNet.Tests\LccApiNet.Tests.csproj", "{38700993-0A8F-4BB7-BF0B-79668B44C6C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet.DartLibGenerator", "LccApiNet.DartLibGenerator\LccApiNet.DartLibGenerator.csproj", "{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LccApiNet.LibraryGenerator", "LccApiNet.LibraryGenerator\LccApiNet.LibraryGenerator.csproj", "{E1889C21-6317-4291-AAE5-CA16A1BF3495}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{973299FB-1D70-4799-A855-3EFB08366006}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLibraryGenerator", "..\LibraryGenerators\NetLibraryGenerator\NetLibraryGenerator\NetLibraryGenerator.csproj", "{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,22 +38,14 @@ Global
 		{38700993-0A8F-4BB7-BF0B-79668B44C6C2}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
 		{38700993-0A8F-4BB7-BF0B-79668B44C6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38700993-0A8F-4BB7-BF0B-79668B44C6C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.netcore3.0D|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.netcore3.0D|Any CPU.Build.0 = Debug|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.netcore5.0D|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF9A91F9-4BD8-4220-BA74-E4D4FC690462}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.netcore3.0D|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.netcore3.0D|Any CPU.Build.0 = Debug|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.netcore5.0D|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1889C21-6317-4291-AAE5-CA16A1BF3495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore3.0D|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore3.0D|Any CPU.Build.0 = Debug|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore5.0D|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 
 using LccApiNet.Exceptions;
-using LccApiNet.LibraryGenerator.Attributes;
 using LccApiNet.Model;
+using NetLibraryGenerator.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -34,7 +34,7 @@ namespace LccApiNet.Categories.Abstraction {
         /// <param name="password">User's password</param>
         /// <param name="deviceName">Name of the device that will be authorized under the user</param>
         /// <param name="deviceType">Type of the device that will be authorized under the user</param>
-        Task<bool> LoginAsync(LoginParameters @params, bool saveCredentials = false, CancellationToken token = default);
+        Task<string> LoginAsync(string login, string password, string deviceName, DeviceType deviceType, CancellationToken token = default);
         
         /// <summary>
         /// Gets full info of the user.
@@ -45,7 +45,7 @@ namespace LccApiNet.Categories.Abstraction {
         /// Returns a fresh token with reset expiration date.
         /// based on data from current token.
         /// </summary>
-        Task RefreshAccessTokenAsync(CancellationToken token = default);
+        Task<string> RefreshAccessTokenAsync(CancellationToken token = default);
     }
 }
 

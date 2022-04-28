@@ -1,8 +1,15 @@
 ﻿using LccApiNet.EventHandlers;
 using LccApiNet.Model;
 
+using System.Threading.Tasks;
+
 namespace LccApiNet.Services
 {
+    /// <summary>
+    /// Represents a function that will execute command asynchronously and return its result to the sender.
+    /// </summary>
+    public delegate Task<CommandResult> CommandHandler(object sender, Command command);
+
     /// <summary>
     /// Manage command execution flow.
     /// </summary>
@@ -18,17 +25,21 @@ namespace LccApiNet.Services
         public CommandService(ILccApi api)
         {
             _api = api;
-            //_api.UserEvents.CommandSent += OnCommandSent;
+            _api.Events.OnCommandEvent += (s, e) => { 
+                if (e.Type == CommandEventType.commandSent) {
+                    OnCommandSent(s, e.Command!);
+                }
+            };
         }
 
-        private void OnCommandSent(object sender, CommandSentEventArgs args)
+        private void OnCommandSent(object sender, Command command)
         {
             if (Handler == null) {
                 return;
             }
 
-            CommandResult result = Handler.Invoke(sender, args).Result;
-            _api.Client.SetCommandResultAsync(args.Command.Id, result);
+            CommandResult result = Handler.Invoke(sender, command).Result;
+            _api.Client.SetCommandResultAsync(command.Id, result);
         }
     }
 }

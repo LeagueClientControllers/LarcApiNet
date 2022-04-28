@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LccApiNet.LibraryGenerator\LccApiNet.LibraryGenerator.csproj" />
+    <ProjectReference Include="..\..\LibraryGenerators\NetLibraryGenerator\NetLibraryGenerator\NetLibraryGenerator.csproj" />
   </ItemGroup>
 
 </Project>

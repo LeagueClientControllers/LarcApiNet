@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 
 using LccApiNet.Exceptions;
-using LccApiNet.LibraryGenerator.Attributes;
 using LccApiNet.Model;
+using NetLibraryGenerator.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -37,7 +37,7 @@ namespace LccApiNet.Categories.Abstraction {
         /// </summary>
         /// <param name="id"></param>
         [ControllerOnly()]
-        Task<Device> GetDeviceByIdAsync(int deviceId, CancellationToken token = default);
+        Task<Device> GetDeviceByIdAsync(int id, CancellationToken token = default);
         
         /// <summary>
         /// Changes the name of the device.
@@ -58,7 +58,7 @@ namespace LccApiNet.Categories.Abstraction {
         /// </summary>
         /// <param name="id"></param>
         [DeviceOnly()]
-        Task<ClientController> GetControllerByIdAsync(int controllerId, CancellationToken token = default);
+        Task GetControllerByIdAsync(int id, CancellationToken token = default);
         
         /// <summary>
         /// Changes the name of the controller.

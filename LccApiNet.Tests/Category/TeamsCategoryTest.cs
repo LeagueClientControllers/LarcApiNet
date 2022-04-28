@@ -14,12 +14,11 @@ namespace LccApiNet.Tests.Category
         public async Task Setup()
         {
             _api = new LccApi();
-            await _api.Identity.LoginAsync(new LoginParameters(
+            await _api.AuthorizeDevice(
                 "Rayms",
                 "12345",
                 "TestController",
-                DeviceType.Controller
-            ), saveCredentials: false);
+                DeviceType.Controller);
         }
 
         //[Test]

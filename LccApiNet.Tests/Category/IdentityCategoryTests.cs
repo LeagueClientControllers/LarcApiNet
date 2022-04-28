@@ -18,35 +18,28 @@ namespace LccApiNet.Tests.Category
 
         [Test]
         public async Task LoginTest() {
-
-            bool correctLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
+            bool correctLoginResponse = await _api.AuthorizeDevice(
                 "Test",
                 ApiCredentials.TEST_ACCOUNT_PASSWORD,
                 "TestController",
-                DeviceType.Controller
-            ), saveCredentials: false);
+                DeviceType.Controller);
             
-            bool incorrectLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
+            bool incorrectLoginResponse = await _api.AuthorizeDevice(
                 "Test",
                 "00000",
                 "TestController",
-                DeviceType.Controller
-            ), saveCredentials: false);
+                DeviceType.Controller);
 
-            
             Assert.True(correctLoginResponse);
             Assert.False(incorrectLoginResponse);
-            
-            MethodException? exception = Assert.CatchAsync(typeof(MethodException), async () => {
-                bool incorrectSecondLoginResponse = await _api.Identity.LoginAsync(new LoginParameters(
+
+            Assert.True(Assert.CatchAsync(typeof(MethodException), async () => {
+                await _api.AuthorizeDevice(
                     "Test",
                     "",
                     "TestController",
-                    DeviceType.Controller
-                ), saveCredentials: false);
-            }) as MethodException;
-
-            Assert.True(exception != null && exception.ErrorName == MethodError.InvalidMethodParameter);
+                    DeviceType.Controller);
+            }) is MethodException exception && exception.ErrorName == MethodError.InvalidMethodParameter);
         }
     }
 }

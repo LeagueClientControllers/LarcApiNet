@@ -28,35 +28,29 @@ namespace LccApiNet.Categories {
         private ILccApi _api;
         
         public ClientCategory(ILccApi api) {
-            this._api = api;
+            _api = api;
         }
         
         /// <inheritdoc />
-        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted = null, CancellationToken token = default)
+        public async Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, int? readyCheckStarted, CancellationToken token = default) 
         {
-            if (gameflowPhase == GameflowPhase.ReadyCheck) {
-                if (readyCheckStarted == null) {
-                    throw new ArgumentException("When game flow phase is ready check, ready check started is required.", "readyCheckStarted");
-                }
-
-                DateTime sTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                await _api.ExecuteAsync("/client/setGameflowPhase", new SetGameflowPhaseParameters(gameflowPhase, (int)(readyCheckStarted - sTime).Value.TotalSeconds), true, token).ConfigureAwait(false);
-            } else {
-                await _api.ExecuteAsync("/client/setGameflowPhase", new SetGameflowPhaseParameters(gameflowPhase, 0), true, token).ConfigureAwait(false);
-            }
-        } 
-        
-        /// <inheritdoc />
-        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, CancellationToken token = default)
-        {
-            return await _api.ExecuteAsync<int, SendCommandParameters>("/client/sendCommand", new SendCommandParameters(controllerId, commandName, null), "commandId", true, token).ConfigureAwait(false);
+        	if (gameflowPhase == GameflowPhase.ReadyCheck && readyCheckStarted == null) {
+        		throw new ArgumentException ("When game flow phase is ready check, ready check started is required.", nameof (readyCheckStarted));
+        	}
+        	await _api.ExecuteAsync ("/client/setGameflowPhase", new SetGameflowPhaseParameters (gameflowPhase, 0), true, token).ConfigureAwait (false);
         }
         
         /// <inheritdoc />
-        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default)
+        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, SomeParametrizedCommandArgs? commandArgs, CancellationToken token = default) 
         {
-            await _api.ExecuteAsync("/client/setCommandResult", new SetCommandResultParameters(commandId, result), true, token).ConfigureAwait(false);
-        } 
+        	return await _api.ExecuteAsync<int, SendCommandParameters> ("/client/sendCommand", new SendCommandParameters (controllerId, commandName, null), "commandId", true, token).ConfigureAwait (false);
+        }
+        
+        /// <inheritdoc />
+        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default) 
+        {
+        	await _api.ExecuteAsync ("/client/setCommandResult", new SetCommandResultParameters (commandId, result), true, token).ConfigureAwait (false);
+        }
     }
 }
 
