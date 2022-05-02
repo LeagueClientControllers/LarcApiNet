@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
+using LccApiNet.Tests;
+
 namespace LarcApiNet.Tests.Category
 {
     public class DeviceCategoryTests
