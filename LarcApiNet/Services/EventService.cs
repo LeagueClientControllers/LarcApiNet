@@ -8,6 +8,8 @@ using LarcApiNet.Exceptions;
 using LarcApiNet.Model.Local;
 using LarcApiNet.Security;
 
+using LccApiNet.Security;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
