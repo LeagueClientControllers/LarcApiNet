@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="06304efb-e9f3-4db0-a49e-2e61bbcb5266" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LarcApiNet.Tests/ApiCredentials.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet.Tests/ApiCredentials.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LarcApiNet.sln" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LarcApiNet/Security/IUserCredentialsStorage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Security/IUserCredentialsStorage.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Development/LCC/LarcApiNet/LarcApiNet.Tests/ApiCredentials.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Development/LCC/LarcApiNet/LarcApiNet/Security/IUserCredentialsStorage.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/df484e784747623a93a1735e18f88d1ab5f573101f62bf1c7a5f5345a2d7e/FileSystemEnumerator.Windows.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f3b9684f72bc2cc435eb694f7cc86eca8c240d2d1cefa1e8697a61f1f2f27f/SafeFileHandle.Windows.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="28TCfLQbbL73sih0gEmCrZKjUu1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
   <component name="RunManager">
     <configuration name="NetLibraryGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -20,5 +55,34 @@
       </method>
     </configuration>
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="06304efb-e9f3-4db0-a49e-2e61bbcb5266" name="Changes" comment="" />
+      <created>1651231290878</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1651231290878</updated>
+      <workItem from="1651231314769" duration="703000" />
+      <workItem from="1651232084683" duration="2179000" />
+      <workItem from="1651594150966" duration="1047000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>
