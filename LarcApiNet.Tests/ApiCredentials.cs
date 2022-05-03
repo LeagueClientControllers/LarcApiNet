@@ -1,4 +1,4 @@
-﻿namespace LccApiNet.Tests
+﻿namespace LarcApiNet.Tests
 {
     internal class ApiCredentials
     {
