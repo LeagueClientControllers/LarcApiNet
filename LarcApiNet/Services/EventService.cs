@@ -2,17 +2,10 @@
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
-
-using LarcApiNet.EventHandlers;
 using LarcApiNet.Exceptions;
 using LarcApiNet.Model.Local;
 using LarcApiNet.Security;
-
-using LccApiNet.Security;
-
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
 using Websocket.Client;
 
 namespace LarcApiNet.Services

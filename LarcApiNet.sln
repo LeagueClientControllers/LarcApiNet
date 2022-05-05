@@ -8,11 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetLibraryGenerator", "..\LibraryGenerators\NetLibraryGenerator\NetLibraryGenerator\NetLibraryGenerator.csproj", "{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LarcApiNet", "LarcApiNet\LarcApiNet.csproj", "{4F188E41-D1FC-424B-8585-40F5169432D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LarcApiNet", "LarcApiNet\LarcApiNet.csproj", "{4F188E41-D1FC-424B-8585-40F5169432D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LarcApiNet.Tests", "LarcApiNet.Tests\LarcApiNet.Tests.csproj", "{3DCFD8BE-E8A4-41D2-B040-D8284801DB9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LarcApiNet.Tests", "LarcApiNet.Tests\LarcApiNet.Tests.csproj", "{3DCFD8BE-E8A4-41D2-B040-D8284801DB9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetLibraryGenerator", "..\LibraryGenerators\NetLibraryGenerator\NetLibraryGenerator\NetLibraryGenerator.csproj", "{532EC920-793A-4487-BB56-CBA968149155}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,14 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore3.0D|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore3.0D|Any CPU.Build.0 = Debug|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore5.0D|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF31EFAB-8F35-4372-AEB2-C951BD14D8F8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F188E41-D1FC-424B-8585-40F5169432D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F188E41-D1FC-424B-8585-40F5169432D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F188E41-D1FC-424B-8585-40F5169432D8}.netcore3.0D|Any CPU.ActiveCfg = netcore3.0D|Any CPU
@@ -46,6 +38,14 @@ Global
 		{3DCFD8BE-E8A4-41D2-B040-D8284801DB9C}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
 		{3DCFD8BE-E8A4-41D2-B040-D8284801DB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DCFD8BE-E8A4-41D2-B040-D8284801DB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.netcore3.0D|Any CPU.ActiveCfg = Debug|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.netcore3.0D|Any CPU.Build.0 = Debug|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.netcore5.0D|Any CPU.ActiveCfg = Debug|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.netcore5.0D|Any CPU.Build.0 = Debug|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{532EC920-793A-4487-BB56-CBA968149155}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
