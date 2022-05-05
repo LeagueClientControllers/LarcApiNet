@@ -15,7 +15,7 @@ namespace LarcApiNet.Services
     /// </summary>
     public class CommandService
     {
-        private ILarcApi _api;
+        private readonly ILarcApi _api;
 
         /// <summary>
         /// Handler function of the commands.

@@ -10,6 +10,7 @@
 
 using Ardalis.SmartEnum.JsonNet;
 using Newtonsoft.Json;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -32,15 +33,15 @@ namespace LarcApiNet.Model {
         
         /// <summary>
         /// If the device was added, stores id of the new device;
-        /// If the device was changed, stores id of the device whose changes invoked this event;
-        /// If the device was removed, stores id of the removed device
+        ///If the device was changed, stores id of the device whose changes invoked this event;
+        ///If the device was removed, stores id of the removed device
         /// </summary>
         [JsonProperty("deviceId")]
         public int DeviceId { get; set; } = default!;
         
         /// <summary>
         /// If the device was changed, stores names of the properties 
-        /// that has been changed and properties' new values; otherwise null
+        ///that has been changed and properties' new values; otherwise null
         /// </summary>
         [JsonProperty("changes")]
         public Dictionary<string, object>? Changes { get; set; }//;

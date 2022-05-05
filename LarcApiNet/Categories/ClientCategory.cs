@@ -39,17 +39,14 @@ namespace LarcApiNet.Categories {
         	}
         	await _api.ExecuteAsync ("/client/setGameflowPhase", new SetGameflowPhaseParameters (gameflowPhase, 0), true, token).ConfigureAwait (false);
         }
-        
+
         /// <inheritdoc />
-        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName, SomeParametrizedCommandArgs? commandArgs, CancellationToken token = default) 
+        public async Task<int> SendCommandAsync(int controllerId, CommandName commandName,
+	        SomeParametrizedCommandArgs? commandArgs, CancellationToken token = default)
         {
-        	return await _api.ExecuteAsync<int, SendCommandParameters> ("/client/sendCommand", new SendCommandParameters (controllerId, commandName, null), "commandId", true, token).ConfigureAwait (false);
-        }
-        
-        /// <inheritdoc />
-        public async Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default) 
-        {
-        	await _api.ExecuteAsync ("/client/setCommandResult", new SetCommandResultParameters (commandId, result), true, token).ConfigureAwait (false);
+	        return await _api.ExecuteAsync<int, SendCommandParameters>("/client/sendCommand",
+			        new SendCommandParameters(controllerId, commandName, null), "commandId", true, token)
+		        .ConfigureAwait(false);
         }
     }
 }

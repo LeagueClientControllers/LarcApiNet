@@ -10,6 +10,7 @@
 
 using Ardalis.SmartEnum.JsonNet;
 using Newtonsoft.Json;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -32,7 +33,7 @@ namespace LarcApiNet.Model {
         
         /// <summary>
         /// In case of error during execution
-        /// specifies name of the error occurred.
+        ///specifies name of the error occurred.
         /// </summary>
         [JsonProperty("errorName")]
         [JsonConverter(typeof(SmartEnumNameConverter<MethodError, int>))]
@@ -40,7 +41,7 @@ namespace LarcApiNet.Model {
         
         /// <summary>
         /// In case of error during execution
-        /// specifies message of the error occurred.
+        ///specifies message of the error occurred.
         /// </summary>
         [JsonProperty("errorMessage")]
         public string? ErrorMessage { get; set; }//;

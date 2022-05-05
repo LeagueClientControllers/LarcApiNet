@@ -42,14 +42,6 @@ namespace LarcApiNet.Categories.Abstraction {
         /// <param name="commandArgs">Arguments of the command.</param>
         [DeviceOnly()]
         Task<int> SendCommandAsync(int controllerId, CommandName commandName, SomeParametrizedCommandArgs? commandArgs, CancellationToken token = default);
-        
-        /// <summary>
-        /// Sets result of the command after execution.
-        /// </summary>
-        /// <param name="commandId">Id of the command to set result of.</param>
-        /// <param name="result">Result of the command.</param>
-        [ControllerOnly()]
-        Task SetCommandResultAsync(int commandId, CommandResult result, CancellationToken token = default);
     }
 }
 
