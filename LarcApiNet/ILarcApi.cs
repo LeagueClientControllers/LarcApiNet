@@ -34,17 +34,17 @@ namespace LarcApiNet
         /// <summary>
         /// Contains methods that are used to control the league game client.
         /// </summary>
-        public IClientCategory Client { get; }
+public IClientCategory Client { get; }
 
         /// <summary>
         /// Contains methods that are used to retrieve or update information about user's devices.
         /// </summary>
-        public IDeviceCategory Device { get; }
+public IDeviceCategory Device { get; }
 
         /// <summary>
         /// Contains methods that are used to get user information or related to the authentication.
         /// </summary>
-        public IIdentityCategory Identity { get; }
+public IIdentityCategory Identity { get; }
 
         #endregion
 

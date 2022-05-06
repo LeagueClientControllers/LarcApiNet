@@ -43,9 +43,9 @@ namespace LarcApiNet.Categories.Abstraction {
         
         /// <summary>
         /// Returns a fresh token with reset expiration date.
-        /// based on data from current token.
+        ///based on data from current token.
         /// </summary>
-        Task<string> RefreshAccessTokenAsync(string test, CancellationToken token = default);
+        Task<string> RefreshAccessTokenAsync(CancellationToken token = default);
     }
 }
 
