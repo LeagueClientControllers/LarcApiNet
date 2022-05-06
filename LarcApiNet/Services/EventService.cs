@@ -4,7 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using LarcApiNet.Exceptions;
 using LarcApiNet.Model.Local;
-using LarcApiNet.Security;
+
+using LccApiNet.Security;
+
 using Newtonsoft.Json;
 using Websocket.Client;
 
@@ -16,9 +18,9 @@ namespace LarcApiNet.Services
     /// </summary>
     public partial class EventService : IDisposable
     {
-        private ILarcApi _api;
         private WebsocketClient? _socket;
-        private Uri _webSocketUrl = new Uri($"ws://{ILarcApi.API_HOST}/ws");
+        private readonly ILarcApi _api;
+        private readonly Uri _webSocketUrl = new Uri($"ws://{ILarcApi.API_HOST}/ws");
 
         public EventService(ILarcApi api)
         {

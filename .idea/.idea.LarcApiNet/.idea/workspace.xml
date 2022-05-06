@@ -1,49 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="519de785-db9a-4ed0-b2a4-5255ce067201" name="Changes" comment="refactor: apply changes to develop">
+    <list default="true" id="519de785-db9a-4ed0-b2a4-5255ce067201" name="Changes" comment="refactor: downgrade for generation testing">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/Abstraction/IClientCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/Abstraction/IClientCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/Abstraction/IDeviceCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/Abstraction/IIdentityCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/Abstraction/IIdentityCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/ClientCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/ClientCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/DeviceCategory.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/IdentityCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/IdentityCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/LarcApiNet.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/LarcApiNet.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Commands/Command.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Commands/Command.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Commands/CommandResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Commands/CommandResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Commands/SomeParametrizedCommandArgs.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Commands/SomeParametrizedCommandArgs.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Parameters/SendCommandParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Parameters/SendCommandParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Parameters/SetCommandResultParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Parameters/SetCommandResultParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Parameters/SetGameflowPhaseParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Parameters/SetGameflowPhaseParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Client/Responses/CommandResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Client/Responses/CommandResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Common/ApiResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Common/ApiResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Common/JwtPayload.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Common/JwtPayload.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Common/Parameters/ChangeNameParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Common/Parameters/ChangeNameParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Common/Parameters/GetByIdParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Common/Parameters/GetByIdParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Device/ClientController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Device/ClientController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Device/Device.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Device/Device.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/ControllerResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/ControllerResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/ControllersResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/ControllersResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/DeviceResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/DeviceResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/DevicesResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Device/Responses/DevicesResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Events/ClientEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Events/ClientEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Events/CommandEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Events/CommandEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Events/DeviceEvent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Events/DeviceEvent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Events/EventType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Events/EventType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Identity/Parameters/LoginParameters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Identity/Parameters/LoginParameters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Identity/ProfileInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Identity/ProfileInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Identity/Responses/AccessTokenResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Identity/Responses/AccessTokenResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Model/Identity/Responses/ProfileInfoResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Model/Identity/Responses/ProfileInfoResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Services/CommandService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Services/CommandService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/Development/GitHub/LARC/LarcApiNet/LarcApiNet/Model/Identity/Responses/AccessTokenResponse.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -100,9 +64,17 @@
       <updated>1651738831002</updated>
       <workItem from="1651738831002" duration="59000" />
       <workItem from="1651740075891" duration="841000" />
-      <workItem from="1651777518465" duration="1917000" />
+      <workItem from="1651777518465" duration="2764000" />
+      <workItem from="1651822697037" duration="2745000" />
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="refactor: downgrade for generation testing">
+      <created>1651783226408</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1651783226408</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,6 +97,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="refactor: apply changes to develop" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: apply changes to develop" />
+    <MESSAGE value="refactor: downgrade for generation testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: downgrade for generation testing" />
   </component>
 </project>
