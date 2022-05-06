@@ -53,7 +53,6 @@ namespace LarcApiNet.Categories {
         }
         
         /// <inheritdoc />
-        /// TODO: Needs revision due to a signature changes.
         public async Task<string> RefreshAccessTokenAsync(CancellationToken token = default) 
         {
         	AccessTokenResponse response = await this._api.ExecuteAsync<AccessTokenResponse> ("/identity/refreshAccessToken", true, token);
