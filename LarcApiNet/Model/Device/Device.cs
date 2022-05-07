@@ -21,7 +21,7 @@ namespace LarcApiNet.Model {
     
     /// <summary>
     /// Representation of the device that is owned by the user
-    ///if it's a mobile device or whatever remote
+    /// if it's a mobile device or whatever remote
     /// </summary>
     public class Device : BindableBase {
         

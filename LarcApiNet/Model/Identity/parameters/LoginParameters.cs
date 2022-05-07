@@ -21,8 +21,8 @@ namespace LarcApiNet.Model {
     
     /// <summary>
     /// Parameters of the /identity/login method. 
-    ///Contains api key, id of the type of the authorizing device
-    ///and user credentials
+    /// Contains api key, id of the type of the authorizing device
+    /// and user credentials
     /// </summary>
     public class LoginParameters {
         

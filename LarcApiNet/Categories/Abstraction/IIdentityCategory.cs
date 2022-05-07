@@ -28,7 +28,7 @@ namespace LarcApiNet.Categories.Abstraction {
         
         /// <summary>
         /// Authorizes device in the system,
-        ///binds it to the user and returns token.
+        /// binds it to the user and returns token.
         /// </summary>
         /// <param name="login">User's email or username</param>
         /// <param name="password">User's password</param>
@@ -43,7 +43,7 @@ namespace LarcApiNet.Categories.Abstraction {
         
         /// <summary>
         /// Returns a fresh token with reset expiration date.
-        ///based on data from current token.
+        /// based on data from current token.
         /// </summary>
         Task<string> RefreshAccessTokenAsync(CancellationToken token = default);
     }

@@ -16,7 +16,7 @@ namespace LarcApiNet.Model {
     
     /// <summary>
     /// Type of the event.
-    ///Specify how event message should be deserialized.
+    /// Specify how event message should be deserialized.
     /// </summary>
     public class EventType : SmartEnum<EventType> {
         

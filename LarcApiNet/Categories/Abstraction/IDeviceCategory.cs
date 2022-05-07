@@ -28,7 +28,7 @@ namespace LarcApiNet.Categories.Abstraction {
         
         /// <summary>
         /// Returns all the devices that are registered
-        ///to the current user.
+        /// to the current user.
         /// </summary>
         Task<List<Device>> GetDevicesAsync(CancellationToken token = default);
         
@@ -48,7 +48,7 @@ namespace LarcApiNet.Categories.Abstraction {
         
         /// <summary>
         /// Gets all the client controller that are registered
-        ///to the current user.
+        /// to the current user.
         /// </summary>
         [DeviceOnly()]
         Task<List<ClientController>> GetControllersAsync(CancellationToken token = default);

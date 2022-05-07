@@ -21,7 +21,7 @@ namespace LarcApiNet.Model {
     
     /// <summary>
     /// Representation of the device that is owned by the user
-    ///if it's computer that controls league of legends client
+    /// if it's computer that controls league of legends client
     /// </summary>
     public class ClientController : BindableBase {
         
