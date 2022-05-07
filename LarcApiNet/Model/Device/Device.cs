@@ -23,7 +23,7 @@ namespace LarcApiNet.Model {
     /// Representation of the device that is owned by the user
     ///if it's a mobile device or whatever remote
     /// </summary>
-    public class Device {
+    public class Device : BindableBase {
         
         /// <summary>
         /// Identifier of the device
@@ -38,17 +38,35 @@ namespace LarcApiNet.Model {
         [JsonConverter(typeof(SmartEnumNameConverter<DeviceType, int>))]
         public DeviceType Type { get; set; } = default!;
         
+        private string _name = default!;
+        
+        private bool _isOnline = default!;
+        
         /// <summary>
         /// Name of the device
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; } = default!;
+        public string Name {
+            get {
+                return _name;
+            }
+            set {
+                this.SetProperty(ref _name, value);
+            }
+        }
         
         /// <summary>
         /// Whether the device is online
         /// </summary>
         [JsonProperty("isOnline")]
-        public bool IsOnline { get; set; } = default!;
+        public bool IsOnline {
+            get {
+                return _isOnline;
+            }
+            set {
+                this.SetProperty(ref _isOnline, value);
+            }
+        }
     }
 }
 

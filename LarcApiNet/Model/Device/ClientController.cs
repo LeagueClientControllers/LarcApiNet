@@ -23,7 +23,7 @@ namespace LarcApiNet.Model {
     /// Representation of the device that is owned by the user
     ///if it's computer that controls league of legends client
     /// </summary>
-    public class ClientController {
+    public class ClientController : BindableBase {
         
         /// <summary>
         /// Identifier of the controller.
@@ -31,30 +31,66 @@ namespace LarcApiNet.Model {
         [JsonProperty("id")]
         public int Id { get; set; } = default!;
         
+        private string _name = default!;
+        
+        private bool _isOnline = default!;
+        
+        private GameflowPhase? _gameflowPhase;
+        
+        private System.DateTime? _readyCheckStarted;
+        
         /// <summary>
         /// Name of the controller.
         /// </summary>
         [JsonProperty("name")]
-        public string Name { get; set; } = default!;
+        public string Name {
+            get {
+                return _name;
+            }
+            set {
+                this.SetProperty(ref _name, value);
+            }
+        }
         
         /// <summary>
         /// Whether the device is online
         /// </summary>
         [JsonProperty("isOnline")]
-        public bool IsOnline { get; set; } = default!;
+        public bool IsOnline {
+            get {
+                return _isOnline;
+            }
+            set {
+                this.SetProperty(ref _isOnline, value);
+            }
+        }
         
         /// <summary>
         /// Gameflow phase of the league client that is controlled by this controller.
         /// </summary>
         [JsonProperty("gameflowPhase")]
         [JsonConverter(typeof(SmartEnumNameConverter<GameflowPhase, int>))]
-        public GameflowPhase? GameflowPhase { get; set; }//;
+        public GameflowPhase? GameflowPhase {
+            get {
+                return _gameflowPhase;
+            }
+            set {
+                this.SetProperty(ref _gameflowPhase, value);
+            }
+        }
         
         /// <summary>
         /// Time when ready check was initiated.
         /// </summary>
         [JsonProperty("readyCheckStarted")]
-        public System.DateTime? ReadyCheckStarted { get; set; }//;
+        public System.DateTime? ReadyCheckStarted {
+            get {
+                return _readyCheckStarted;
+            }
+            set {
+                this.SetProperty(ref _readyCheckStarted, value);
+            }
+        }
     }
 }
 
