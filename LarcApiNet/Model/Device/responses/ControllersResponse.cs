@@ -10,6 +10,7 @@
 
 using Ardalis.SmartEnum.JsonNet;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;

@@ -21,50 +21,46 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Representation of the device that is owned by the user
-    /// if it's computer that controls league of legends client
+    /// Represents a «League of Legends» client
+    /// that is controlled by a client controller.
     /// </summary>
-    public class ClientController : BindableBase {
+    public class LeagueClient : BindableBase {
+        
+        private GameflowPhase? _gameflowPhase;
+        
+        private DateTime? _readyCheckStarted;
         
         /// <summary>
-        /// Identifier of the controller.
+        /// Describes champ select phase.
         /// </summary>
-        [JsonProperty("id")]
-        public int Id { get; set; } = default!;
-        
-        private string _name = default!;
-        
-        private bool _isOnline = default!;
+        [JsonProperty("pick")]
+        public PickStage? Pick { get; set; }//;
         
         /// <summary>
-        /// 
+        /// Gameflow phase of the client.
         /// </summary>
-        [JsonProperty("client")]
-        public LeagueClient? Client { get; set; }//;
-        
-        /// <summary>
-        /// Name of the controller.
-        /// </summary>
-        [JsonProperty("name")]
-        public string Name {
+        [JsonProperty("gameflowPhase")]
+        [JsonConverter(typeof(SmartEnumNameConverter<GameflowPhase, int>))]
+        public GameflowPhase? GameflowPhase {
             get {
-                return _name;
+                return _gameflowPhase;
             }
             set {
-                this.SetProperty(ref _name, value);
+                this.SetProperty(ref _gameflowPhase, value);
             }
         }
         
         /// <summary>
-        /// Whether the device is online
+        /// Time when ready check was initiated.
         /// </summary>
-        [JsonProperty("isOnline")]
-        public bool IsOnline {
+        [JsonProperty("readyCheckStarted")]
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? ReadyCheckStarted {
             get {
-                return _isOnline;
+                return _readyCheckStarted;
             }
             set {
-                this.SetProperty(ref _isOnline, value);
+                this.SetProperty(ref _readyCheckStarted, value);
             }
         }
     }

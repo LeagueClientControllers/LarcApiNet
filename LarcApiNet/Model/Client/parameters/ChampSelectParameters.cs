@@ -21,34 +21,33 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Describes event that is related to the client controller command.
+    /// Parameters of the /client/reportChampSelectStarted method.
     /// </summary>
-    public class CommandEvent {
+    public class ChampSelectParameters {
         
         /// <summary>
-        /// Type of the event.
+        /// Index of the user in allies array.
         /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(SmartEnumNameConverter<CommandEventType, int>))]
-        public CommandEventType Type { get; set; } = default!;
+        [JsonProperty("userPosition")]
+        public int UserPosition { get; set; } = default!;
         
         /// <summary>
-        /// If command has been sent contains command details.
+        /// Count of matched enemies.
         /// </summary>
-        [JsonProperty("command")]
-        public Command? Command { get; set; }//;
+        [JsonProperty("enemiesCount")]
+        public int EnemiesCount { get; set; } = default!;
         
         /// <summary>
-        /// If command has been executed contains id of the command.
+        /// Array of matched allies' roles
         /// </summary>
-        [JsonProperty("commandId")]
-        public int? CommandId { get; set; }//;
+        [JsonProperty("alliesRoles")]
+        public List<Role> AlliesRoles { get; set; } = default!;
         
-        /// <summary>
-        /// If command has been executed contains result of the command.
-        /// </summary>
-        [JsonProperty("commandResult")]
-        public CommandResult? CommandResult { get; set; }//;
+        public ChampSelectParameters(int userPosition, int enemiesCount, List<Role> alliesRoles) {
+            this.UserPosition = userPosition;
+            this.EnemiesCount = enemiesCount;
+            this.AlliesRoles = alliesRoles;
+        }
     }
 }
 

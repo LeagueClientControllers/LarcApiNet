@@ -67,7 +67,12 @@ namespace LarcApiNet.Model {
         /// <summary>
         /// 
         /// </summary>
-        public static MethodError ListenerIsAlreadyRegistered = new MethodError("ListenerIsAlreadyRegisteredError", 10);
+        public static MethodError InvalidOperation = new MethodError("InvalidOperationError", 10);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public static MethodError ListenerIsAlreadyRegistered = new MethodError("ListenerIsAlreadyRegisteredError", 11);
         
         public MethodError(string name, int value) : 
                 base(name, value) {

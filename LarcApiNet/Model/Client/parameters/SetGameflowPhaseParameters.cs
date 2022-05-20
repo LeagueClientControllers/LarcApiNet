@@ -10,6 +10,7 @@
 
 using Ardalis.SmartEnum.JsonNet;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Parameters of /client/setGameflowPhase method.
+    /// Parameters of the /client/setGameflowPhase method.
     /// </summary>
     public class SetGameflowPhaseParameters {
         
@@ -35,9 +36,10 @@ namespace LarcApiNet.Model {
         /// If game flow phase is ready check, this property determines timestamp when ready check was started in unix format.
         /// </summary>
         [JsonProperty("readyCheckStarted")]
-        public int? ReadyCheckStarted { get; set; }//;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.UnixDateTimeConverter))]
+        public DateTime? ReadyCheckStarted { get; set; }//;
         
-        public SetGameflowPhaseParameters(GameflowPhase? gameflowPhase, int? readyCheckStarted) {
+        public SetGameflowPhaseParameters(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted) {
             this.GameflowPhase = gameflowPhase;
             this.ReadyCheckStarted = readyCheckStarted;
         }

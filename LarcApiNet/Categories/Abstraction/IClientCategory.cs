@@ -27,15 +27,76 @@ namespace LarcApiNet.Categories.Abstraction {
     public interface IClientCategory {
         
         /// <summary>
+        /// Reports that the «League of Legends» client
+        /// on controller's machine has been opened.
+        /// </summary>
+        [ControllerOnly()]
+        Task ReportClientOpenedAsync(CancellationToken token = default);
+        
+        /// <summary>
+        /// Reports that the «League of Legends» client
+        /// on controller's machine has been closed.
+        /// </summary>
+        [ControllerOnly()]
+        Task ReportClientClosedAsync(CancellationToken token = default);
+        
+        /// <summary>
         /// Sets current game flow phase of the league client.
         /// </summary>
         /// <param name="gameflowPhase">Current league client game flow phase to set.</param>
         /// <param name="readyCheckStarted">If game flow phase is ready check, this property determines timestamp when ready check was started in unix format.</param>
         [ControllerOnly()]
-        Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, int? readyCheckStarted, CancellationToken token = default);
+        Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted, CancellationToken token = default);
         
         /// <summary>
-        /// Sends command to a client controller that is specified in the parameters to execute.
+        /// Reports that champ select phase
+        /// has been started in the «League of Legends» client.
+        /// </summary>
+        /// <param name="userPosition">Index of the user in allies array.</param>
+        /// <param name="enemiesCount">Count of matched enemies.</param>
+        /// <param name="alliesRoles">Array of matched allies' roles</param>
+        [ControllerOnly()]
+        Task ReportChampSelectStartedAsync(int userPosition, int enemiesCount, List<Role> alliesRoles, CancellationToken token = default);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="requestedAt">When this action was requested by league client.</param>
+        /// <param name="isAllyAction">Is action is prescribed for an ally or an opponent.</param>
+        /// <param name="firstActorPosition">
+        /// Index of the allies or opponents array
+        /// that specifies first summoner of the action. [0..4]
+        /// </param>
+        /// <param name="actorsCount">How many summoners participates in the action. [1..5]</param>
+        /// <param name="type">Type of the action.</param>
+        [ControllerOnly()]
+        Task ReportActionRequestedAsync(DateTime requestedAt, bool isAllyAction, int firstActorPosition, int actorsCount, ActionType type, CancellationToken token = default);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="completed">Is champion action completed or the champion is only hovered.</param>
+        /// <param name="championId">ID of the picked or banned champion.</param>
+        /// <param name="actorPosition">Position of the actor in ally or enemy team. [0..4]</param>
+        [ControllerOnly()]
+        Task ReportActionChangedAsync(bool completed, int championId, int actorPosition, CancellationToken token = default);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playerPosition">Position of player whose skin has been changed in allies array. [0..4]</param>
+        /// <param name="skinId">New skin id.</param>
+        [ControllerOnly()]
+        Task ReportSkinChangedAsync(int playerPosition, int skinId, CancellationToken token = default);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [ControllerOnly()]
+        Task ReportChampSelectEndedAsync(CancellationToken token = default);
+        
+        /// <summary>
+        /// Reports that pick stage in champ select phase is started.
         /// </summary>
         /// <param name="controllerId">Determine which controller should execute this command.</param>
         /// <param name="commandName">Command that should be sent to the client controller.</param>

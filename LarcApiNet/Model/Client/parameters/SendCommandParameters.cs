@@ -10,6 +10,7 @@
 
 using Ardalis.SmartEnum.JsonNet;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Parameters of /client/sendCommand method.
+    /// Parameters of the /client/sendCommand method.
     /// </summary>
     public class SendCommandParameters {
         

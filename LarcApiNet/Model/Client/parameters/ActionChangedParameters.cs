@@ -21,34 +21,33 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Describes event that is related to the client controller command.
+    /// 
     /// </summary>
-    public class CommandEvent {
+    public class ActionChangedParameters {
         
         /// <summary>
-        /// Type of the event.
+        /// Is champion action completed or the champion is only hovered.
         /// </summary>
-        [JsonProperty("type")]
-        [JsonConverter(typeof(SmartEnumNameConverter<CommandEventType, int>))]
-        public CommandEventType Type { get; set; } = default!;
+        [JsonProperty("completed")]
+        public bool Completed { get; set; } = default!;
         
         /// <summary>
-        /// If command has been sent contains command details.
+        /// ID of the picked or banned champion.
         /// </summary>
-        [JsonProperty("command")]
-        public Command? Command { get; set; }//;
+        [JsonProperty("championId")]
+        public int ChampionId { get; set; } = default!;
         
         /// <summary>
-        /// If command has been executed contains id of the command.
+        /// Position of the actor in ally or enemy team. [0..4]
         /// </summary>
-        [JsonProperty("commandId")]
-        public int? CommandId { get; set; }//;
+        [JsonProperty("actorPosition")]
+        public int ActorPosition { get; set; } = default!;
         
-        /// <summary>
-        /// If command has been executed contains result of the command.
-        /// </summary>
-        [JsonProperty("commandResult")]
-        public CommandResult? CommandResult { get; set; }//;
+        public ActionChangedParameters(bool completed, int championId, int actorPosition) {
+            this.Completed = completed;
+            this.ChampionId = championId;
+            this.ActorPosition = actorPosition;
+        }
     }
 }
 

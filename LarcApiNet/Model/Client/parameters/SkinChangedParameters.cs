@@ -23,13 +23,24 @@ namespace LarcApiNet.Model {
     /// <summary>
     /// 
     /// </summary>
-    public class ProfileInfoResponse : ApiResponse {
+    public class SkinChangedParameters {
         
         /// <summary>
-        /// 
+        /// Position of player whose skin has been changed in allies array. [0..4]
         /// </summary>
-        [JsonProperty("profile")]
-        public ProfileInfo Profile { get; set; } = default!;
+        [JsonProperty("playerPosition")]
+        public int PlayerPosition { get; set; } = default!;
+        
+        /// <summary>
+        /// New skin id.
+        /// </summary>
+        [JsonProperty("skinId")]
+        public int SkinId { get; set; } = default!;
+        
+        public SkinChangedParameters(int playerPosition, int skinId) {
+            this.PlayerPosition = playerPosition;
+            this.SkinId = skinId;
+        }
     }
 }
 

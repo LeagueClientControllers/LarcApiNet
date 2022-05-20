@@ -8,28 +8,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Ardalis.SmartEnum.JsonNet;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Ardalis.SmartEnum;
 
 
 namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// 
+    /// Indicates type of action that is available
+    /// for an ally of an opponent during champ select phase.
     /// </summary>
-    public class ProfileInfoResponse : ApiResponse {
+    public class ActionType : SmartEnum<ActionType> {
         
         /// <summary>
         /// 
         /// </summary>
-        [JsonProperty("profile")]
-        public ProfileInfo Profile { get; set; } = default!;
+        public static ActionType Pick = new ActionType("Pick", 1);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public static ActionType Ban = new ActionType("Ban", 2);
+        
+        public ActionType(string name, int value) : 
+                base(name, value) {
+        }
     }
 }
 
