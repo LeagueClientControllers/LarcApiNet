@@ -64,7 +64,7 @@ namespace LarcApiNet.Model {
         /// When the action was requested.
         /// Only if {@see type} is {@see PickEventType.ActionRequested}, otherwise null.
         /// </summary>
-        [JsonProperty("actionType")]
+        [JsonProperty("requestedAt")]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.UnixDateTimeConverter))]
         public DateTime? RequestedAt { get; set; }//;
         
