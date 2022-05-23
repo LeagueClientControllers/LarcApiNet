@@ -42,7 +42,7 @@ namespace LarcApiNet.Model {
         /// Arguments of the command.
         /// </summary>
         [JsonProperty("args")]
-        public SomeParametrizedCommandArgs? Args { get; set; }//;
+        public ChampionCommandArgs? Args { get; set; }//;
     }
 }
 

@@ -34,6 +34,11 @@ namespace LarcApiNet.Services {
         /// </summary>
         public event DeviceEventHandler? OnDeviceEvent;
         
+        /// <summary>
+        /// Fires when <see cref="PickEvent"/> is occurred.
+        /// </summary>
+        public event PickEventHandler? OnPickEvent;
+        
         private void HandleEventMessage(EventMessage message) {
             if ((message.Type == EventType.Client)) {
                 ClientEvent? @event = message.Event.ToObject<ClientEvent>();
@@ -62,6 +67,16 @@ namespace LarcApiNet.Services {
                 }
 
                 this.OnDeviceEvent?.Invoke(this, @event);
+                return;
+            }
+
+            if ((message.Type == EventType.Pick)) {
+                PickEvent? @event = message.Event.ToObject<PickEvent>();
+                if ((@event == null)) {
+                    throw new EventProviderException("Event object is missing in event message.");
+                }
+
+                this.OnPickEvent?.Invoke(this, @event);
                 return;
             }
 

@@ -39,17 +39,10 @@ namespace LarcApiNet.Model {
         public bool IsAllyAction { get; set; } = default!;
         
         /// <summary>
-        /// Index of the allies or opponents array
-        /// that specifies first summoner of the action. [0..4]
+        /// Specifies range of actors the action was requested from ([0..4]).
         /// </summary>
-        [JsonProperty("firstActorPosition")]
-        public int FirstActorPosition { get; set; } = default!;
-        
-        /// <summary>
-        /// How many summoners participates in the action. [1..5]
-        /// </summary>
-        [JsonProperty("actorsCount")]
-        public int ActorsCount { get; set; } = default!;
+        [JsonProperty("actorsRange")]
+        public ValueRange ActorsRange { get; set; } = default!;
         
         /// <summary>
         /// Type of the action.
@@ -58,11 +51,10 @@ namespace LarcApiNet.Model {
         [JsonConverter(typeof(SmartEnumNameConverter<ActionType, int>))]
         public ActionType Type { get; set; } = default!;
         
-        public ActionRequestedParameters(DateTime requestedAt, bool isAllyAction, int firstActorPosition, int actorsCount, ActionType type) {
+        public ActionRequestedParameters(DateTime requestedAt, bool isAllyAction, ValueRange actorsRange, ActionType type) {
             this.RequestedAt = requestedAt;
             this.IsAllyAction = isAllyAction;
-            this.FirstActorPosition = firstActorPosition;
-            this.ActorsCount = actorsCount;
+            this.ActorsRange = actorsRange;
             this.Type = type;
         }
     }

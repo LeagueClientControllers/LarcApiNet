@@ -21,7 +21,7 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Describes the event related to the client.
+    /// Describes an event related to the client.
     /// </summary>
     public class ClientEvent {
         

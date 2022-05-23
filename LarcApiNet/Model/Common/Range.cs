@@ -21,15 +21,24 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// 
+    /// Specifies value range borders.
+    /// Used for taking values from an array.
+    /// Values count is {@see entitiesCount} and they are taken from {@see firstIndex},
+    /// so the range is from {@see firstIndex} to {@see firstIndex} + {@see entitiesCount}.
     /// </summary>
-    public class SomeParametrizedCommandArgs {
+    public class ValueRange {
         
         /// <summary>
-        /// 
+        /// Index of the first element of the array that needs to be taking.
         /// </summary>
-        [JsonProperty("commandParam")]
-        public string CommandParam { get; set; } = default!;
+        [JsonProperty("firstIndex")]
+        public int FirstIndex { get; set; } = default!;
+        
+        /// <summary>
+        /// How many elements needs to be taken.
+        /// </summary>
+        [JsonProperty("entitiesCount")]
+        public int EntitiesCount { get; set; } = default!;
     }
 }
 

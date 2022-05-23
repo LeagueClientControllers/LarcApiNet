@@ -15,7 +15,7 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Indicates command that is sended to client controller to be executed by it.
+    /// Indicates command that is sent to client controller to be executed by it.
     /// </summary>
     public class CommandName : SmartEnum<CommandName> {
         
@@ -30,9 +30,14 @@ namespace LarcApiNet.Model {
         public static CommandName AcceptMatch = new CommandName("AcceptMatch", 2);
         
         /// <summary>
-        /// Test
+        /// Client controller should hover on champion in a champ select stage.
         /// </summary>
-        public static CommandName SomeParametrized = new CommandName("SomeParametrized", 3);
+        public static CommandName HoverChampion = new CommandName("HoverChampion", 3);
+        
+        /// <summary>
+        /// Client controller should complete current action by banning or picking a champion.
+        /// </summary>
+        public static CommandName CompleteAction = new CommandName("CompleteAction", 4);
         
         public CommandName(string name, int value) : 
                 base(name, value) {

@@ -31,9 +31,14 @@ namespace LarcApiNet.Model {
         public static EventType Client = new EventType("Client", 2);
         
         /// <summary>
+        /// Event message should be deserialized as <see cref="PickEvent"/>
+        /// </summary>
+        public static EventType Pick = new EventType("Pick", 3);
+        
+        /// <summary>
         /// Event message should be deserialized as <see cref="CommandEvent"/>
         /// </summary>
-        public static EventType Command = new EventType("Command", 3);
+        public static EventType Command = new EventType("Command", 4);
         
         public EventType(string name, int value) : 
                 base(name, value) {

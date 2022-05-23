@@ -30,7 +30,7 @@ namespace LarcApiNet.Model {
         /// </summary>
         [JsonProperty("gameflowPhase")]
         [JsonConverter(typeof(SmartEnumNameConverter<GameflowPhase, int>))]
-        public GameflowPhase? GameflowPhase { get; set; }//;
+        public GameflowPhase GameflowPhase { get; set; } = default!;
         
         /// <summary>
         /// If game flow phase is ready check, this property determines timestamp when ready check was started in unix format.
@@ -39,7 +39,7 @@ namespace LarcApiNet.Model {
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.UnixDateTimeConverter))]
         public DateTime? ReadyCheckStarted { get; set; }//;
         
-        public SetGameflowPhaseParameters(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted) {
+        public SetGameflowPhaseParameters(GameflowPhase gameflowPhase, DateTime? readyCheckStarted) {
             this.GameflowPhase = gameflowPhase;
             this.ReadyCheckStarted = readyCheckStarted;
         }

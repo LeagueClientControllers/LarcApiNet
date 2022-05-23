@@ -20,9 +20,19 @@ namespace LarcApiNet.Model {
     public class ClientEventType : SmartEnum<ClientEventType> {
         
         /// <summary>
+        /// Client was opened. Gameflow phase changed to {@see GameflowPhase.None}.
+        /// </summary>
+        public static ClientEventType ClientOpened = new ClientEventType("ClientOpened", 1);
+        
+        /// <summary>
+        /// Client was closed.
+        /// </summary>
+        public static ClientEventType ClientClosed = new ClientEventType("ClientClosed", 2);
+        
+        /// <summary>
         /// Client game glow phase was changed.
         /// </summary>
-        public static ClientEventType GameflowPhaseChanged = new ClientEventType("GameflowPhaseChanged", 1);
+        public static ClientEventType GameflowPhaseChanged = new ClientEventType("GameflowPhaseChanged", 3);
         
         public ClientEventType(string name, int value) : 
                 base(name, value) {

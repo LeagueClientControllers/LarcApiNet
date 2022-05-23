@@ -21,33 +21,15 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// 
+    /// Describes args for a command that requires a champion ID.
     /// </summary>
-    public class ActionChangedParameters {
+    public class ChampionCommandArgs {
         
         /// <summary>
-        /// Is champion action completed or the champion is only hovered.
-        /// </summary>
-        [JsonProperty("completed")]
-        public bool Completed { get; set; } = default!;
-        
-        /// <summary>
-        /// ID of the picked or banned champion.
+        /// ID of a champion that should be hovered upon, picked or banned.
         /// </summary>
         [JsonProperty("championId")]
         public int ChampionId { get; set; } = default!;
-        
-        /// <summary>
-        /// Position of the actor in ally or enemy team ([0..4]).
-        /// </summary>
-        [JsonProperty("actorPosition")]
-        public int ActorPosition { get; set; } = default!;
-        
-        public ActionChangedParameters(bool completed, int championId, int actorPosition) {
-            this.Completed = completed;
-            this.ChampionId = championId;
-            this.ActorPosition = actorPosition;
-        }
     }
 }
 

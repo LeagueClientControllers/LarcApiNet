@@ -42,9 +42,9 @@ namespace LarcApiNet.Model {
         /// Arguments of the command.
         /// </summary>
         [JsonProperty("commandArgs")]
-        public SomeParametrizedCommandArgs? CommandArgs { get; set; }//;
+        public ChampionCommandArgs? CommandArgs { get; set; }//;
         
-        public SendCommandParameters(int controllerId, CommandName commandName, SomeParametrizedCommandArgs? commandArgs) {
+        public SendCommandParameters(int controllerId, CommandName commandName, ChampionCommandArgs? commandArgs) {
             this.ControllerId = controllerId;
             this.CommandName = commandName;
             this.CommandArgs = commandArgs;

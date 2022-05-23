@@ -46,7 +46,7 @@ namespace LarcApiNet.Categories.Abstraction {
         /// <param name="gameflowPhase">Current league client game flow phase to set.</param>
         /// <param name="readyCheckStarted">If game flow phase is ready check, this property determines timestamp when ready check was started in unix format.</param>
         [ControllerOnly()]
-        Task SetGameflowPhaseAsync(GameflowPhase? gameflowPhase, DateTime? readyCheckStarted, CancellationToken token = default);
+        Task SetGameflowPhaseAsync(GameflowPhase gameflowPhase, DateTime? readyCheckStarted, CancellationToken token = default);
         
         /// <summary>
         /// Reports that champ select phase
@@ -63,21 +63,17 @@ namespace LarcApiNet.Categories.Abstraction {
         /// </summary>
         /// <param name="requestedAt">When this action was requested by league client.</param>
         /// <param name="isAllyAction">Is action is prescribed for an ally or an opponent.</param>
-        /// <param name="firstActorPosition">
-        /// Index of the allies or opponents array
-        /// that specifies first summoner of the action. [0..4]
-        /// </param>
-        /// <param name="actorsCount">How many summoners participates in the action. [1..5]</param>
+        /// <param name="actorsRange">Specifies range of actors the action was requested from ([0..4]).</param>
         /// <param name="type">Type of the action.</param>
         [ControllerOnly()]
-        Task ReportActionRequestedAsync(DateTime requestedAt, bool isAllyAction, int firstActorPosition, int actorsCount, ActionType type, CancellationToken token = default);
+        Task ReportActionRequestedAsync(DateTime requestedAt, bool isAllyAction, ValueRange actorsRange, ActionType type, CancellationToken token = default);
         
         /// <summary>
         /// 
         /// </summary>
         /// <param name="completed">Is champion action completed or the champion is only hovered.</param>
         /// <param name="championId">ID of the picked or banned champion.</param>
-        /// <param name="actorPosition">Position of the actor in ally or enemy team. [0..4]</param>
+        /// <param name="actorPosition">Position of the actor in ally or enemy team ([0..4]).</param>
         [ControllerOnly()]
         Task ReportActionChangedAsync(bool completed, int championId, int actorPosition, CancellationToken token = default);
         
@@ -102,7 +98,7 @@ namespace LarcApiNet.Categories.Abstraction {
         /// <param name="commandName">Command that should be sent to the client controller.</param>
         /// <param name="commandArgs">Arguments of the command.</param>
         [DeviceOnly()]
-        Task<int> SendCommandAsync(int controllerId, CommandName commandName, SomeParametrizedCommandArgs? commandArgs, CancellationToken token = default);
+        Task<int> SendCommandAsync(int controllerId, CommandName commandName, ChampionCommandArgs? commandArgs, CancellationToken token = default);
         
         /// <summary>
         /// Sets result of the command after execution.
