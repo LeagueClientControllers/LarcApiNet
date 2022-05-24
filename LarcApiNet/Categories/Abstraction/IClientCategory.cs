@@ -59,7 +59,7 @@ namespace LarcApiNet.Categories.Abstraction {
         Task ReportChampSelectStartedAsync(int userPosition, int enemiesCount, List<Role> alliesRoles, CancellationToken token = default);
         
         /// <summary>
-        /// 
+        /// Reports that action was requested from one of the matched players.
         /// </summary>
         /// <param name="requestedAt">When this action was requested by league client.</param>
         /// <param name="isAllyAction">Is action is prescribed for an ally or an opponent.</param>
@@ -69,7 +69,8 @@ namespace LarcApiNet.Categories.Abstraction {
         Task ReportActionRequestedAsync(DateTime requestedAt, bool isAllyAction, ValueRange actorsRange, ActionType type, CancellationToken token = default);
         
         /// <summary>
-        /// 
+        /// Reports that action was changed, i.e. hovered champion was changed
+        /// or champion was picked or banned.
         /// </summary>
         /// <param name="completed">Is champion action completed or the champion is only hovered.</param>
         /// <param name="championId">ID of the picked or banned champion.</param>
@@ -78,7 +79,7 @@ namespace LarcApiNet.Categories.Abstraction {
         Task ReportActionChangedAsync(bool completed, int championId, int actorPosition, CancellationToken token = default);
         
         /// <summary>
-        /// 
+        /// Reports that champion skin was changed by the one of the allies.
         /// </summary>
         /// <param name="playerPosition">Position of player whose skin has been changed in allies array. [0..4]</param>
         /// <param name="skinId">New skin id.</param>
@@ -86,13 +87,13 @@ namespace LarcApiNet.Categories.Abstraction {
         Task ReportSkinChangedAsync(int playerPosition, int skinId, CancellationToken token = default);
         
         /// <summary>
-        /// 
+        /// Reports that champ select phase was completed or cancelled.
         /// </summary>
         [ControllerOnly()]
         Task ReportChampSelectEndedAsync(CancellationToken token = default);
         
         /// <summary>
-        /// Reports that pick stage in champ select phase is started.
+        /// Sends command to a client controller that is specified in the parameters to execute.
         /// </summary>
         /// <param name="controllerId">Determine which controller should execute this command.</param>
         /// <param name="commandName">Command that should be sent to the client controller.</param>

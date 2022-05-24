@@ -22,18 +22,42 @@ namespace LarcApiNet.Categories.Abstraction {
     
     
     /// <summary>
-    /// Contains methods that are used to get user information or related to the authentication.
+    /// Contains methods that are used to get user information or are related to the authentication.
     /// </summary>
     public interface IIdentityCategory {
+        
+        /// <summary>
+        /// Registers a new user in the system.
+        /// Sends email with 6-digits confirmation code and initializes confirmation process.
+        /// </summary>
+        /// <param name="username">Name of the user that will be registered.</param>
+        /// <param name="email">Email of the user that will be registered.</param>
+        /// <param name="password">User's password</param>
+        Task<int> RegisterAsync(string username, string email, string password, CancellationToken token = default);
+        
+        /// <summary>
+        /// Confirms user, giving access token to the authorized device.
+        /// </summary>
+        /// <param name="accountId">ID of an account that should be confirmed.</param>
+        /// <param name="code">6-digits code to confirm account.</param>
+        /// <param name="deviceName">Name of the device that will be authorized under the user.</param>
+        /// <param name="deviceType">Type of the device that will be authorized under the user.</param>
+        Task<string> ConfirmAsync(int accountId, string code, string deviceName, DeviceType deviceType, CancellationToken token = default);
+        
+        /// <summary>
+        /// Resends confirmation email with a new 6-digits confirmation code.
+        /// </summary>
+        /// <param name="accountId">ID of an account that should be confirmed..</param>
+        Task ResendConfirmationAsync(int accountId, CancellationToken token = default);
         
         /// <summary>
         /// Authorizes device in the system,
         /// binds it to the user and returns token.
         /// </summary>
-        /// <param name="login">User's email or username</param>
-        /// <param name="password">User's password</param>
-        /// <param name="deviceName">Name of the device that will be authorized under the user</param>
-        /// <param name="deviceType">Type of the device that will be authorized under the user</param>
+        /// <param name="login">User's email or username.</param>
+        /// <param name="password">User's password.</param>
+        /// <param name="deviceName">Name of the device that will be authorized under the user.</param>
+        /// <param name="deviceType">Type of the device that will be authorized under the user.</param>
         Task<string> LoginAsync(string login, string password, string deviceName, DeviceType deviceType, CancellationToken token = default);
         
         /// <summary>

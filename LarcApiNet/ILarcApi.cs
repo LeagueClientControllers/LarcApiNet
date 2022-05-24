@@ -42,7 +42,7 @@ public IClientCategory Client { get; }
 public IDeviceCategory Device { get; }
 
         /// <summary>
-        /// Contains methods that are used to get user information or related to the authentication.
+        /// Contains methods that are used to get user information or are related to the authentication.
         /// </summary>
 public IIdentityCategory Identity { get; }
 

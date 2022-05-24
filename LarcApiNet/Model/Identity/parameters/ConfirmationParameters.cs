@@ -21,21 +21,21 @@ namespace LarcApiNet.Model {
     
     
     /// <summary>
-    /// Parameters of the /identity/login method.
+    /// Parameters of the /identity/confirm method.
     /// </summary>
-    public class LoginParameters {
+    public class ConfirmationParameters {
         
         /// <summary>
-        /// User's email or username.
+        /// ID of an account that should be confirmed.
         /// </summary>
-        [JsonProperty("login")]
-        public string Login { get; set; } = default!;
+        [JsonProperty("accountId")]
+        public int AccountId { get; set; } = default!;
         
         /// <summary>
-        /// User's password.
+        /// 6-digits code to confirm account.
         /// </summary>
-        [JsonProperty("password")]
-        public string Password { get; set; } = default!;
+        [JsonProperty("code")]
+        public string Code { get; set; } = default!;
         
         /// <summary>
         /// Name of the device that will be authorized under the user.
@@ -50,9 +50,9 @@ namespace LarcApiNet.Model {
         [JsonConverter(typeof(SmartEnumNameConverter<DeviceType, int>))]
         public DeviceType DeviceType { get; set; } = default!;
         
-        public LoginParameters(string login, string password, string deviceName, DeviceType deviceType) {
-            this.Login = login;
-            this.Password = password;
+        public ConfirmationParameters(int accountId, string code, string deviceName, DeviceType deviceType) {
+            this.AccountId = accountId;
+            this.Code = code;
             this.DeviceName = deviceName;
             this.DeviceType = deviceType;
         }
