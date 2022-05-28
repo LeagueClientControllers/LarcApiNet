@@ -32,7 +32,7 @@ namespace LarcApiNet.Model {
         /// <summary>
         /// 
         /// </summary>
-        public static Role Mid = new Role("Mid", 3);
+        public static Role Middle = new Role("Middle", 3);
         
         /// <summary>
         /// 

@@ -26,7 +26,7 @@ namespace LarcApiNet.Model {
     /// </summary>
     public class LeagueClient : BindableBase {
         
-        private GameflowPhase? _gameflowPhase;
+        private GameflowPhase _gameflowPhase = default!;
         
         private DateTime? _readyCheckStarted;
         
@@ -41,7 +41,7 @@ namespace LarcApiNet.Model {
         /// </summary>
         [JsonProperty("gameflowPhase")]
         [JsonConverter(typeof(SmartEnumNameConverter<GameflowPhase, int>))]
-        public GameflowPhase? GameflowPhase {
+        public GameflowPhase GameflowPhase {
             get {
                 return _gameflowPhase;
             }
