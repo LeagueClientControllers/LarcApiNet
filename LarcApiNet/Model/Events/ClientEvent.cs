@@ -39,10 +39,19 @@ namespace LarcApiNet.Model {
         public int ControllerId { get; set; } = default!;
         
         /// <summary>
-        /// Contains changes of the client values.
+        /// If gameflow phase is changed, contains new gameflow phase value.
         /// </summary>
-        [JsonProperty("changes")]
-        public Dictionary<string, object>? Changes { get; set; }//;
+        [JsonProperty("gameflowPhase")]
+        [JsonConverter(typeof(SmartEnumNameConverter<GameflowPhase, int>))]
+        public GameflowPhase? GameflowPhase { get; set; }//;
+        
+        /// <summary>
+        /// If gameflow phase is changed to {@see GameflowPhase.ReadyCheck},
+        /// contains timestamp when ready check was initiated.
+        /// </summary>
+        [JsonProperty("readyCheckStarted")]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.UnixDateTimeConverter))]
+        public DateTime? ReadyCheckStarted { get; set; }//;
     }
 }
 
