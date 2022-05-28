@@ -58,7 +58,7 @@ namespace LarcApiNet.Categories.Abstraction {
         /// </summary>
         /// <param name="id"></param>
         [DeviceOnly()]
-        Task GetControllerByIdAsync(int id, CancellationToken token = default);
+        Task<ClientController> GetControllerByIdAsync(int id, CancellationToken token = default);
         
         /// <summary>
         /// Changes the name of the controller.

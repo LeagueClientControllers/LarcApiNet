@@ -32,19 +32,19 @@ namespace LarcApiNet.Model {
         [JsonProperty("userPosition")]
         public int UserPosition { get; set; } = default!;
         
-        private List<DateTime>? _banRequested;
+        private DateTime? _banRequested;
         
-        private List<DateTime>? _pickRequested;
+        private DateTime? _pickRequested;
         
         private DateTime? _prepareStageStarted;
         
-        private List<ActionType>? _actionType;
+        private ActionType? _actionType;
         
-        private List<bool>? _isActorAnAlly;
+        private bool? _isActorAnAlly;
         
-        private List<int>? _firstActorPosition;
+        private int? _firstActorPosition;
         
-        private List<int>? _actorsCount;
+        private int? _actorsCount;
         
         /// <summary>
         /// Members of the user's team.
@@ -64,7 +64,8 @@ namespace LarcApiNet.Model {
         /// Time when ban phase was started.
         /// </summary>
         [JsonProperty("banRequested")]
-        public List<DateTime>? BanRequested {
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? BanRequested {
             get {
                 return _banRequested;
             }
@@ -77,7 +78,8 @@ namespace LarcApiNet.Model {
         /// Time when pick phase was started.
         /// </summary>
         [JsonProperty("pickRequested")]
-        public List<DateTime>? PickRequested {
+        [JsonConverter(typeof(UnixDateTimeConverter))]
+        public DateTime? PickRequested {
             get {
                 return _pickRequested;
             }
@@ -104,7 +106,8 @@ namespace LarcApiNet.Model {
         /// Type of the current action.
         /// </summary>
         [JsonProperty("actionType")]
-        public List<ActionType>? ActionType {
+        [JsonConverter(typeof(SmartEnumNameConverter<ActionType, int>))]
+        public ActionType? ActionType {
             get {
                 return _actionType;
             }
@@ -117,7 +120,7 @@ namespace LarcApiNet.Model {
         /// Is current action prescribed for the user's ally.
         /// </summary>
         [JsonProperty("isActorAnAlly")]
-        public List<bool>? IsActorAnAlly {
+        public bool? IsActorAnAlly {
             get {
                 return _isActorAnAlly;
             }
@@ -131,7 +134,7 @@ namespace LarcApiNet.Model {
         /// to the first summoner that participate in the current action.
         /// </summary>
         [JsonProperty("firstActorPosition")]
-        public List<int>? FirstActorPosition {
+        public int? FirstActorPosition {
             get {
                 return _firstActorPosition;
             }
@@ -144,7 +147,7 @@ namespace LarcApiNet.Model {
         /// Number of participants of the current action.
         /// </summary>
         [JsonProperty("actorsCount")]
-        public List<int>? ActorsCount {
+        public int? ActorsCount {
             get {
                 return _actorsCount;
             }
