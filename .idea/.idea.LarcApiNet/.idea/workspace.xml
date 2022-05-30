@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="519de785-db9a-4ed0-b2a4-5255ce067201" name="Changes" comment="refactor: downgrade for generation testing">
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/ClientCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/ClientCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/DeviceCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/DeviceCategory.cs" afterDir="false" />
+    <list default="true" id="519de785-db9a-4ed0-b2a4-5255ce067201" name="Changes" comment="fix: done revision after auto-generation">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock://E:/Development/LCC/LarcApiNet/LarcApiNet/Categories/ClientCategory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://E:/Development/LCC/LarcApiNet/LarcApiNet/Categories/DeviceCategory.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -21,12 +24,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "WebServerToolWindowFactoryState": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="NetLibraryGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -67,6 +70,7 @@
       <workItem from="1651777518465" duration="2764000" />
       <workItem from="1651822697037" duration="2745000" />
       <workItem from="1653905810303" duration="128000" />
+      <workItem from="1653905976034" duration="420000" />
     </task>
     <task id="LOCAL-00002" summary="refactor: downgrade for generation testing">
       <created>1651783226408</created>
@@ -75,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651783226408</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix: done revision after auto-generation">
+      <created>1653906045947</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1653906045947</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,6 +110,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="refactor: apply changes to develop" />
     <MESSAGE value="refactor: downgrade for generation testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: downgrade for generation testing" />
+    <MESSAGE value="fix: done revision after auto-generation" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: done revision after auto-generation" />
   </component>
 </project>
