@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="519de785-db9a-4ed0-b2a4-5255ce067201" name="Changes" comment="refactor: downgrade for generation testing">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LarcApiNet/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/ClientCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/ClientCategory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LarcApiNet/Categories/DeviceCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LarcApiNet/Categories/DeviceCategory.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,13 +21,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="NetLibraryGenerator" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -66,6 +66,7 @@
       <workItem from="1651740075891" duration="841000" />
       <workItem from="1651777518465" duration="2764000" />
       <workItem from="1651822697037" duration="2745000" />
+      <workItem from="1653905810303" duration="128000" />
     </task>
     <task id="LOCAL-00002" summary="refactor: downgrade for generation testing">
       <created>1651783226408</created>
