@@ -47,6 +47,12 @@ namespace LarcApiNet.Model {
         public int? UserPickPosition { get; set; }//;
         
         /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("bansPlanned")]
+        public bool? BansPlanned { get; set; }//;
+        
+        /// <summary>
         /// Contains array of user's allies in a pick queue order with roles of each.
         /// Only if {@see type} is {@see PickEventType.ChampSelectStarted}, otherwise null.
         /// </summary>

@@ -53,10 +53,11 @@ namespace LarcApiNet.Categories.Abstraction {
         /// has been started in the «League of Legends» client.
         /// </summary>
         /// <param name="userPosition">Index of the user in allies array.</param>
+        /// <param name="bansPlanned"></param>
         /// <param name="enemiesCount">Count of matched enemies.</param>
         /// <param name="alliesRoles">Array of matched allies' roles</param>
         [ControllerOnly()]
-        Task ReportChampSelectStartedAsync(int userPosition, int enemiesCount, List<Role> alliesRoles, CancellationToken token = default);
+        Task ReportChampSelectStartedAsync(int userPosition, bool bansPlanned, int enemiesCount, List<Role> alliesRoles, CancellationToken token = default);
         
         /// <summary>
         /// Reports that action was requested from one of the matched players.

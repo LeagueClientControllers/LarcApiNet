@@ -32,6 +32,12 @@ namespace LarcApiNet.Model {
         public int UserPosition { get; set; } = default!;
         
         /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("bansPlanned")]
+        public bool BansPlanned { get; set; } = default!;
+        
+        /// <summary>
         /// Count of matched enemies.
         /// </summary>
         [JsonProperty("enemiesCount")]
@@ -43,8 +49,9 @@ namespace LarcApiNet.Model {
         [JsonProperty("alliesRoles")]
         public List<Role> AlliesRoles { get; set; } = default!;
         
-        public ChampSelectParameters(int userPosition, int enemiesCount, List<Role> alliesRoles) {
+        public ChampSelectParameters(int userPosition, bool bansPlanned, int enemiesCount, List<Role> alliesRoles) {
             this.UserPosition = userPosition;
+            this.BansPlanned = bansPlanned;
             this.EnemiesCount = enemiesCount;
             this.AlliesRoles = alliesRoles;
         }

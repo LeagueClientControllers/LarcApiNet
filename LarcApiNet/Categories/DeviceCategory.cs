@@ -82,9 +82,8 @@ namespace LarcApiNet.Categories {
         	// TODO: Add parameters validation
         	// </auto-generated-safe-area>
         	GetByIdParameters parameters = new GetByIdParameters (id);
-            ControllerResponse controllerResponse = await _api.ExecuteAsync<ControllerResponse, GetByIdParameters>("/device/getControllerById", parameters, true, token);
-            
-            return controllerResponse.Controller;
+        	ControllerResponse controllerResponse = await _api.ExecuteAsync<ControllerResponse, GetByIdParameters> ("/device/getControllerById", parameters, true, token);
+        	return controllerResponse.Controller;
         }
         
         /// <inheritdoc />

@@ -32,6 +32,8 @@ namespace LarcApiNet.Model {
         [JsonProperty("userPosition")]
         public int UserPosition { get; set; } = default!;
         
+        private bool _bansPlanned = default!;
+        
         private DateTime? _banRequested;
         
         private DateTime? _pickRequested;
@@ -59,6 +61,19 @@ namespace LarcApiNet.Model {
         /// </summary>
         [JsonProperty("enemies")]
         public List<Summoner> Enemies { get; set; } = default!;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonProperty("bansPlanned")]
+        public bool BansPlanned {
+            get {
+                return _bansPlanned;
+            }
+            set {
+                this.SetProperty(ref _bansPlanned, value);
+            }
+        }
         
         /// <summary>
         /// Time when ban phase was started.
