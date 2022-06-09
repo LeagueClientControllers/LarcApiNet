@@ -46,7 +46,7 @@ namespace LarcApiNet.Model {
         /// <summary>
         /// Array of matched allies' roles
         /// </summary>
-        [JsonProperty("alliesRoles")]
+        [JsonProperty("alliesRoles", ItemConverterType = typeof(SmartEnumNameConverter<Role, int>))]
         public List<Role> AlliesRoles { get; set; } = default!;
         
         public ChampSelectParameters(int userPosition, bool bansPlanned, int enemiesCount, List<Role> alliesRoles) {
