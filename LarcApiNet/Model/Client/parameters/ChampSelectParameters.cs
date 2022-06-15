@@ -32,7 +32,7 @@ namespace LarcApiNet.Model {
         public int UserPosition { get; set; } = default!;
         
         /// <summary>
-        /// 
+        /// Whether bans are intended for chosen game mode.
         /// </summary>
         [JsonProperty("bansPlanned")]
         public bool BansPlanned { get; set; } = default!;
@@ -49,11 +49,18 @@ namespace LarcApiNet.Model {
         [JsonProperty("alliesRoles")]
         public List<Role> AlliesRoles { get; set; } = default!;
         
-        public ChampSelectParameters(int userPosition, bool bansPlanned, int enemiesCount, List<Role> alliesRoles) {
+        /// <summary>
+        /// List of champions that user owns.
+        /// </summary>
+        [JsonProperty("availableChampions")]
+        public List<int> AvailableChampions { get; set; } = default!;
+        
+        public ChampSelectParameters(int userPosition, bool bansPlanned, int enemiesCount, List<Role> alliesRoles, List<int> availableChampions) {
             this.UserPosition = userPosition;
             this.BansPlanned = bansPlanned;
             this.EnemiesCount = enemiesCount;
             this.AlliesRoles = alliesRoles;
+            this.AvailableChampions = availableChampions;
         }
     }
 }

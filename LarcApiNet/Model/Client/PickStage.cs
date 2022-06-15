@@ -37,6 +37,12 @@ namespace LarcApiNet.Model {
         private DateTime? _actionRequestedAt;
         
         /// <summary>
+        /// Champions that are owned by the user and are allowed to be picked by him.
+        /// </summary>
+        [JsonProperty("availableChampions")]
+        public List<int> AvailableChampions { get; set; } = default!;
+        
+        /// <summary>
         /// Members of the user's team.
         /// Index in the array points to player position in the pick order.
         /// </summary>
