@@ -40,31 +40,11 @@ namespace LarcApiNet.Model {
         public int ControllerId { get; set; } = default!;
         
         /// <summary>
-        /// Specifies where in the pick queue user is.
+        /// Contains initial pick stage info when it's started.
         /// Only if {@see type} is {@see PickEventType.ChampSelectStarted}, otherwise null.
         /// </summary>
-        [JsonProperty("userPickPosition")]
-        public int? UserPickPosition { get; set; }//;
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        [JsonProperty("bansPlanned")]
-        public bool? BansPlanned { get; set; }//;
-        
-        /// <summary>
-        /// Contains array of user's allies in a pick queue order with roles of each.
-        /// Only if {@see type} is {@see PickEventType.ChampSelectStarted}, otherwise null.
-        /// </summary>
-        [JsonProperty("alliesRoles")]
-        public List<Role>? AlliesRoles { get; set; }//;
-        
-        /// <summary>
-        /// Contains number of matched enemies considering every one of them has {@see Role.Any} role.
-        /// Only if {@see type} is {@see PickEventType.ChampSelectStarted}, otherwise null.
-        /// </summary>
-        [JsonProperty("enemiesCount")]
-        public int? EnemiesCount { get; set; }//;
+        [JsonProperty("stage")]
+        public PickStage? Stage { get; set; }//;
         
         /// <summary>
         /// When the action was requested.
@@ -83,13 +63,6 @@ namespace LarcApiNet.Model {
         public ActionType? ActionType { get; set; }//;
         
         /// <summary>
-        /// Indicates whether action was requested from an ally.
-        /// Only if {@see type} is {@see PickEventType.ActionRequested}, otherwise null.
-        /// </summary>
-        [JsonProperty("isActorAnAlly")]
-        public bool? IsActorAnAlly { get; set; }//;
-        
-        /// <summary>
         /// Specifies range of actors the action was requested from ([0..4]).
         /// Only if {@see type} is {@see PickEventType.ActionRequested}, otherwise null.
         /// </summary>
@@ -97,26 +70,27 @@ namespace LarcApiNet.Model {
         public ValueRange? ActorsRange { get; set; }//;
         
         /// <summary>
-        /// Position of the actor in ally or enemy team ([0..4]).
-        /// Only if {@see type} is {@see PickEventType.ActionChanged} or {@see PickEventType.SkinChanged},
+        /// Position of the summoner in ally or enemy team ([0..4]).
+        /// Only if {@see type} is champion related or {@see PickEventType.SkinChanged},
         /// otherwise null.
         /// </summary>
         [JsonProperty("actorPosition")]
-        public int? ActorPosition { get; set; }//;
+        public int? SummonerPosition { get; set; }//;
         
         /// <summary>
-        /// ID of a champion that was banned or picked.
-        /// Only if {@see type} is {@see PickEventType.ActionChanged}, otherwise null.
+        /// Is summoner in ally or enemy team.
+        /// Only if {@see type} is champion related, otherwise null.
+        /// </summary>
+        [JsonProperty("isSummonerAnAlly")]
+        public bool? IsSummonerAnAlly { get; set; }//;
+        
+        /// <summary>
+        /// ID of a champion that was banned, picked or hovered on.
+        /// Only if {@see type} is {@see PickEventType.ChampionHovered} or optional if {@see PickEventType.ActionCompleted},
+        /// otherwise null.
         /// </summary>
         [JsonProperty("championId")]
         public int? ChampionId { get; set; }//;
-        
-        /// <summary>
-        /// Indicates whether champion was actually ban or picked.
-        /// Only if {@see type} is {@see PickEventType.ActionChanged}, otherwise null.
-        /// </summary>
-        [JsonProperty("completed")]
-        public bool? Completed { get; set; }//;
         
         /// <summary>
         /// ID of a skin that was applied to the picked champion.

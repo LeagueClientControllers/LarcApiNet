@@ -43,6 +43,8 @@ namespace LarcApiNet.Model {
         
         private int _skinId = default!;
         
+        private ActionType? _actionInProgressType;
+        
         /// <summary>
         /// ID of the champion this summoner picked.
         /// </summary>
@@ -96,7 +98,7 @@ namespace LarcApiNet.Model {
         }
         
         /// <summary>
-        /// 
+        /// ID of the skin of a picked champion.
         /// </summary>
         [JsonProperty("skinId")]
         public int SkinId {
@@ -105,6 +107,20 @@ namespace LarcApiNet.Model {
             }
             set {
                 this.SetProperty(ref _skinId, value);
+            }
+        }
+        
+        /// <summary>
+        /// Specifies type of action the summoner participates in.
+        /// </summary>
+        [JsonProperty("actionInProgressType")]
+        [JsonConverter(typeof(SmartEnumNameConverter<ActionType, int>))]
+        public ActionType? ActionInProgressType {
+            get {
+                return _actionInProgressType;
+            }
+            set {
+                this.SetProperty(ref _actionInProgressType, value);
             }
         }
     }

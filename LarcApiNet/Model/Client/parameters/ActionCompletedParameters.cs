@@ -23,23 +23,30 @@ namespace LarcApiNet.Model {
     /// <summary>
     /// 
     /// </summary>
-    public class SkinChangedParameters {
+    public class ActionCompletedParameters {
         
         /// <summary>
-        /// Position of player whose skin has been changed in allies array. [0..4]
+        /// Position of the actor in ally or enemy team ([0..4]).
         /// </summary>
-        [JsonProperty("summonerPosition")]
-        public int SummonerPosition { get; set; } = default!;
+        [JsonProperty("actorPosition")]
+        public int ActorPosition { get; set; } = default!;
         
         /// <summary>
-        /// New skin id.
+        /// Whether actor is on ally or enemy team.
         /// </summary>
-        [JsonProperty("skinId")]
-        public int SkinId { get; set; } = default!;
+        [JsonProperty("isActorAnAlly")]
+        public bool IsActorAnAlly { get; set; } = default!;
         
-        public SkinChangedParameters(int summonerPosition, int skinId) {
-            this.SummonerPosition = summonerPosition;
-            this.SkinId = skinId;
+        /// <summary>
+        /// ID of a picked or banned champion.
+        /// </summary>
+        [JsonProperty("championId")]
+        public int? ChampionId { get; set; }//;
+        
+        public ActionCompletedParameters(int actorPosition, bool isActorAnAlly, int? championId) {
+            this.ActorPosition = actorPosition;
+            this.IsActorAnAlly = isActorAnAlly;
+            this.ChampionId = championId;
         }
     }
 }

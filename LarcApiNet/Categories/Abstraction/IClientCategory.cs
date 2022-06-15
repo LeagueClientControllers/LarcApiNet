@@ -70,22 +70,30 @@ namespace LarcApiNet.Categories.Abstraction {
         Task ReportActionRequestedAsync(DateTime requestedAt, bool isAllyAction, ValueRange actorsRange, ActionType type, CancellationToken token = default);
         
         /// <summary>
-        /// Reports that action was changed, i.e. hovered champion was changed
-        /// or champion was picked or banned.
+        /// Reports that action was changed, i.e. champion was banned or picked.
         /// </summary>
-        /// <param name="completed">Is champion action completed or the champion is only hovered.</param>
-        /// <param name="championId">ID of the picked or banned champion.</param>
         /// <param name="actorPosition">Position of the actor in ally or enemy team ([0..4]).</param>
+        /// <param name="isActorAnAlly">Whether actor is on ally or enemy team.</param>
+        /// <param name="championId">ID of a picked or banned champion.</param>
         [ControllerOnly()]
-        Task ReportActionChangedAsync(bool completed, int championId, int actorPosition, CancellationToken token = default);
+        Task ReportActionCompletedAsync(int actorPosition, bool isActorAnAlly, int? championId, CancellationToken token = default);
+        
+        /// <summary>
+        /// Reports that champion was hovered.
+        /// </summary>
+        /// <param name="actorPosition">Position of the actor in ally or enemy team ([0..4]).</param>
+        /// <param name="isActorAnAlly">Whether actor is on ally or enemy team.</param>
+        /// <param name="championId">ID of the hovered champion.</param>
+        [ControllerOnly()]
+        Task ReportChampionHoveredAsync(int actorPosition, bool isActorAnAlly, int championId, CancellationToken token = default);
         
         /// <summary>
         /// Reports that champion skin was changed by the one of the allies.
         /// </summary>
-        /// <param name="playerPosition">Position of player whose skin has been changed in allies array. [0..4]</param>
+        /// <param name="summonerPosition">Position of player whose skin has been changed in allies array. [0..4]</param>
         /// <param name="skinId">New skin id.</param>
         [ControllerOnly()]
-        Task ReportSkinChangedAsync(int playerPosition, int skinId, CancellationToken token = default);
+        Task ReportSkinChangedAsync(int summonerPosition, int skinId, CancellationToken token = default);
         
         /// <summary>
         /// Reports that champ select phase was completed or cancelled.

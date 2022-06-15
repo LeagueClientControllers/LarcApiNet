@@ -27,22 +27,27 @@ namespace LarcApiNet.Model {
         /// <summary>
         /// 
         /// </summary>
-        public static PickEventType ActionChanged = new PickEventType("ActionChanged", 2);
+        public static PickEventType ActionRequested = new PickEventType("ActionRequested", 2);
         
         /// <summary>
         /// 
         /// </summary>
-        public static PickEventType ActionRequested = new PickEventType("ActionRequested", 3);
+        public static PickEventType ActionCompleted = new PickEventType("ActionCompleted", 3);
         
         /// <summary>
         /// 
         /// </summary>
-        public static PickEventType ChampSelectEnded = new PickEventType("ChampSelectEnded", 4);
+        public static PickEventType ChampionHovered = new PickEventType("ChampionHovered", 4);
         
         /// <summary>
         /// 
         /// </summary>
-        public static PickEventType ChampSelectStarted = new PickEventType("ChampSelectStarted", 5);
+        public static PickEventType ChampSelectEnded = new PickEventType("ChampSelectEnded", 5);
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        public static PickEventType ChampSelectStarted = new PickEventType("ChampSelectStarted", 6);
         
         public PickEventType(string name, int value) : 
                 base(name, value) {

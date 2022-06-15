@@ -34,19 +34,7 @@ namespace LarcApiNet.Model {
         
         private bool _bansPlanned = default!;
         
-        private DateTime? _banRequested;
-        
-        private DateTime? _pickRequested;
-        
-        private DateTime? _prepareStageStarted;
-        
-        private ActionType? _actionType;
-        
-        private bool? _isActorAnAlly;
-        
-        private int? _firstActorPosition;
-        
-        private int? _actorsCount;
+        private DateTime? _actionRequestedAt;
         
         /// <summary>
         /// Members of the user's team.
@@ -76,98 +64,16 @@ namespace LarcApiNet.Model {
         }
         
         /// <summary>
-        /// Time when ban phase was started.
+        /// Time when the last action was requested from summoner(s).
         /// </summary>
-        [JsonProperty("banRequested")]
+        [JsonProperty("actionRequestedAt")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? BanRequested {
+        public DateTime? ActionRequestedAt {
             get {
-                return _banRequested;
+                return _actionRequestedAt;
             }
             set {
-                this.SetProperty(ref _banRequested, value);
-            }
-        }
-        
-        /// <summary>
-        /// Time when pick phase was started.
-        /// </summary>
-        [JsonProperty("pickRequested")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? PickRequested {
-            get {
-                return _pickRequested;
-            }
-            set {
-                this.SetProperty(ref _pickRequested, value);
-            }
-        }
-        
-        /// <summary>
-        /// Time when prepare phase was started.
-        /// </summary>
-        [JsonProperty("prepareStageStarted")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? PrepareStageStarted {
-            get {
-                return _prepareStageStarted;
-            }
-            set {
-                this.SetProperty(ref _prepareStageStarted, value);
-            }
-        }
-        
-        /// <summary>
-        /// Type of the current action.
-        /// </summary>
-        [JsonProperty("actionType")]
-        [JsonConverter(typeof(SmartEnumNameConverter<ActionType, int>))]
-        public ActionType? ActionType {
-            get {
-                return _actionType;
-            }
-            set {
-                this.SetProperty(ref _actionType, value);
-            }
-        }
-        
-        /// <summary>
-        /// Is current action prescribed for the user's ally.
-        /// </summary>
-        [JsonProperty("isActorAnAlly")]
-        public bool? IsActorAnAlly {
-            get {
-                return _isActorAnAlly;
-            }
-            set {
-                this.SetProperty(ref _isActorAnAlly, value);
-            }
-        }
-        
-        /// <summary>
-        /// Index of the allies or opponents array that points
-        /// to the first summoner that participate in the current action.
-        /// </summary>
-        [JsonProperty("firstActorPosition")]
-        public int? FirstActorPosition {
-            get {
-                return _firstActorPosition;
-            }
-            set {
-                this.SetProperty(ref _firstActorPosition, value);
-            }
-        }
-        
-        /// <summary>
-        /// Number of participants of the current action.
-        /// </summary>
-        [JsonProperty("actorsCount")]
-        public int? ActorsCount {
-            get {
-                return _actorsCount;
-            }
-            set {
-                this.SetProperty(ref _actorsCount, value);
+                this.SetProperty(ref _actionRequestedAt, value);
             }
         }
     }
