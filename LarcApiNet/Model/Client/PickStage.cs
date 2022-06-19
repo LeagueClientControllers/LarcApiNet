@@ -27,6 +27,13 @@ namespace LarcApiNet.Model {
     public class PickStage : BindableBase {
         
         /// <summary>
+        /// Type of the queue the pick stage was started for.
+        /// </summary>
+        [JsonProperty("queueType")]
+        [JsonConverter(typeof(SmartEnumNameConverter<QueueType, int>))]
+        public QueueType QueueType { get; set; } = default!;
+        
+        /// <summary>
         /// Index of the allies array that corresponds to the user.
         /// </summary>
         [JsonProperty("userPosition")]
@@ -35,6 +42,13 @@ namespace LarcApiNet.Model {
         private bool _bansPlanned = default!;
         
         private DateTime? _actionRequestedAt;
+        
+        /// <summary>
+        /// How much time user have to complete the action in seconds
+        /// before he will be thrown out of queue.
+        /// </summary>
+        [JsonProperty("timeToAct")]
+        public int? TimeToAct { get; set; }//;
         
         /// <summary>
         /// Champions that are owned by the user and are allowed to be picked by him.

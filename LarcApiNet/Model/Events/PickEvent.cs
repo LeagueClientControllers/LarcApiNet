@@ -55,6 +55,14 @@ namespace LarcApiNet.Model {
         public DateTime? RequestedAt { get; set; }//;
         
         /// <summary>
+        /// How much time user have to complete the action in seconds
+        /// before he will be thrown out of queue.
+        /// Only if {@see type} is {@see PickEventType.ActionRequested}, otherwise null.
+        /// </summary>
+        [JsonProperty("timeToAct")]
+        public int? TimeToAct { get; set; }//;
+        
+        /// <summary>
         /// Specifies if requested or changed action was pick or ban.
         /// Only if {@see type} is {@see PickEventType.ActionRequested}, otherwise null.
         /// </summary>

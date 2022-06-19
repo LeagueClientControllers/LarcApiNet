@@ -32,6 +32,13 @@ namespace LarcApiNet.Model {
         public int UserPosition { get; set; } = default!;
         
         /// <summary>
+        /// Type of the queue for which the pick stage was started.
+        /// </summary>
+        [JsonProperty("queueType")]
+        [JsonConverter(typeof(SmartEnumNameConverter<QueueType, int>))]
+        public QueueType QueueType { get; set; } = default!;
+        
+        /// <summary>
         /// Whether bans are intended for chosen game mode.
         /// </summary>
         [JsonProperty("bansPlanned")]
@@ -55,8 +62,9 @@ namespace LarcApiNet.Model {
         [JsonProperty("availableChampions")]
         public List<int> AvailableChampions { get; set; } = default!;
         
-        public ChampSelectParameters(int userPosition, bool bansPlanned, int enemiesCount, List<Role> alliesRoles, List<int> availableChampions) {
+        public ChampSelectParameters(int userPosition, QueueType queueType, bool bansPlanned, int enemiesCount, List<Role> alliesRoles, List<int> availableChampions) {
             this.UserPosition = userPosition;
+            this.QueueType = queueType;
             this.BansPlanned = bansPlanned;
             this.EnemiesCount = enemiesCount;
             this.AlliesRoles = alliesRoles;
