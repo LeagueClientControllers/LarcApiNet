@@ -4,8 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LarcApiNet.Exceptions;
 using LarcApiNet.Model.Local;
-
-using LccApiNet.Security;
+using LarcApiNet.Security;
 
 using Newtonsoft.Json;
 using Websocket.Client;
